@@ -7,6 +7,8 @@ class TxtsController < ApplicationController
     elsif params[:Body] == 'subscribe'
       Subscriber.create(number: params[:From])
       welcome
+    else
+      relay
     end
   end
 
@@ -16,5 +18,14 @@ class TxtsController < ApplicationController
 
   def welcome
     render inline: "xml.Response { xml.Sms('welcome') }", type: :builder
+  end
+
+  def relay
+    @destinations = (Subscriber.all - [Subscriber.find_by(number: params[:From])]).map(&:number)
+    respond_to do |format|
+      format.any do
+        render 'relay', formats: :xml
+      end
+    end
   end
 end
