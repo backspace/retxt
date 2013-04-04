@@ -19,16 +19,21 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation) txt$/
   response_should_include message
 end
 
-Then(/^subscribers other than me should receive that message$/) do
+Then(/^I should receive a message that I am not subscribed$/) do
+  response_should_include 'you are not subscribed'
+end
+
+Then(/^subscribers other than me should( not)? receive that message$/) do |negation|
   page = Nokogiri::XML(last_response.body)
+  matcher = negation ? :should_not : :should
 
   subscribers_other_than_me.each do |subscriber|
-    page.xpath("//Sms[@to='#{subscriber.number}']").text.should include(@txt_content)
+    page.xpath("//Sms[@to='#{subscriber.number}']").text.send(matcher, include(@txt_content))
   end
 end
 
 def subscribers_other_than_me
-  Subscriber.all - [Subscriber.find_by(number: my_number)]
+  Subscriber.all - [Subscriber.where(number: my_number).first]
 end
 
 def response_should_include(content)

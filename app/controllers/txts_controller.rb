@@ -29,11 +29,15 @@ class TxtsController < ApplicationController
   end
 
   def relay
-    @destinations = (Subscriber.all - [Subscriber.find_by(number: params[:From])]).map(&:number)
-    respond_to do |format|
-      format.any do
-        render 'relay', formats: :xml
+    if subscriber.present?
+      @destinations = (Subscriber.all - [Subscriber.find_by(number: params[:From])]).map(&:number)
+      respond_to do |format|
+        format.any do
+          render 'relay', formats: :xml
+        end
       end
+    else
+      render_simple_response 'you are not subscribed'
     end
   end
 
@@ -41,5 +45,9 @@ class TxtsController < ApplicationController
   def render_simple_response(content)
     @content = content
     render 'simple_response', formats: :xml
+  end
+
+  def subscriber
+    Subscriber.where(number: params[:From]).first
   end
 end
