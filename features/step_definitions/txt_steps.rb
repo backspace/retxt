@@ -21,7 +21,6 @@ end
 
 Then(/^subscribers other than me should receive that message$/) do
   page = Nokogiri::XML(last_response.body)
-  # binding.pry
 
   subscribers_other_than_me.each do |subscriber|
     page.xpath("//Sms[@to='#{subscriber.number}']").text.should include(@txt_content)
