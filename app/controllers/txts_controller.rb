@@ -12,8 +12,12 @@ class TxtsController < ApplicationController
         welcome
       end
     elsif params[:Body] == 'unsubscribe'
-      subscriber.destroy
-      render_simple_response 'goodbye'
+      if subscriber.present?
+        subscriber.destroy
+        render_simple_response 'goodbye'
+      else
+        render_simple_response 'you are not subscribed'
+      end
     else
       relay
     end

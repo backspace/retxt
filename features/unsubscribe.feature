@@ -7,3 +7,7 @@ Feature: Unsubscribe
 
     When I visit the subscribers list
     Then I should not see myself
+
+  Scenario: A non-subscriber unsubscribes
+    When I txt 'unsubscribe'
+    Then I should receive a message that I am not subscribed
