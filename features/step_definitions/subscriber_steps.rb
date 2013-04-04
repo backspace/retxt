@@ -15,6 +15,6 @@ When(/^I visit the subscribers list$/) do
   visit subscribers_path
 end
 
-Then(/^I should see myself$/) do
-  page.should have_content(my_number)
+Then(/^I should( not)? see myself$/) do |negation|
+  page.send(negation ? :should_not : :should, have_content(my_number))
 end

@@ -11,6 +11,9 @@ class TxtsController < ApplicationController
         Subscriber.create(number: params[:From])
         welcome
       end
+    elsif params[:Body] == 'unsubscribe'
+      subscriber.destroy
+      render_simple_response 'goodbye'
     else
       relay
     end

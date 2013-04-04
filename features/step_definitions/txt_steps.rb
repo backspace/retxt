@@ -5,7 +5,7 @@ When(/^I txt '(.*?)'$/) do |content|
   post '/txts/incoming', Body: content, From: my_number
 end
 
-Then(/^I should receive an? (already-subscribed|help|welcome|confirmation) txt$/) do |message_type|
+Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|goodbye) txt$/) do |message_type|
   if message_type == 'help'
     message = 'help message'
   elsif message_type == 'welcome'
@@ -14,6 +14,8 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation) txt$/
     message = 'your message was sent'
   elsif message_type == 'already-subscribed'
     message = 'you are already subscribed'
+  elsif message_type == 'goodbye'
+    message = 'goodbye'
   end
 
   response_should_include message
