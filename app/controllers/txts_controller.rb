@@ -5,8 +5,12 @@ class TxtsController < ApplicationController
     if params[:Body] == 'help'
       help
     elsif params[:Body] == 'subscribe'
-      Subscriber.create(number: params[:From])
-      welcome
+      if Subscriber.where(number: params[:From]).present?
+        already_subscribed
+      else
+        Subscriber.create(number: params[:From])
+        welcome
+      end
     else
       relay
     end
@@ -18,6 +22,10 @@ class TxtsController < ApplicationController
 
   def welcome
     render inline: "xml.Response { xml.Sms('welcome') }", type: :builder
+  end
+
+  def already_subscribed
+    render inline: "xml.Response { xml.Sms('you are already subscribed') }", type: :builder
   end
 
   def relay
