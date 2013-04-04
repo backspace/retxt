@@ -17,15 +17,15 @@ class TxtsController < ApplicationController
   end
 
   def help
-    render inline: "xml.Response { xml.Sms('help message') }", type: :builder
+    render_simple_response 'help message'
   end
 
   def welcome
-    render inline: "xml.Response { xml.Sms('welcome') }", type: :builder
+    render_simple_response 'welcome'
   end
 
   def already_subscribed
-    render inline: "xml.Response { xml.Sms('you are already subscribed') }", type: :builder
+    render_simple_response 'you are already subscribed'
   end
 
   def relay
@@ -35,5 +35,11 @@ class TxtsController < ApplicationController
         render 'relay', formats: :xml
       end
     end
+  end
+
+  private
+  def render_simple_response(content)
+    @content = content
+    render 'simple_response', formats: :xml
   end
 end
