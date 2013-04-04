@@ -4,6 +4,12 @@ gem 'rails', '3.2.13'
 
 gem 'mongoid', '~> 3.0.0'
 
+group :test do
+  gem 'rspec-rails'
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
+end
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
