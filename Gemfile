@@ -10,6 +10,10 @@ group :test do
   gem 'database_cleaner'
 end
 
+group :development, :test do
+  gem 'pry'
+end
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
