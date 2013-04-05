@@ -28,7 +28,7 @@ class TxtsController < ApplicationController
   end
 
   def welcome
-    render_simple_response 'welcome'
+    render_simple_response "welcome to the relay. commands: help, unsubscribe. any other messages will be forwarded to #{ActionController::Base.helpers.pluralize Subscriber.count - 1, 'subscriber'}."
   end
 
   def already_subscribed
