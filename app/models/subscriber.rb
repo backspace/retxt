@@ -5,4 +5,5 @@ class Subscriber
   include Mongoid::Versioning
 
   field :number, type: String
+  field :nick, type: String
 end

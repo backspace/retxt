@@ -7,6 +7,10 @@ class TxtsController < ApplicationController
     elsif command == 'nick'
       new_nick = params[:Body].split[1..-1].join(' ').parameterize
 
+      if new_nick.present?
+        subscriber.update_attribute(:nick, new_nick)
+      end
+
       render_simple_response "your nick is #{subscriber.nick}. change it with 'nick (new nick)'."
     elsif command == 'subscribe'
       if Subscriber.where(number: params[:From]).present?
