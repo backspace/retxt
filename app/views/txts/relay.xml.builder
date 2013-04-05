@@ -3,5 +3,5 @@ xml.Response do
     xml.Sms(params[:Body], to: number)
   end
 
-  xml.Sms "your message was sent to #{@destinations} subscribers"
+  xml.Sms "your message was sent to #{pluralize @destinations.size, 'subscriber'}"
 end
