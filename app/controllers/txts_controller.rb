@@ -2,7 +2,7 @@ class TxtsController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   def incoming
-    if command == 'help'
+    if command == 'help' || command == 'about'
       help
     elsif command == 'nick'
       new_nick = params[:Body].split[1..-1].join(' ').parameterize
