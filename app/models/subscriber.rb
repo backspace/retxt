@@ -6,4 +6,8 @@ class Subscriber
 
   field :number, type: String
   field :nick, type: String
+
+  def nick_or_anon
+    nick.present? ? nick : 'anon'
+  end
 end

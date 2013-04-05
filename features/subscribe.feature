@@ -2,7 +2,7 @@ Feature: Subscribe
 
   Scenario: A user subscribes
     When I txt 'subscribe'
-    Then I should receive a welcome txt
+    Then I should receive a welcome txt saying my nick is 'anon'
 
     When I visit the subscribers list
     Then I should see myself

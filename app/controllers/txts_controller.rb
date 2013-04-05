@@ -11,7 +11,7 @@ class TxtsController < ApplicationController
         subscriber.update_attribute(:nick, new_nick)
       end
 
-      render_simple_response "your nick is #{subscriber.nick}. change it with 'nick (new nick)'."
+      render_simple_response "your nick is #{subscriber.nick_or_anon}. change it with 'nick (new nick)'."
     elsif command == 'subscribe'
       if Subscriber.where(number: params[:From]).present?
         already_subscribed
@@ -41,7 +41,7 @@ class TxtsController < ApplicationController
   end
 
   def welcome
-    render_simple_response "welcome to the relay. your nick is #{subscriber.nick}. commands: help, unsubscribe. any other messages will be forwarded to #{ActionController::Base.helpers.pluralize Subscriber.count - 1, 'subscriber'}."
+    render_simple_response "welcome to the relay. your nick is #{subscriber.nick_or_anon}. commands: help, unsubscribe. any other messages will be forwarded to #{ActionController::Base.helpers.pluralize Subscriber.count - 1, 'subscriber'}."
   end
 
   def already_subscribed

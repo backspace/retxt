@@ -7,5 +7,8 @@ Feature: Nicks
 
   Scenario: I change my nick
     Given I am subscribed
+    When I txt 'nick'
+    Then I should receive a txt saying my nick is 'anon'
+
     When I txt 'nick leguin'
     Then I should receive a txt saying my nick is 'leguin'
