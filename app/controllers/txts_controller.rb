@@ -2,16 +2,16 @@ class TxtsController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   def incoming
-    if params[:Body] == 'help'
+    if command == 'help'
       help
-    elsif params[:Body] == 'subscribe'
+    elsif command == 'subscribe'
       if Subscriber.where(number: params[:From]).present?
         already_subscribed
       else
         Subscriber.create(number: params[:From])
         welcome
       end
-    elsif params[:Body] == 'unsubscribe'
+    elsif command == 'unsubscribe'
       if subscriber.present?
         subscriber.destroy
         render_simple_response 'goodbye'
@@ -56,5 +56,9 @@ class TxtsController < ApplicationController
 
   def subscriber
     Subscriber.where(number: params[:From]).first
+  end
+
+  def command
+    params[:Body].split.first.downcase
   end
 end
