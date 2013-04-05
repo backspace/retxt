@@ -7,7 +7,7 @@ end
 
 Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|goodbye) txt$/) do |message_type|
   if message_type == 'help'
-    message = 'help message'
+    message = 'commands'
   elsif message_type == 'welcome'
     message = 'welcome'
   elsif message_type == 'confirmation'

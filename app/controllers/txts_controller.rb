@@ -37,11 +37,11 @@ class TxtsController < ApplicationController
   end
 
   def help
-    render_simple_response 'help message'
+    render_simple_response commands_content
   end
 
   def welcome
-    render_simple_response "welcome to the relay. your nick is #{subscriber.nick_or_anon}. commands: help, unsubscribe, nick. any other messages will be forwarded to #{ActionController::Base.helpers.pluralize Subscriber.count - 1, 'subscriber'}."
+    render_simple_response "welcome to the relay. your nick is #{subscriber.nick_or_anon}. #{commands_content}"
   end
 
   def already_subscribed
@@ -73,5 +73,9 @@ class TxtsController < ApplicationController
 
   def command
     params[:Body].split.first.downcase
+  end
+
+  def commands_content
+    "commands: about, unsubscribe, nick. any other messages will be forwarded to #{ActionController::Base.helpers.pluralize Subscriber.count - 1, 'subscriber'}."
   end
 end
