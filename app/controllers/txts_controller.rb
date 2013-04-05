@@ -16,7 +16,12 @@ class TxtsController < ApplicationController
       if Subscriber.where(number: params[:From]).present?
         already_subscribed
       else
-        Subscriber.create(number: params[:From])
+        @subscriber = Subscriber.create(number: params[:From])
+
+        new_nick = params[:Body].split[1..-1].join(' ').parameterize
+
+        @subscriber.update_attribute(:nick, new_nick) if new_nick.present?
+
         welcome
       end
     elsif command == 'unsubscribe'
@@ -36,7 +41,7 @@ class TxtsController < ApplicationController
   end
 
   def welcome
-    render_simple_response "welcome to the relay. commands: help, unsubscribe. any other messages will be forwarded to #{ActionController::Base.helpers.pluralize Subscriber.count - 1, 'subscriber'}."
+    render_simple_response "welcome to the relay. your nick is #{subscriber.nick}. commands: help, unsubscribe. any other messages will be forwarded to #{ActionController::Base.helpers.pluralize Subscriber.count - 1, 'subscriber'}."
   end
 
   def already_subscribed
@@ -63,7 +68,7 @@ class TxtsController < ApplicationController
   end
 
   def subscriber
-    Subscriber.where(number: params[:From]).first
+    @subscriber ||= Subscriber.where(number: params[:From]).first
   end
 
   def command
