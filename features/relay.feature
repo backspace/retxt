@@ -6,7 +6,16 @@ Feature: Relay
 
     When I txt 'a tornado is destroying super c'
 
-    Then subscribers other than me should receive that message
+    Then subscribers other than me should receive that message signed by 'anon'
+    And I should receive a confirmation txt
+
+  Scenario: Relay a signed txt
+    Given I am subscribed as 'fork'
+    And two other people are subscribed
+
+    When I txt 'the cross is on fire'
+
+    Then subscribers other than me should receive that message signed by 'fork'
     And I should receive a confirmation txt
 
   Scenario: Non-subscriber tries to relay
