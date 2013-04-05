@@ -76,6 +76,6 @@ class TxtsController < ApplicationController
   end
 
   def commands_content
-    "commands: about, unsubscribe, nick. any other messages will be forwarded to #{ActionController::Base.helpers.pluralize Subscriber.count - 1, 'subscriber'}."
+    "commands: about, unsubscribe, nick. any other messages will be forwarded to #{ActionController::Base.helpers.pluralize Subscriber.count - 1, 'other subscriber'}."
   end
 end
