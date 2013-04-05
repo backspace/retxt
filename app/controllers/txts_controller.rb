@@ -4,6 +4,10 @@ class TxtsController < ApplicationController
   def incoming
     if command == 'help'
       help
+    elsif command == 'nick'
+      new_nick = params[:Body].split[1..-1].join(' ').parameterize
+
+      render_simple_response "your nick is #{subscriber.nick}. change it with 'nick (new nick)'."
     elsif command == 'subscribe'
       if Subscriber.where(number: params[:From]).present?
         already_subscribed
