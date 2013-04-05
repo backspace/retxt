@@ -82,3 +82,4 @@ production:
   sessions:
     default:
       uri: <%= ENV['MONGOLAB_URI'] %>
+  url: <%= ENV['MONGOLAB_URI'] %>
