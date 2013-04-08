@@ -87,6 +87,7 @@ GEM
       tzinfo (~> 0.3.22)
     moped (1.4.5)
     multi_json (1.7.2)
+    newrelic_rpm (3.6.0.78)
     nokogiri (1.5.9)
     origin (1.0.11)
     polyglot (0.3.3)
@@ -170,6 +171,7 @@ DEPENDENCIES
   haml
   jquery-rails
   mongoid (~> 3.0.0)
+  newrelic_rpm
   pry
   rails (= 3.2.13)
   rspec-rails
