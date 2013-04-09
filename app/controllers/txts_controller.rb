@@ -11,7 +11,7 @@ class TxtsController < ApplicationController
         subscriber.update_attribute(:nick, new_nick)
       end
 
-      render_simple_response "your nick is #{subscriber.nick_or_anon}. change it with 'nick (new nick)'."
+      render_simple_response render_to_string(partial: 'nick', formats: [:text], locals: {nick: subscriber.nick_or_anon})
     elsif command == 'subscribe'
       if Subscriber.where(number: params[:From]).present?
         already_subscribed
