@@ -17,6 +17,7 @@ end
 
 group :development, :test do
   gem 'pry'
+  gem 'pry-nav'
 end
 
 group :assets do
