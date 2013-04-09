@@ -1,6 +1,6 @@
 class TxtsController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  before_filter :validate_twilio_request, only: :incoming if Rails.env.production?
+  # before_filter :validate_twilio_request, only: :incoming if Rails.env.production?
 
   def incoming
     if command == 'help' || command == 'about'
