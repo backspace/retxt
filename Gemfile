@@ -6,6 +6,8 @@ gem 'rails', '3.2.13'
 
 gem 'mongoid', '~> 3.0.0'
 
+gem 'devise'
+
 group :test do
   gem 'rspec-rails'
   gem 'cucumber-rails'
