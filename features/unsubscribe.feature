@@ -5,6 +5,7 @@ Feature: Unsubscribe
     When I txt 'unsubscribe'
     Then I should receive a goodbye txt
 
+    Given I am signed in as an admin
     When I visit the subscribers list
     Then I should not see myself
 

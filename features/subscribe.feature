@@ -4,6 +4,7 @@ Feature: Subscribe
     When I txt 'subscribe'
     Then I should receive a welcome txt saying my nick is 'anon'
 
+    Given I am signed in as an admin
     When I visit the subscribers list
     Then I should see myself
 
