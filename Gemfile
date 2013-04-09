@@ -10,6 +10,8 @@ gem 'mongoid', '~> 3.0.0'
 gem 'devise'
 gem 'cancan'
 
+gem 'twilio-ruby'
+
 group :test do
   gem 'rspec-rails'
   gem 'cucumber-rails'
