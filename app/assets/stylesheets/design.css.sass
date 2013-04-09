@@ -2,10 +2,24 @@
 
 body
   background: $background
+  color: $text
 
 h1
+  color: $text
   vertical-align: top
-  text-shadow: 1px 1px 0 white
+  text-shadow: 1px 1px 0 black
+
+h2, h3, h4, h5, h6
+  color: $text
+
+a
+  color: $highlight
+  &:hover
+    color: darken($highlight, 10)
+
+section.row
+  margin-bottom: 3em
 
 .credits
-  font-size: 50%
+  > *
+    font-size: 50%

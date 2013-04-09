@@ -1,9 +1,65 @@
 .row
-  %h1
-    =image_tag 'tower.png', size: '100x100'
-    Relay
-  %p More to come!
-  .credits
-    %p Developed by #{link_to 'chromatin', 'http://chromatin.ca/'}
+  .small-12.columns
+    %h1
+      =image_tag 'tower.png', size: '100x100'
+      Relay
+    %p This is the homepage for a prototype emergency SMS relay system for southwest Montréal. It’s simple for now but can grow as we discover our needs.
     %p
-      <a href="http://thenounproject.com/noun/radio-tower/#icon-No1316" target="_blank">Radio Tower</a> designed by <a href="http://thenounproject.com/johncaserta" target="_blank">John Caserta</a> from The Noun Project
+      %a{href: 'tel:+15145002007'} (514) 500-2007
+      is the number all the commands below should be sent to. This could change in the future.
+%section.row
+  .small-6.columns
+    %h2 Subscribing
+    .row.txtpair=txt_pair('subscribe', txt_partial('welcome', nick: 'anon', subscriber_count: @subscriber_count))
+    .row
+      .small-12.columns
+        %p Optionally, specify your nickname when subscribing.
+    .row.txtpair=txt_pair('subscribe tuffduck', txt_partial('welcome', nick: 'tuffduck', subscriber_count: @subscriber_count))
+  .small-6.columns
+    %h2 Unsubscribing
+    .row.txtpair=txt_pair('unsubscribe', '(this message is intercepted by the text message gateway and out of our control. you need to send \'start\' to get back in communication with the relay.)')
+
+%section.row
+  .small-6.columns
+    %h2 Relay a message
+    .row.txtpair=txt_pair('there\'s a tornado destroying super c!', txt_partial('relayed', destination_count: @subscriber_count))
+    %p Other subscribers will receive the message like this:
+    %pre.txt.small-5.columns
+      tuffduck sez: there's a tornado destroying super c!
+  .small-6.columns
+    %h2 Etiquette
+    %p
+      This is just being tested for now, but be careful anyway?
+      %ul
+        %li Don’t send fake emergency messages! Creating a panic isn’t fun times.
+        %li Test/information messages are good to exercise the system, but be mindful that other subscribers will be receiving them.
+        %li Plus, each incoming and outgoing message costs the developer $0.01.
+        %li Therefore, don’t spam!
+
+%section.row
+  .small-6.columns
+    %h2 About
+    .row.txtpair=txt_pair('about', txt_partial('commands_content', subscriber_count: @subscriber_count))
+  .small-6.columns
+    %h2 Nicknames
+    .row.txtpair=txt_pair('nick', txt_partial('nick', nick: 'tuffduck'))
+    .row.txtpair=txt_pair('nick francine', txt_partial('nick', nick: 'francine'))
+
+%section.row
+  .small-6.columns
+    %h2 Feedback
+    %p For now, please email the developer. The address is the letter “b” followed by the domain chromatin.ca.
+  .small-6.columns
+    %h2 Features to come
+    %ul
+      %li text-to-speech of relayed messages to non-mobile phones
+      %li banning a user
+      %li ignoring a user
+      %li shutting down the list in technical emergencies
+      %li got others? let the developer know
+
+
+%section.row.credits
+  %p Developed by #{link_to 'chromatin', 'http://chromatin.ca/'}
+  %p
+    <a href="http://thenounproject.com/noun/radio-tower/#icon-No1316" target="_blank">Radio Tower</a> designed by <a href="http://thenounproject.com/johncaserta" target="_blank">John Caserta</a> from The Noun Project
