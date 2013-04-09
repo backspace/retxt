@@ -41,7 +41,7 @@ class TxtsController < ApplicationController
   end
 
   def welcome
-    render_simple_response "welcome to the relay. your nick is #{subscriber.nick_or_anon}. #{commands_content}"
+    render_simple_response render_to_string(partial: 'welcome', formats: [:text], locals: {subscriber_count: Subscriber.count - 1, nick: subscriber.nick_or_anon})
   end
 
   def already_subscribed
@@ -76,6 +76,6 @@ class TxtsController < ApplicationController
   end
 
   def commands_content
-    "commands: about, unsubscribe, nick. any other messages will be forwarded to #{ActionController::Base.helpers.pluralize Subscriber.count - 1, 'other subscriber'}."
+    render_to_string partial: 'commands_content', formats: [:text], locals: {subscriber_count: (Subscriber.count - 1)}
   end
 end
