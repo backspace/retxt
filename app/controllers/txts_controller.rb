@@ -48,7 +48,6 @@ class TxtsController < ApplicationController
     @admins = Subscriber.admins
 
     render 'welcome_and_notification', formats: [:xml]
-    # render_simple_response render_to_string(partial: 'welcome', formats: [:text], locals: {subscriber_count: Subscriber.count - 1, nick: subscriber.nick_or_anon})
   end
 
   def already_subscribed
