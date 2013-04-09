@@ -27,7 +27,10 @@ class TxtsController < ApplicationController
     elsif command == 'unsubscribe'
       if subscriber.present?
         subscriber.destroy
-        render_simple_response 'goodbye'
+
+        @unsubscriber = subscriber
+        @admins = Subscriber.admins
+        render 'goodbye_and_notification', formats: [:xml]
       else
         render_simple_response 'you are not subscribed'
       end

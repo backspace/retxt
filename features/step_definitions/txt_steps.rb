@@ -39,12 +39,12 @@ Then(/^subscribers other than me should( not)? receive that message( signed by '
   end
 end
 
-Then(/^the admin should receive a txt saying anon subscribed$/) do
+Then(/^the admin should receive a txt saying anon (un)?subscribed$/) do |unsubscribed|
   page = Nokogiri::XML(last_response.body)
   admin_text = page.xpath("//Sms[@to='#{@admin.number}']").text
 
   admin_text.should include('anon')
-  admin_text.should include('subscribed')
+  admin_text.should include(unsubscribed ? 'unsubscribed' : 'subscribed')
 end
 
 def subscribers_other_than_me
