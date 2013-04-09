@@ -7,15 +7,15 @@ body
 h1
   color: $text
   vertical-align: top
-  text-shadow: 1px 1px 0 black
+  text-shadow: 1px 1px 0 $highlight
 
 h2, h3, h4, h5, h6
   color: $text
 
 a
-  color: $highlight
+  color: darken($highlight, 20)
   &:hover
-    color: darken($highlight, 10)
+    color: darken($highlight, 40)
 
 section.row
   margin-bottom: 3em
