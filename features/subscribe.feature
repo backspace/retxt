@@ -1,8 +1,10 @@
 Feature: Subscribe
 
   Scenario: A user subscribes
+    Given an admin is subscribed
     When I txt 'subscribe'
     Then I should receive a welcome txt saying my nick is 'anon'
+    And the admin should receive a txt saying anon subscribed
 
     Given I am signed in as an admin
     When I visit the subscribers list

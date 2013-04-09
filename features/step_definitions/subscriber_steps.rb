@@ -15,6 +15,12 @@ Given(/^two other people are subscribed$/) do
   Subscriber.create(number: '4385551313')
 end
 
+Given(/^an admin is subscribed$/) do
+  @admin = Subscriber.create(number: '6045551313')
+  @admin.admin = true
+  @admin.save
+end
+
 When(/^I visit the subscribers list$/) do
   visit subscribers_path
 end

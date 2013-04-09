@@ -7,7 +7,12 @@ class Subscriber
   field :number, type: String
   field :nick, type: String
 
+  field :admin, type: Boolean
+  attr_protected :admin
+
   def nick_or_anon
     nick.present? ? nick : 'anon'
   end
+
+  scope :admins, where(admin: true)
 end
