@@ -19,10 +19,11 @@
   = csrf_meta_tags
 
 %body
-  -if user_signed_in?
-    =link_to "Sign out", destroy_user_session_path, method: :delete
-  %p.notice=notice
-  %p.alert=alert
+  .row
+    -if user_signed_in?
+      =link_to "Sign out", destroy_user_session_path, method: :delete
+    %p.notice=notice
+    %p.alert=alert
 
   = yield
   = javascript_include_tag "application"
