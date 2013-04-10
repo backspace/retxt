@@ -1,6 +1,6 @@
 class TxtsController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  # before_filter :validate_twilio_request, only: :incoming if Rails.env.production?
+  before_filter :validate_twilio_request, only: :incoming if Rails.env.production?
 
   def incoming
     if command == 'help' || command == 'about'
@@ -96,6 +96,19 @@ class TxtsController < ApplicationController
     parameters = env['rack.request.form_hash']
     signature = env['HTTP_X_TWILIO_SIGNATURE']
 
+    logger.info "validation data"
+    logger.info "authtoken: #{ENV['TWILIO_AUTH_TOKEN']}"
+    logger.info "url: #{url}"
+    logger.info "params:"
+    logger.info parameters
+    logger.info "signature: #{signature}"
+
+    logger.info "validator.validate: #{validator.validate url, parameters, signature}"
+
+
     validator.validate url, parameters, signature
+
+    # Bypass authentication for now
+    true
   end
 end
