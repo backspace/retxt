@@ -9,11 +9,24 @@ describe TxtsController do
   end
 
   context "when the command is 'nick'" do
+    let(:number) { "5551313" }
+    let!(:subscriber) { Subscriber.create!(number: number) }
+
     context "and a new nick is supplied" do
-      it "changes the subscriber's nick"
+      it "changes the subscriber's nick" do
+        new_nick = "newnick"
+        post :incoming, From: number, Body: "nick #{new_nick}"
+
+        subscriber.reload
+        subscriber.nick.should == new_nick
+      end
     end
 
-    it "renders the nick message"
+    it "renders the nick message" do
+      number = "5551313"
+      controller.should_receive(:render_to_string).with(hash_including(partial: 'nick'))
+      post :incoming, From: number, Body: "nick"
+    end
   end
 
   context "when the command is 'subscribe'" do
