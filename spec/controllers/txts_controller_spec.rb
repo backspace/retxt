@@ -63,13 +63,25 @@ describe TxtsController do
   end
 
   context "when the command is 'unsubscribe'" do
+    let(:number) { "5551313" }
     context "and the sender is subscribed" do
-      it "unsubscribes the number"
-      it "renders the goodbye message"
+      let!(:subscriber) { Subscriber.create!(number: number) }
+
+      before { post :incoming, From: number, Body: "unsubscribe" }
+      it "unsubscribes the number" do
+        Subscriber.all.should be_empty
+      end
+
+      it "renders the goodbye message" do
+        response.should render_template('goodbye_and_notification')
+      end
     end
 
     context "and the sender is not subscribed" do
-      it "renders the not subscribed message"
+      it "renders the not subscribed message" do
+        controller.should_receive(:render_simple_response).with('you are not subscribed').and_call_original
+        post :incoming, From: number, Body: "unsubscribe"
+      end
     end
   end
 
