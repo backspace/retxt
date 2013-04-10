@@ -2,7 +2,10 @@ require 'spec_helper'
 
 describe TxtsController do
   context "when the command is 'help'" do
-    it "renders the help message"
+    it "renders the help message" do
+      controller.should_receive(:render_to_string).with(hash_including(partial: 'commands_content'))
+      post :incoming, Body: 'help'
+    end
   end
 
   context "when the command is 'nick'" do
