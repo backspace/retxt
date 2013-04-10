@@ -2,7 +2,7 @@ Sssr::Application.routes.draw do
   devise_for :users
 
   incoming_constraints = {}
-  incoming_constraints = {protocol: 'https'} if Rails.env.production?
+  # incoming_constraints = {protocol: 'https'} if Rails.env.production?
 
   resources :subscribers
   resources :txts do
