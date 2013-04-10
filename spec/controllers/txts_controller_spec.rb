@@ -86,13 +86,30 @@ describe TxtsController do
   end
 
   context "when there is no command" do
+    let(:number) { "5551313" }
+
     context "and the sender is subscribed" do
-      it "relays to everyone but the sender"
-      it "renders the relay view"
+      let!(:subscriber) { Subscriber.create!(number: number) }
+
+      let(:other_number) { "5551212" }
+      let!(:other_subscriber) { Subscriber.create!(number: other_number) }
+
+      before { post :incoming, From: number, Body: "this is not a command" }
+
+      it "relays to everyone but the sender" do
+        expect(assigns(:destinations)).to eq([other_number])
+      end
+
+      it "renders the relay view" do
+        response.should render_template('relay')
+      end
     end
 
     context "and the sender is not subscribed" do
-      it "renders the not subscribed message"
+      it "renders the not subscribed message" do
+        controller.should_receive(:render_simple_response).with('you are not subscribed').and_call_original
+        post :incoming, From: number, Body: "this is not a command"
+      end
     end
   end
 end
