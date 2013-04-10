@@ -62,4 +62,9 @@ Sssr::Application.configure do
   config.active_support.deprecation = :notify
 
   config.action_mailer.default_url_options = { :host => 'relay.herokuapp.com' }
+
+  # Needed to fix logging on Heroku
+  # https://github.com/ryanb/cancan/issues/511#issuecomment-3643266
+  config.logger = Logger.new(STDOUT) 
+  config.logger.level = Logger::INFO
 end
