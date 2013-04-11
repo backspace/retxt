@@ -12,3 +12,10 @@ Feature: Names
 
     When I txt 'name leguin'
     Then I should receive a txt saying my name is 'leguin'
+
+  Scenario: I change my name to an existing name
+    Given someone is subscribed as 'test'
+    And I am subscribed
+
+    When I txt 'name test'
+    Then I should receive a txt saying my name is 'test1'

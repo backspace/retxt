@@ -15,6 +15,10 @@ Given(/^two other people are subscribed$/) do
   Subscriber.create(number: '4385551313')
 end
 
+Given(/^someone is subscribed as 'test'$/) do
+  Subscriber.create(number: '5551313', name: 'test')
+end
+
 Given(/^an admin is subscribed$/) do
   @admin = Subscriber.create(number: '6045551313')
   @admin.admin = true
