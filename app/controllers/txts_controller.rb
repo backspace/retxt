@@ -8,9 +8,7 @@ class TxtsController < ApplicationController
     elsif command == 'name'
       new_name = after_command.parameterize
 
-      if new_name.present?
-        subscriber.update_attribute(:name, new_name)
-      end
+      ChangesNames.change_name(subscriber, new_name)
 
       render_simple_response render_to_string(partial: 'name', formats: [:text], locals: {name: subscriber.name_or_anon})
     elsif command == 'subscribe'
@@ -21,7 +19,7 @@ class TxtsController < ApplicationController
 
         new_name = after_command.parameterize
 
-        @subscriber.update_attribute(:name, new_name) if new_name.present?
+        ChangesNames.change_name(@subscriber, new_name)
 
         welcome
       end
