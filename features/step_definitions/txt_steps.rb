@@ -25,6 +25,10 @@ Then(/^I should receive a message that I am not subscribed$/) do
   response_should_include 'you are not subscribed'
 end
 
+Then(/^I should receive a message that the relay is frozen$/) do
+  response_should_include 'frozen'
+end
+
 Then(/^subscribers other than me should( not)? receive that message( signed by '(.*?)')?$/) do |negation, signature_exists, signature|
   page = Nokogiri::XML(last_response.body)
   matcher = negation ? :should_not : :should

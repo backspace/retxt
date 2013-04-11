@@ -103,6 +103,15 @@ describe TxtsController do
       it "renders the relay view" do
         response.should render_template('relay')
       end
+
+      context "but the list is frozen" do
+        it "does not relay the message" do
+          RelaySettings.frozen = true
+          controller.should_receive(:render_simple_response).with('the relay is frozen').and_call_original
+          post :incoming, From: number, Body: "this is a relay message"
+          response.should_not render_template('relay')
+        end
+      end
     end
 
     context "and the sender is not subscribed" do

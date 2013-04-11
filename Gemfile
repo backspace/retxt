@@ -6,6 +6,7 @@ gem 'rails', '3.2.13'
 gem 'unicorn'
 
 gem 'mongoid', '~> 3.0.0'
+gem 'mongoid-app_settings'
 
 gem 'devise'
 gem 'cancan'
