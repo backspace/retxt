@@ -6,8 +6,8 @@ Given(/^I am subscribed$/) do
   Subscriber.create(number: my_number)
 end
 
-Given(/^I am subscribed as '(.*?)'$/) do |nick|
-  Subscriber.create(number: my_number, nick: nick)
+Given(/^I am subscribed as '(.*?)'$/) do |name|
+  Subscriber.create(number: my_number, name: name)
 end
 
 Given(/^two other people are subscribed$/) do

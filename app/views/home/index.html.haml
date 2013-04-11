@@ -10,11 +10,11 @@
 %section.row
   .small-6.columns
     %h2 Subscribing
-    .row.txtpair=txt_pair('subscribe', txt_partial('welcome', nick: 'anon', subscriber_count: @subscriber_count))
+    .row.txtpair=txt_pair('subscribe', txt_partial('welcome', name: 'anon', subscriber_count: @subscriber_count))
     .row
       .small-12.columns
-        %p Optionally, specify your nickname when subscribing.
-    .row.txtpair=txt_pair('subscribe tuffduck', txt_partial('welcome', nick: 'tuffduck', subscriber_count: @subscriber_count))
+        %p Optionally, specify a name when subscribing.
+    .row.txtpair=txt_pair('subscribe alice', txt_partial('welcome', name: 'alice', subscriber_count: @subscriber_count))
   .small-6.columns
     %h2 Unsubscribing
     .row.txtpair=txt_pair('unsubscribe', '(this message is intercepted by the text message gateway and out of our control. you need to send \'start\' to get back in communication with the relay.)')
@@ -25,7 +25,7 @@
     .row.txtpair=txt_pair('there\'s a tornado destroying super c!', txt_partial('relayed', destination_count: @subscriber_count))
     %p Other subscribers will receive the message like this:
     %pre.txt.small-5.columns
-      tuffduck sez: there's a tornado destroying super c!
+      alice sez: there's a tornado destroying super c!
   .small-6.columns
     %h2 Etiquette
     %p
@@ -41,9 +41,9 @@
     %h2 About
     .row.txtpair=txt_pair('about', txt_partial('commands_content', subscriber_count: @subscriber_count))
   .small-6.columns
-    %h2 Nicknames
-    .row.txtpair=txt_pair('nick', txt_partial('nick', nick: 'tuffduck'))
-    .row.txtpair=txt_pair('nick francine', txt_partial('nick', nick: 'francine'))
+    %h2 Names
+    .row.txtpair=txt_pair('name', txt_partial('name', name: 'alice'))
+    .row.txtpair=txt_pair('name bob', txt_partial('name', name: 'bob'))
 
 %section.row
   .small-6.columns

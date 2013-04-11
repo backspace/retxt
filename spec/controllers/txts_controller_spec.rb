@@ -8,24 +8,24 @@ describe TxtsController do
     end
   end
 
-  context "when the command is 'nick'" do
+  context "when the command is 'name'" do
     let(:number) { "5551313" }
     let!(:subscriber) { Subscriber.create!(number: number) }
 
-    context "and a new nick is supplied" do
-      it "changes the subscriber's nick" do
-        new_nick = "newnick"
-        post :incoming, From: number, Body: "nick #{new_nick}"
+    context "and a new name is supplied" do
+      it "changes the subscriber's name" do
+        new_name = "newname"
+        post :incoming, From: number, Body: "name #{new_name}"
 
         subscriber.reload
-        subscriber.nick.should == new_nick
+        subscriber.name.should == new_name
       end
     end
 
-    it "renders the nick message" do
+    it "renders the name message" do
       number = "5551313"
-      controller.should_receive(:render_to_string).with(hash_including(partial: 'nick'))
-      post :incoming, From: number, Body: "nick"
+      controller.should_receive(:render_to_string).with(hash_including(partial: 'name'))
+      post :incoming, From: number, Body: "name"
     end
   end
 
@@ -46,12 +46,12 @@ describe TxtsController do
         Subscriber.first.number.should == number
       end
 
-      context "and a nick is supplied" do
-        it "sets the subscriber's nick" do
-          nick = "mynick"
-          post :incoming, From: number, Body: "subscribe #{nick}"
+      context "and a name is supplied" do
+        it "sets the subscriber's name" do
+          name = "myname"
+          post :incoming, From: number, Body: "subscribe #{name}"
 
-          Subscriber.first.nick.should == nick
+          Subscriber.first.name.should == name
         end
       end
 

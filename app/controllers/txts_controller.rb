@@ -5,23 +5,23 @@ class TxtsController < ApplicationController
   def incoming
     if command == 'help' || command == 'about'
       help
-    elsif command == 'nick'
-      new_nick = params[:Body].split[1..-1].join(' ').parameterize
+    elsif command == 'name'
+      new_name = params[:Body].split[1..-1].join(' ').parameterize
 
-      if new_nick.present?
-        subscriber.update_attribute(:nick, new_nick)
+      if new_name.present?
+        subscriber.update_attribute(:name, new_name)
       end
 
-      render_simple_response render_to_string(partial: 'nick', formats: [:text], locals: {nick: subscriber.nick_or_anon})
+      render_simple_response render_to_string(partial: 'name', formats: [:text], locals: {name: subscriber.name_or_anon})
     elsif command == 'subscribe'
       if Subscriber.where(number: params[:From]).present?
         already_subscribed
       else
         @subscriber = Subscriber.create(number: params[:From])
 
-        new_nick = params[:Body].split[1..-1].join(' ').parameterize
+        new_name = params[:Body].split[1..-1].join(' ').parameterize
 
-        @subscriber.update_attribute(:nick, new_nick) if new_nick.present?
+        @subscriber.update_attribute(:name, new_name) if new_name.present?
 
         welcome
       end
@@ -46,7 +46,7 @@ class TxtsController < ApplicationController
 
   def welcome
     @subscriber_count = Subscriber.count - 1
-    @nick = subscriber.nick_or_anon
+    @name = subscriber.name_or_anon
     @number = subscriber.number
 
     @admins = Subscriber.admins

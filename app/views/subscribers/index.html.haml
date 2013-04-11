@@ -3,11 +3,11 @@
     %thead
       %tr
         %th #
-        %th nick
+        %th name
         %th admin?
     %tbody
       -@subscribers.each do |subscriber|
         %tr
           %td=subscriber.number
-          %td=subscriber.nick_or_anon
+          %td=subscriber.name_or_anon
           %td=subscriber.admin? ? check : cross
