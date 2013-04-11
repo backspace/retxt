@@ -8,25 +8,25 @@
       %a{href: 'tel:+15145002007'} (514) 500-2007
       is the number all the commands below should be sent to. This could change in the future.
 %section.row
-  .small-6.columns
+  .large-6.small-12.columns
     %h2 Subscribing
     .row.txtpair=txt_pair('subscribe', txt_partial('welcome', name: 'anon', subscriber_count: @subscriber_count))
     .row
       .small-12.columns
         %p Optionally, specify a name when subscribing.
     .row.txtpair=txt_pair('subscribe alice', txt_partial('welcome', name: 'alice', subscriber_count: @subscriber_count))
-  .small-6.columns
+  .large-6.small-12.columns
     %h2 Unsubscribing
     .row.txtpair=txt_pair('unsubscribe', '(this message is intercepted by the text message gateway and out of our control. you need to send \'start\' to get back in communication with the relay.)')
 
 %section.row
-  .small-6.columns
+  .large-6.small-12.columns
     %h2 Relay a message
     .row.txtpair=txt_pair('there\'s a tornado destroying super c!', txt_partial('relayed', destination_count: @subscriber_count))
     %p Other subscribers will receive the message like this:
     %pre.txt.small-5.columns
       alice sez: there's a tornado destroying super c!
-  .small-6.columns
+  .large-6.small-12.columns
     %h2 Etiquette
     %p
       This is just being tested for now, but be careful anyway?
@@ -37,16 +37,16 @@
         %li Therefore, don’t spam!
 
 %section.row
-  .small-6.columns
+  .large-6.small-12.columns
     %h2 About
     .row.txtpair=txt_pair('about', txt_partial('commands_content', subscriber_count: @subscriber_count))
-  .small-6.columns
+  .large-6.small-12.columns
     %h2 Names
     .row.txtpair=txt_pair('name', txt_partial('name', name: 'alice'))
     .row.txtpair=txt_pair('name bob', txt_partial('name', name: 'bob'))
 
 %section.row
-  .small-6.columns
+  .large-6.small-12.columns
     %h2 Feedback
     %p Things to consider:
     %ul
@@ -55,7 +55,7 @@
       %li or other confusions?
       %li do you have any suggestions?
     %p For now, please email the developer. The address is the letter “b” followed by the domain chromatin.ca.
-  .small-6.columns
+  .large-6.small-12.columns
     %h2 Features to come
     %ul
       %li text-to-speech of relayed messages to non-mobile phones
