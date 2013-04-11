@@ -1,6 +1,7 @@
 class TxtsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :validate_twilio_request, only: :incoming if Rails.env.production?
+  before_filter :reload_settings
 
   def incoming
     if command == 'help' || command == 'about'
@@ -33,6 +34,20 @@ class TxtsController < ApplicationController
       else
         render_simple_response 'you are not subscribed'
       end
+    elsif command == 'freeze'
+      if subscriber.admin?
+        RelaySettings.frozen = true
+        render_simple_response 'the relay is now frozen'
+      else
+        render_simple_response 'you are not an admin'
+      end
+    elsif command == 'thaw' || command == 'unthaw'
+      if subscriber.admin?
+        RelaySettings.frozen = false
+        render_simple_response 'the relay is thawed'
+      else
+        render_simple_response 'you are not an admin'
+      end
     else
       relay
     end
@@ -58,10 +73,14 @@ class TxtsController < ApplicationController
 
   def relay
     if subscriber.present?
-      @destinations = (Subscriber.all - [Subscriber.find_by(number: params[:From])]).map(&:number)
-      respond_to do |format|
-        format.any do
-          render 'relay', formats: :xml
+      if RelaySettings.frozen
+        render_simple_response 'the relay is frozen'
+      else
+        @destinations = (Subscriber.all - [Subscriber.find_by(number: params[:From])]).map(&:number)
+        respond_to do |format|
+          format.any do
+            render 'relay', formats: :xml
+          end
         end
       end
     else
@@ -100,5 +119,9 @@ class TxtsController < ApplicationController
 
 
     validator.validate url, parameters, signature
+  end
+
+  def reload_settings
+    RelaySettings.reload
   end
 end
