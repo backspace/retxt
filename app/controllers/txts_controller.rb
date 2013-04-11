@@ -34,6 +34,13 @@ class TxtsController < ApplicationController
       else
         render_simple_response 'you are not subscribed'
       end
+    elsif command == 'freeze'
+      if subscriber.admin?
+        RelaySettings.frozen = true
+        render_simple_response 'the relay is now frozen'
+      else
+        render_simple_response 'you are not an admin'
+      end
     else
       relay
     end

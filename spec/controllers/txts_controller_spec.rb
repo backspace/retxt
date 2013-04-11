@@ -85,6 +85,33 @@ describe TxtsController do
     end
   end
 
+  def send_message(message)
+    post :incoming, From: number, Body: message
+  end
+
+  context "when the command is 'freeze'" do
+    let(:number) { "5551313" }
+    let(:message) { 'freeze' }
+
+    context "and the sender is subscribed" do
+      let!(:subscriber) { Subscriber.create!(number: number) }
+
+      context "and the sender is an admin" do
+        before { subscriber.update_attribute(:admin, true) }
+
+        it "should freeze the relay" do
+          send_message(message)
+          RelaySettings.frozen.should be_true
+        end
+      end
+
+      it "should not freeze the relay" do
+        send_message(message)
+        RelaySettings.frozen.should be_false
+      end
+    end
+  end
+
   context "when there is no command" do
     let(:number) { "5551313" }
 
