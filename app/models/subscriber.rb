@@ -5,13 +5,13 @@ class Subscriber
   include Mongoid::Versioning
 
   field :number, type: String
-  field :nick, type: String
+  field :name, type: String
 
   field :admin, type: Boolean
   attr_protected :admin
 
-  def nick_or_anon
-    nick.present? ? nick : 'anon'
+  def name_or_anon
+    name.present? ? name : 'anon'
   end
 
   scope :admins, where(admin: true)
