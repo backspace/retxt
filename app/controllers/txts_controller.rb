@@ -41,6 +41,13 @@ class TxtsController < ApplicationController
       else
         render_simple_response 'you are not an admin'
       end
+    elsif command == 'thaw' || command == 'unthaw'
+      if subscriber.admin?
+        RelaySettings.frozen = false
+        render_simple_response 'the relay is thawed'
+      else
+        render_simple_response 'you are not an admin'
+      end
     else
       relay
     end
