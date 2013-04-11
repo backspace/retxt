@@ -6,7 +6,7 @@ class TxtsController < ApplicationController
     if command == 'help' || command == 'about'
       help
     elsif command == 'name'
-      new_name = params[:Body].split[1..-1].join(' ').parameterize
+      new_name = after_command.parameterize
 
       if new_name.present?
         subscriber.update_attribute(:name, new_name)
@@ -19,7 +19,7 @@ class TxtsController < ApplicationController
       else
         @subscriber = Subscriber.create(number: params[:From])
 
-        new_name = params[:Body].split[1..-1].join(' ').parameterize
+        new_name = after_command.parameterize
 
         @subscriber.update_attribute(:name, new_name) if new_name.present?
 
@@ -83,6 +83,10 @@ class TxtsController < ApplicationController
 
   def command
     params[:Body].split.first.downcase
+  end
+
+  def after_command
+    params[:Body][command.length + 1..-1] || ""
   end
 
   def commands_content
