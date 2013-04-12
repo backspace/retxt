@@ -14,6 +14,8 @@ Admin-only commands:
 * `freeze`
 * `thaw`
 
+Messages beginning with `@` will be sent to the subscriber with that name.
+
 Other messages are forwarded to all subscribers if you are subscribed.
 
 ## Infrastructure
@@ -22,6 +24,7 @@ The relay is driven by Twilio and deployed on Heroku. More to come on this.
 
 ## Version history
 
+* 0.3: Store incoming messages, support direct messaging
 * 0.2.1: Added `freeze`/`thaw`
 * 0.2: Changed `nick` to `name`, ensure uniqueness
 * 0.1: Initial release

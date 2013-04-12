@@ -15,8 +15,8 @@ Given(/^two other people are subscribed$/) do
   Subscriber.create(number: '4385551313')
 end
 
-Given(/^someone is subscribed as 'test'$/) do
-  Subscriber.create(number: '5551313', name: 'test')
+Given(/^someone is subscribed as '(.*)'$/) do |name|
+  Subscriber.create(number: Time.now.to_f, name: name)
 end
 
 Given(/^an admin is subscribed$/) do
@@ -31,4 +31,8 @@ end
 
 Then(/^I should( not)? see myself$/) do |negation|
   page.send(negation ? :should_not : :should, have_content(my_number))
+end
+
+Then(/^I should have sent (\d+) messages?$/) do |message_count|
+  page.find("#subscriber_#{Subscriber.find_by(number: my_number).id} .sent").should have_content(message_count)
 end
