@@ -52,6 +52,9 @@
     .row.txtpair=txt_pair(message, txt_partial('direct_message_success', recipient_name: 'alice'))
     %p @alice will receive the message like this:
     %pre.txt.small-5.columns=txt_partial('direct_message_content', subscriber_name: 'your_name', message: message)
+  .large-6.small-12.columns
+    %h2 Freeze/thaw
+    %p These are admin-only commands to temporarily pause relaying messages in case of spamming or technical failures.
 
 %section.row
   .large-6.small-12.columns
@@ -69,7 +72,6 @@
       %li text-to-speech of relayed messages to non-mobile phones
       %li banning a user
       %li ignoring a user
-      %li shutting down the list in technical emergencies
       %li got others? let the developer know
     %p And maybe… open sourcing!
 
