@@ -85,6 +85,58 @@ describe TxtsController do
     end
   end
 
+  def send_message(message)
+    post :incoming, From: number, Body: message
+  end
+
+  context "when the command is 'freeze'" do
+    let(:number) { "5551313" }
+    let(:message) { 'freeze' }
+
+    context "and the sender is subscribed" do
+      let!(:subscriber) { Subscriber.create!(number: number) }
+
+      context "and the sender is an admin" do
+        before { subscriber.update_attribute(:admin, true) }
+
+        it "should freeze the relay" do
+          send_message(message)
+          RelaySettings.frozen.should be_true
+        end
+      end
+
+      it "should not freeze the relay" do
+        send_message(message)
+        RelaySettings.frozen.should be_false
+      end
+    end
+  end
+
+  context "when the command is 'thaw'" do
+    let(:number) { "5551313" }
+    let(:message) { 'thaw' }
+
+    before { RelaySettings.frozen = true }
+
+    context "and the sender is subscribed" do
+      let!(:subscriber) { Subscriber.create!(number: number) }
+
+      context "and the sender is an admin" do
+        before { subscriber.update_attribute(:admin, true) }
+
+        it "should thaw the relay" do
+          send_message(message)
+          RelaySettings.frozen.should be_false
+        end
+      end
+
+      it "should not thaw the relay" do
+        send_message(message)
+        RelaySettings.frozen.should be_true
+      end
+    end
+  end
+
   context "when there is no command" do
     let(:number) { "5551313" }
 
@@ -102,6 +154,15 @@ describe TxtsController do
 
       it "renders the relay view" do
         response.should render_template('relay')
+      end
+
+      context "but the list is frozen" do
+        it "does not relay the message" do
+          RelaySettings.frozen = true
+          controller.should_receive(:render_simple_response).with('the relay is frozen').and_call_original
+          post :incoming, From: number, Body: "this is a relay message"
+          response.should_not render_template('relay')
+        end
       end
     end
 

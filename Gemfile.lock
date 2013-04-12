@@ -95,6 +95,9 @@ GEM
       moped (~> 1.2)
       origin (~> 1.0)
       tzinfo (~> 0.3.22)
+    mongoid-app_settings (1.1.0)
+      activesupport
+      mongoid (>= 2.0)
     moped (1.4.5)
     multi_json (1.7.2)
     newrelic_rpm (3.6.0.78)
@@ -199,6 +202,7 @@ DEPENDENCIES
   haml
   jquery-rails
   mongoid (~> 3.0.0)
+  mongoid-app_settings
   newrelic_rpm
   pry
   pry-nav
