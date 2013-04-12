@@ -51,6 +51,13 @@ Then(/^the admin should receive a txt saying anon (un)?subscribed$/) do |unsubsc
   admin_text.should include(unsubscribed ? 'unsubscribed' : 'subscribed')
 end
 
+Then(/^(.*) should( not)? receive '(.*)'$/) do |name, negation, message|
+  page = Nokogiri::XML(last_response.body)
+  text = page.xpath("//Sms[@to='#{Subscriber.find_by(name: name).number}']").text
+
+  text.send(negation ? :should_not : :should, include(message))
+end
+
 def subscribers_other_than_me
   Subscriber.all - [Subscriber.where(number: my_number).first]
 end

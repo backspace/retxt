@@ -137,6 +137,35 @@ describe TxtsController do
     end
   end
 
+  context "when the command is a direct message" do
+    let(:number) { "5551313" }
+
+    context "and the sender is subscribed" do
+      let!(:subscriber) { Subscriber.create!(number: number) }
+
+      context "and the message is to a subscriber" do
+        let(:recipient_name) { 'bob' }
+        let!(:recipient) { Subscriber.create!(name: recipient_name) }
+
+        let(:message) { '@bob hello there' }
+
+        before { send_message(message) }
+
+        it "should render the direct message template" do
+          response.should render_template('direct_message')
+        end
+
+        it "should assign the subscriber" do
+          expect(assigns(:subscriber)).to eq(subscriber)
+        end
+
+        it "should assign the recipient" do
+          expect(assigns(:recipient)).to eq(recipient)
+        end
+      end
+    end
+  end
+
   context "when there is no command" do
     let(:number) { "5551313" }
 

@@ -49,6 +49,14 @@ class TxtsController < ApplicationController
       else
         render_simple_response 'you are not an admin'
       end
+    elsif command.starts_with? '@'
+      @subscriber = subscriber
+      @recipient = Subscriber.find_by(name: command[1..-1])
+      respond_to do |format|
+        format.any do
+          render 'direct_message', formats: :xml
+        end
+      end
     else
       relay
     end

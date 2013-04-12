@@ -15,8 +15,8 @@ Given(/^two other people are subscribed$/) do
   Subscriber.create(number: '4385551313')
 end
 
-Given(/^someone is subscribed as 'test'$/) do
-  Subscriber.create(number: '5551313', name: 'test')
+Given(/^someone is subscribed as '(.*)'$/) do |name|
+  Subscriber.create(number: Time.now.to_f, name: name)
 end
 
 Given(/^an admin is subscribed$/) do
