@@ -179,6 +179,12 @@ describe TxtsController do
         end
       end
     end
+
+    context "but the sender is not subscribed" do
+      it "renders the not subscribed message" do
+        controller.should_receive(:render_simple_response).with('you are not subscribed').and_call_original
+        send_message('@hello but what')
+      end
     end
   end
 
