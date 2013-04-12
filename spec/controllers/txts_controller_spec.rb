@@ -163,6 +163,22 @@ describe TxtsController do
           expect(assigns(:recipient)).to eq(recipient)
         end
       end
+
+      context "but the message recipient does not exist" do
+        let(:recipient_name) { 'colleen' }
+        let(:message) { '@colleen are you there?' }
+
+        before { send_message(message) }
+
+        it "should render the failed direct message template" do
+          response.should render_template('failed_direct_message')
+        end
+
+        it "should assign the recipient" do
+          expect(assigns(:recipient)).to eq('@colleen')
+        end
+      end
+    end
     end
   end
 
