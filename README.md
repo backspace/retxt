@@ -14,6 +14,8 @@ Admin-only commands:
 * `freeze`
 * `thaw`
 
+Messages beginning with `@` will be sent to the subscriber with that name.
+
 Other messages are forwarded to all subscribers if you are subscribed.
 
 ## Infrastructure
