@@ -15,4 +15,8 @@ class Subscriber
   end
 
   scope :admins, where(admin: true)
+
+  def sent
+    Txt.where(from: number)
+  end
 end

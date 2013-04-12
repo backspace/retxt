@@ -2,6 +2,7 @@ class TxtsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :validate_twilio_request, only: :incoming if Rails.env.production?
   before_filter :reload_settings
+  before_filter :store_incoming_message, only: :incoming
 
   def incoming
     if command == 'help' || command == 'about'
@@ -123,5 +124,9 @@ class TxtsController < ApplicationController
 
   def reload_settings
     RelaySettings.reload
+  end
+
+  def store_incoming_message
+    Txt.create(from: params[:From], body: params[:Body], to: params[:To], service_id: params[:SmsSid])
   end
 end

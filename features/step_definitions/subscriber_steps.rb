@@ -32,3 +32,7 @@ end
 Then(/^I should( not)? see myself$/) do |negation|
   page.send(negation ? :should_not : :should, have_content(my_number))
 end
+
+Then(/^I should have sent (\d+) messages?$/) do |message_count|
+  page.find("#subscriber_#{Subscriber.find_by(number: my_number).id} .sent").should have_content(message_count)
+end

@@ -5,9 +5,11 @@
         %th #
         %th name
         %th admin?
+        %th sent
     %tbody
       -@subscribers.each do |subscriber|
-        %tr
+        %tr[subscriber]
           %td=subscriber.number
           %td=subscriber.name_or_anon
           %td=subscriber.admin? ? check : cross
+          %td.sent=subscriber.sent.count
