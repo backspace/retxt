@@ -25,7 +25,7 @@
     .row.txtpair=txt_pair('there\'s a tornado destroying super c!', txt_partial('relayed', destination_count: @subscriber_count))
     %p Other subscribers will receive the message like this:
     %pre.txt.small-5.columns
-      alice sez: there's a tornado destroying super c!
+      @alice sez: there's a tornado destroying super c!
   .large-6.small-12.columns
     %h2 Etiquette
     %p
@@ -44,6 +44,14 @@
     %h2 Names
     .row.txtpair=txt_pair('name', txt_partial('name', name: 'alice'))
     .row.txtpair=txt_pair('name bob', txt_partial('name', name: 'bob'))
+
+%section.row
+  .large-6.small-12.columns
+    %h2 Direct messaging
+    -message = '@alice see you there!'
+    .row.txtpair=txt_pair(message, txt_partial('direct_message_success', recipient_name: 'alice'))
+    %p @alice will receive the message like this:
+    %pre.txt.small-5.columns=txt_partial('direct_message_content', subscriber_name: 'your_name', message: message)
 
 %section.row
   .large-6.small-12.columns

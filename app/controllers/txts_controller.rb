@@ -49,6 +49,24 @@ class TxtsController < ApplicationController
       else
         render_simple_response 'you are not an admin'
       end
+    elsif command.starts_with? '@'
+      if subscriber.present?
+        if command == '@anon'
+          render_xml_template 'failed_direct_message'
+        else
+          @subscriber = subscriber
+          @recipient = Subscriber.where(name: command[1..-1]).first
+
+          if @recipient.present?
+            render_xml_template 'direct_message'
+          else
+            @recipient = command
+            render_xml_template 'failed_direct_message'
+          end
+        end
+      else
+        render_simple_response 'you are not subscribed'
+      end
     else
       relay
     end
@@ -78,11 +96,7 @@ class TxtsController < ApplicationController
         render_simple_response 'the relay is frozen'
       else
         @destinations = (Subscriber.all - [Subscriber.find_by(number: params[:From])]).map(&:number)
-        respond_to do |format|
-          format.any do
-            render 'relay', formats: :xml
-          end
-        end
+        render_xml_template 'relay'
       end
     else
       render_simple_response 'you are not subscribed'
@@ -128,5 +142,13 @@ class TxtsController < ApplicationController
 
   def store_incoming_message
     Txt.create(from: params[:From], body: params[:Body], to: params[:To], service_id: params[:SmsSid])
+  end
+
+  def render_xml_template(template_name)
+    respond_to do |format|
+      format.any do
+        render template_name, formats: :xml
+      end
+    end
   end
 end

@@ -29,6 +29,10 @@ Then(/^I should receive a message that the relay is frozen$/) do
   response_should_include 'frozen'
 end
 
+Then(/^I should receive a txt including '(.*)'$/) do |content|
+  response_should_include content
+end
+
 Then(/^subscribers other than me should( not)? receive that message( signed by '(.*?)')?$/) do |negation, signature_exists, signature|
   page = Nokogiri::XML(last_response.body)
   matcher = negation ? :should_not : :should
@@ -49,6 +53,13 @@ Then(/^the admin should receive a txt saying anon (un)?subscribed$/) do |unsubsc
 
   admin_text.should include('anon')
   admin_text.should include(unsubscribed ? 'unsubscribed' : 'subscribed')
+end
+
+Then(/^(.*) should( not)? receive '(.*)'$/) do |name, negation, message|
+  page = Nokogiri::XML(last_response.body)
+  text = page.xpath("//Sms[@to='#{Subscriber.find_by(name: name).number}']").text
+
+  text.send(negation ? :should_not : :should, include(message))
 end
 
 def subscribers_other_than_me
