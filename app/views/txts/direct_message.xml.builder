@@ -1,4 +1,4 @@
 xml.Response do
-  xml.Sms("@#{@subscriber.name} said to you: #{params[:Body]}", to: @recipient.number)
-  xml.Sms "your message was sent to @#{@recipient.name}"
+  xml.Sms(render(partial: 'direct_message_content', formats: [:text], locals: {subscriber_name: @subscriber.name, message: params[:Body]}), to: @recipient.number)
+  xml.Sms render(partial: 'direct_message_success', formats: [:text], locals: {recipient_name: @recipient.name})
 end
