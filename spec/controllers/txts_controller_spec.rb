@@ -164,6 +164,18 @@ describe TxtsController do
         end
       end
 
+      context "and the message is to anon" do
+        let(:recipient_name) { 'anon' }
+        let!(:recipient) { Subscriber.create!(name: recipient_name) }
+        let(:message) { '@anon who are you?' }
+
+        before { send_message(message) }
+
+        it "should render the failed direct message template" do
+          response.should render_template('failed_direct_message')
+        end
+      end
+
       context "but the message recipient does not exist" do
         let(:recipient_name) { 'colleen' }
         let(:message) { '@colleen are you there?' }
