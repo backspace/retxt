@@ -47,6 +47,14 @@
 
 %section.row
   .large-6.small-12.columns
+    %h2 Direct messaging
+    -message = '@alice see you there!'
+    .row.txtpair=txt_pair(message, txt_partial('direct_message_success', recipient_name: 'alice'))
+    %p @alice will receive the message like this:
+    %pre.txt.small-5.columns=txt_partial('direct_message_content', subscriber_name: 'your_name', message: message)
+
+%section.row
+  .large-6.small-12.columns
     %h2 Feedback
     %p Things to consider:
     %ul
