@@ -4,6 +4,8 @@ class TxtsController < ApplicationController
   before_filter :reload_settings
   before_filter :store_incoming_message, only: :incoming
 
+  helper_method :target_relay
+
   def incoming
     if command == 'help' || command == 'about'
       help
