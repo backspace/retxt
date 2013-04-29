@@ -32,8 +32,8 @@ class TxtsController < ApplicationController
         welcome
       end
     elsif command == 'unsubscribe'
-      if subscriber.present?
-        subscriber.destroy
+      if subscriber.present? && target_relay.subscribed?(subscriber)
+        Subscription.find_by(relay: target_relay, subscriber: subscriber).destroy
 
         @unsubscriber = subscriber
         @admins = Subscriber.admins

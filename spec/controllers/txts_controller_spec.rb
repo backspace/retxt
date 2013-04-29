@@ -87,13 +87,31 @@ describe TxtsController do
     context "and the sender is subscribed" do
       let!(:subscriber) { Subscriber.create!(number: number) }
 
-      before { post :incoming, From: number, Body: "unsubscribe" }
-      it "unsubscribes the number" do
-        Subscriber.all.should be_empty
+      context "to another relay" do
+        let!(:other_relay) { Relay.create(number: '313') }
+        let!(:subscription) { Subscription.create(subscriber: subscriber, relay: other_relay) }
+
+        it "renders the not subscribed message" do
+          controller.should_receive(:render_simple_response).with('you are not subscribed').and_call_original
+          post :incoming, From: number, Body: "unsubscribe", To: relay_number
+        end
       end
 
-      it "renders the goodbye message" do
-        response.should render_template('goodbye_and_notification')
+      context "to this relay" do
+        let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+
+        before { post :incoming, From: number, Body: "unsubscribe", To: relay_number }
+        it "destroys the subscription" do
+          Subscription.deleted.should include(subscription)
+        end
+
+        it "keeps the subscriber" do
+          Subscriber.all.should include(subscriber)
+        end
+
+        it "renders the goodbye message" do
+          response.should render_template('goodbye_and_notification')
+        end
       end
     end
 
