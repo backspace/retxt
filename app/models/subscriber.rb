@@ -10,6 +10,8 @@ class Subscriber
   field :admin, type: Boolean
   attr_protected :admin
 
+  has_many :subscriptions
+
   def name_or_anon
     name.present? ? name : 'anon'
   end

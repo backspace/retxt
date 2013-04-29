@@ -1,13 +1,18 @@
 World(Rack::Test::Methods)
 
-When(/^I txt '(.*?)'$/) do |content|
+When(/^I txt '(.*?)'( to relay (.*))?$/) do |content, non_default_relay, relay_name|
   @txt_content = content
-  post '/txts/incoming', Body: content, From: my_number
+
+  if non_default_relay
+    post '/txts/incoming', Body: content, From: my_number, To: Relay.find_by(name: relay_name).number
+  else
+    post '/txts/incoming', Body: content, From: my_number
+  end
 end
 
 Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|goodbye) txt$/) do |message_type|
   if message_type == 'help'
-    message = 'commands'
+    message = 'cmds'
   elsif message_type == 'welcome'
     message = 'welcome'
   elsif message_type == 'confirmation'
@@ -60,6 +65,11 @@ Then(/^(.*) should( not)? receive '(.*)'$/) do |name, negation, message|
   text = page.xpath("//Sms[@to='#{Subscriber.find_by(name: name).number}']").text
 
   text.send(negation ? :should_not : :should, include(message))
+end
+
+Then(/^(.*) should not receive a message$/) do |name|
+  page = Nokogiri::XML(last_response.body)
+  page.xpath("//Sms[@to='#{Subscriber.find_by(name: name).number}']").should be_empty
 end
 
 def subscribers_other_than_me

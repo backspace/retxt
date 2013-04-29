@@ -95,7 +95,7 @@ class TxtsController < ApplicationController
       if RelaySettings.frozen
         render_simple_response 'the relay is frozen'
       else
-        @destinations = (Subscriber.all - [Subscriber.find_by(number: params[:From])]).map(&:number)
+        @destinations = target_relay.subscriptions.map(&:subscriber).map(&:number) - [Subscriber.find_by(number: params[:From]).number]
         render_xml_template 'relay'
       end
     else
@@ -111,6 +111,25 @@ class TxtsController < ApplicationController
 
   def subscriber
     @subscriber ||= Subscriber.where(number: params[:From]).first
+  end
+
+  def target_relay
+    @relay ||= find_or_create_relay
+  end
+
+  def find_or_create_relay
+    matching = Relay.where(number: params[:To]).first
+
+    if matching.nil?
+      relay = Relay.create(number: params[:To])
+      Subscriber.all.each do |subscriber|
+        relay.subscriptions << Subscription.create(subscriber: subscriber, relay: relay)
+      end
+
+      relay
+    else
+      matching
+    end
   end
 
   def command

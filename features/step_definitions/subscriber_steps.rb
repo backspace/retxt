@@ -2,12 +2,24 @@ def my_number
   '2045551313'
 end
 
-Given(/^I am subscribed$/) do
-  Subscriber.create(number: my_number)
+def create_relay_with_subscriber(name, subscriber)
+  relay = Relay.find_or_create_by(name: name)
+
+  relay.update_attribute(:number, Time.now.to_f) unless relay.number.present?
+
+  relay.subscriptions << Subscription.create(subscriber: subscriber, relay: relay)
 end
 
-Given(/^I am subscribed as '(.*?)'$/) do |name|
-  Subscriber.create(number: my_number, name: name)
+Given(/^I am subscribed( to relay (\w*))?$/) do |non_default_relay, relay_name|
+  subscriber = Subscriber.create(number: my_number)
+
+  create_relay_with_subscriber(relay_name, subscriber) if non_default_relay
+end
+
+Given(/^I am subscribed( to relay (\w*))? as '(\w*)'$/) do |non_default_relay, relay_name, name|
+  subscriber = Subscriber.create(number: my_number, name: name)
+
+  create_relay_with_subscriber(relay_name, subscriber) if non_default_relay
 end
 
 Given(/^two other people are subscribed$/) do
@@ -15,8 +27,10 @@ Given(/^two other people are subscribed$/) do
   Subscriber.create(number: '4385551313')
 end
 
-Given(/^someone is subscribed as '(.*)'$/) do |name|
-  Subscriber.create(number: Time.now.to_f, name: name)
+Given(/^someone is subscribed( to relay (.*))? as '(.*)'$/) do |non_default_relay, relay_name, name|
+  subscriber = Subscriber.create(number: Time.now.to_f, name: name)
+
+  create_relay_with_subscriber(relay_name, subscriber) if non_default_relay
 end
 
 Given(/^an admin is subscribed$/) do
