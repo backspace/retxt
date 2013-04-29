@@ -37,7 +37,7 @@ class TxtsController < ApplicationController
       end
     elsif command == 'create'
       if subscriber.admin?
-        @from = BuysNumbers.buy_number
+        @from = BuysNumbers.buy_number('514')
         render_simple_response 'created a new relay!'
       else
         render_simple_response 'you are not an admin'
