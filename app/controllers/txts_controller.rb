@@ -43,7 +43,7 @@ class TxtsController < ApplicationController
       end
     elsif command == 'create'
       if subscriber.admin?
-        @from = BuysNumbers.buy_number('514')
+        @from = BuysNumbers.buy_number('514', incoming_txts_url)
         @relay = Relay.create(name: after_command, number: @from)
         Subscription.create(relay: @relay, subscriber: subscriber)
         render_simple_response 'created a new relay!'
