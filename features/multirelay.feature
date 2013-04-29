@@ -11,3 +11,12 @@ Feature: Multi-relay
     Then I should receive a confirmation txt
     And bob should receive '@alice sez: this message should not go to everyone'
     And colleen should not receive a message
+
+  Scenario: Create a relay
+    Given the number buyer will buy number 123
+    And I am subscribed as an admin
+    And I txt 'create B'
+
+    Then I should receive a created txt from 123
+
+

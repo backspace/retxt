@@ -10,10 +10,12 @@ def create_relay_with_subscriber(name, subscriber)
   relay.subscriptions << Subscription.create(subscriber: subscriber, relay: relay)
 end
 
-Given(/^I am subscribed( to relay (\w*))?$/) do |non_default_relay, relay_name|
+Given(/^I am subscribed( to relay (\w*))?( as an admin)?$/) do |non_default_relay, relay_name, admin|
   subscriber = Subscriber.create(number: my_number)
 
   create_relay_with_subscriber(relay_name, subscriber) if non_default_relay
+
+  subscriber.update_attribute(:admin, true) if admin
 end
 
 Given(/^I am subscribed( to relay (\w*))? as '(\w*)'$/) do |non_default_relay, relay_name, name|

@@ -10,7 +10,7 @@ When(/^I txt '(.*?)'( to relay (.*))?$/) do |content, non_default_relay, relay_n
   end
 end
 
-Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|goodbye) txt$/) do |message_type|
+Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|goodbye|created) txt( from (\d+))?$/) do |message_type, non_default_source, source|
   if message_type == 'help'
     message = 'cmds'
   elsif message_type == 'welcome'
@@ -21,9 +21,15 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|goodby
     message = 'you are already subscribed'
   elsif message_type == 'goodbye'
     message = 'goodbye'
+  elsif message_type == 'created'
+    message = 'created'
   end
 
   response_should_include message
+
+  if non_default_source
+    Nokogiri::XML(last_response.body).xpath("//Sms[@from='#{source}']").should_not be_empty
+  end
 end
 
 Then(/^I should receive a message that I am not subscribed$/) do

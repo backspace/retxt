@@ -35,6 +35,13 @@ class TxtsController < ApplicationController
       else
         render_simple_response 'you are not subscribed'
       end
+    elsif command == 'create'
+      if subscriber.admin?
+        @from = BuysNumbers.buy_number
+        render_simple_response 'created a new relay!'
+      else
+        render_simple_response 'you are not an admin'
+      end
     elsif command == 'freeze'
       if subscriber.admin?
         RelaySettings.frozen = true

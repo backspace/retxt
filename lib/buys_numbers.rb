@@ -1,0 +1,2 @@
+class BuysNumbers
+end
