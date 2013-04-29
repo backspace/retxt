@@ -106,7 +106,7 @@ class TxtsController < ApplicationController
   end
 
   def relay
-    if subscriber.present?
+    if subscriber.present? && target_relay.subscribed?(subscriber)
       if RelaySettings.frozen
         render_simple_response 'the relay is frozen'
       else

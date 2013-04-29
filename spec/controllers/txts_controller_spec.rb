@@ -228,23 +228,38 @@ describe TxtsController do
 
       let(:other_number) { "5551212" }
       let!(:other_subscriber) { Subscriber.create!(number: other_number) }
+      let!(:other_subscription) { Subscription.create(relay: relay, subscriber: other_subscriber) }
 
-      before { post :incoming, From: number, Body: "this is not a command" }
+      context "to another relay" do
+        let!(:other_relay) { Relay.create(number: "66116") }
+        let!(:other_relay_subscription) { Subscription.create(relay: other_relay, subscriber: subscriber) }
 
-      it "relays to everyone but the sender" do
-        expect(assigns(:destinations)).to eq([other_number])
+        it "renders the not subscribed message" do
+          controller.should_receive(:render_simple_response).with('you are not subscribed').and_call_original
+          post :incoming, From: number, Body: "this is not a command", To: relay_number
+        end
       end
 
-      it "renders the relay view" do
-        response.should render_template('relay')
-      end
+      context "to this relay" do
+        let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
 
-      context "but the list is frozen" do
-        it "does not relay the message" do
-          RelaySettings.frozen = true
-          controller.should_receive(:render_simple_response).with('the relay is frozen').and_call_original
-          post :incoming, From: number, Body: "this is a relay message"
-          response.should_not render_template('relay')
+      before { post :incoming, From: number, Body: "this is not a command", To: relay_number }
+
+        it "relays to everyone but the sender" do
+          expect(assigns(:destinations)).to eq([other_number])
+        end
+
+        it "renders the relay view" do
+          response.should render_template('relay')
+        end
+
+        context "but the list is frozen" do
+          it "does not relay the message" do
+            RelaySettings.frozen = true
+            controller.should_receive(:render_simple_response).with('the relay is frozen').and_call_original
+            post :incoming, From: number, Body: "this is a relay message"
+            response.should_not render_template('relay')
+          end
         end
       end
     end
