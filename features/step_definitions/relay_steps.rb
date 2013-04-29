@@ -13,9 +13,11 @@ Then(/^I should see that I am subscribed to relay B$/) do
   page.should have_selector(".relay_#{relay.id}.subscriber_#{subscriber.id}")
 end
 
-Then(/^I should not see that 'bob' is subscribed to relay B$/) do
-  relay = Relay.find_by(name: 'B')
-  subscriber = Subscriber.find_by(name: 'bob')
+Then(/^I should( not)? see that '(\w*)' is subscribed to relay (\w*)$/) do |negation, subscriber_name, relay_name|
+  relay = Relay.find_by(name: relay_name)
+  subscriber = Subscriber.find_by(name: subscriber_name)
 
-  page.should_not have_selector(".relay_#{relay.id}.subscriber_#{subscriber.id}")
+  matcher = negation ? :should_not : :should
+
+  page.send(matcher, have_selector(".relay_#{relay.id}.subscriber_#{subscriber.id}"))
 end

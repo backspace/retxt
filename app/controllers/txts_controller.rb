@@ -14,10 +14,16 @@ class TxtsController < ApplicationController
 
       render_simple_response render_to_string(partial: 'name', formats: [:text], locals: {name: subscriber.name_or_anon})
     elsif command == 'subscribe'
-      if Subscriber.where(number: params[:From]).present?
-        already_subscribed
+      if subscriber.present?
+        if target_relay.subscribed?(subscriber)
+          already_subscribed
+        else
+          Subscription.create(relay: target_relay, subscriber: subscriber)
+          welcome
+        end
       else
         @subscriber = Subscriber.create(number: params[:From])
+        Subscription.create(subscriber: @subscriber, relay: target_relay)
 
         new_name = after_command.parameterize
 

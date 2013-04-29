@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe TxtsController do
+  let(:relay_number) { '123455' }
+  let!(:relay) { Relay.create(number: relay_number) }
+
   context "when the command is 'help'" do
     it "renders the help message" do
       controller.should_receive(:render_to_string).with(hash_including(partial: 'commands_content'))
@@ -31,25 +34,42 @@ describe TxtsController do
 
   context "when the command is 'subscribe'" do
     let(:number) { "5551313" }
-    context "and the sender is subscribed" do
+    context "and the sender is subscribed to this relay" do
       it "renders the already-subscribed message" do
-        Subscriber.create!(number: number)
+        subscriber = Subscriber.create!(number: number)
+        Subscription.create(relay: relay, subscriber: subscriber)
         controller.should_receive(:render_simple_response).with('you are already subscribed').and_call_original
-        post :incoming, From: number, Body: "subscribe"
+        post :incoming, From: number, Body: "subscribe", To: relay_number
+      end
+    end
+
+    context "and the sender is subscribed to another relay" do
+      before do
+        other_relay = Relay.create(number: '11', name: 'X')
+        subscriber = Subscriber.create!(number: number)
+        Subscription.create(relay: other_relay, subscriber: subscriber)
+      end
+
+      it "subscribers the number" do
+        post :incoming, From: number, Body: "subscribe", To: relay_number
+
+        Subscriber.count.should eq(1)
+        Subscription.where(relay: relay, subscriber: Subscriber.first).should be_present
       end
     end
 
     context "and the sender is not subscribed" do
       it "subscribes the number" do
-        post :incoming, From: number, Body: "subscribe"
+        post :incoming, From: number, Body: "subscribe", To: relay_number
 
         Subscriber.first.number.should == number
+        Subscription.first.relay.should == relay
       end
 
       context "and a name is supplied" do
         it "sets the subscriber's name" do
           name = "myname"
-          post :incoming, From: number, Body: "subscribe #{name}"
+          post :incoming, From: number, Body: "subscribe #{name}", To: relay_number
 
           Subscriber.first.name.should == name
         end
@@ -57,7 +77,7 @@ describe TxtsController do
 
       it "renders the welcome message" do
         controller.should_receive(:welcome).and_call_original
-        post :incoming, Body: "subscribe"
+        post :incoming, Body: "subscribe", To: relay_number
       end
     end
   end

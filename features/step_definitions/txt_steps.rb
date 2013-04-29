@@ -10,6 +10,10 @@ When(/^I txt '(.*?)'( to relay (.*))?$/) do |content, non_default_relay, relay_n
   end
 end
 
+When(/^'bob' txts 'subscribe' to relay A$/) do
+  post '/txts/incoming', Body: 'subscribe', From: Subscriber.find_by(name: 'bob').number, To: Relay.find_by(name: 'A').number
+end
+
 Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|goodbye|created) txt( from (\d+))?$/) do |message_type, non_default_source, source|
   if message_type == 'help'
     message = 'cmds'
