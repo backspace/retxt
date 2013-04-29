@@ -12,4 +12,8 @@ class Relay
   def subscribed?(subscriber)
     subscriptions.map(&:subscriber).include? subscriber
   end
+
+  def self.master
+    Relay.asc(:created_at).first
+  end
 end
