@@ -8,4 +8,8 @@ class Relay
   field :name, type: String
 
   has_many :subscriptions
+
+  def subscribed?(subscriber)
+    subscriptions.map(&:subscriber).include? subscriber
+  end
 end
