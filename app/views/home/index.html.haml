@@ -4,12 +4,13 @@
       =image_tag 'tower.png', size: '100x100'
       Relay
     %p This is the homepage for a prototype emergency SMS relay system for southwest Montréal. It’s simple for now but can grow as we discover our needs.
-    %p
-      -if @relay.present?
-        =@relay.number
-        is the number all the commands below should be sent to. This could change in the future.
-      -else
-        There appears to be no phone number associated with the relay?!
+    -if RelaySettings.display_number
+      %p
+        -if @relay.present?
+          =@relay.number
+          is the number all the commands below should be sent to. This could change in the future.
+        -else
+          There appears to be no phone number associated with the relay?!
 %section.row
   .large-6.small-12.columns
     %h2 Subscribing
