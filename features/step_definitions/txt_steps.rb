@@ -10,8 +10,9 @@ When(/^I txt '(.*?)'( to relay (.*))?$/) do |content, non_default_relay, relay_n
   end
 end
 
-When(/^'bob' txts '(\w*)' to relay A$/) do |content|
-  post '/txts/incoming', Body: content, From: Subscriber.find_by(name: 'bob').number, To: Relay.find_by(name: 'A').number
+When(/^'bob' txts '([^']*)'( to relay A)?$/) do |content, relay_given|
+  relay = relay_given ? Relay.find_by(name: 'A') : Relay.first
+  post '/txts/incoming', Body: content, From: Subscriber.find_by(name: 'bob').number, To: relay.number
 end
 
 Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|goodbye|created) txt( from (\d+))?$/) do |message_type, non_default_source, source|
@@ -52,6 +53,10 @@ Then(/^I should receive a txt including '(.*)'$/) do |content|
   response_should_include content
 end
 
+Then(/^'bob' should receive a txt including '(.*)'$/) do |content|
+  response_should_include content
+end
+
 Then(/^subscribers other than me should( not)? receive that message( signed by '(.*?)')?$/) do |negation, signature_exists, signature|
   page = Nokogiri::XML(last_response.body)
   matcher = negation ? :should_not : :should
@@ -79,6 +84,12 @@ Then(/^the admin should receive a txt saying 'bob' unsubscribed$/) do
 
   admin_text.should include('bob')
   admin_text.should include('unsubscribed')
+end
+
+Then(/^the admin should receive a txt including '([^']*)'$/) do |content|
+  admin_text = Nokogiri::XML(last_response.body).xpath("//Sms[@to='#{Subscriber.find_by(admin: true).number}']").text
+
+  admin_text.should include(content)
 end
 
 Then(/^(.*) should( not)? receive '(.*)'$/) do |name, negation, message|

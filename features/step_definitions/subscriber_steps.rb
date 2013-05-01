@@ -39,7 +39,12 @@ Given(/^someone is subscribed( to relay (\w*))?( as '(\w*)')?$/) do |non_default
 
   subscriber.update_attribute(:name, name) if name_given
 
-  create_relay_with_subscriber(relay_name, subscriber) if non_default_relay
+  if non_default_relay
+    create_relay_with_subscriber(relay_name, subscriber)
+  else
+    relay = Relay.first || Relay.create
+    Subscription.create(relay: relay, subscriber: subscriber)
+  end
 end
 
 Given(/^an admin is subscribed$/) do

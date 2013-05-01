@@ -73,6 +73,20 @@ class TxtsController < ApplicationController
       else
         render_simple_response 'you are not an admin'
       end
+    elsif command == '/mute'
+      if subscriber.admin?
+        @mutee = Subscriber.where(name: after_command[1..-1]).first
+
+        if @mutee.present?
+          subscription = Subscription.where(subscriber: @mutee, relay: target_relay).first
+
+          if subscription.present?
+            subscription.update_attribute(:muted, true)
+
+            render_xml_template 'muted'
+          end
+        end
+      end
     elsif command.starts_with? '@'
       if subscriber.present?
         if command == '@anon'
@@ -120,6 +134,11 @@ class TxtsController < ApplicationController
     if subscriber.present? && target_relay.subscribed?(subscriber)
       if target_relay.frozen
         render_simple_response 'the relay is frozen'
+      elsif Subscription.find_by(subscriber: subscriber, relay: target_relay).muted
+        @mutee = subscriber
+        @original_message = params[:Body]
+        @admin_destinations = target_relay.subscriptions.map(&:subscriber).select(&:admin).map(&:number)
+        render_xml_template 'muted_relay_fail'
       else
         @destinations = target_relay.subscriptions.map(&:subscriber).map(&:number) - [Subscriber.find_by(number: params[:From]).number]
         render_xml_template 'relay'

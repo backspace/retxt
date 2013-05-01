@@ -223,6 +223,39 @@ describe TxtsController do
     end
   end
 
+  context "when the command is '/mute'" do
+    context "and the sender is subscribed and an admin" do
+      let(:number) { "5551313" }
+      let!(:subscriber) { Subscriber.create!(number: number) }
+      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+
+      before { subscriber.update_attribute(:admin, true) }
+
+      context "and the target is subscribed" do
+        let(:mutee_name) { "bob" }
+        let!(:mutee) { Subscriber.create(number: Time.now.to_f, name: mutee_name) }
+        let!(:mutee_subscription) { Subscription.create(subscriber: mutee, relay: relay) }
+
+        let(:message) { "/mute @#{mutee_name}" }
+
+        before { send_message(message) }
+
+        it "should render the muted template" do
+          response.should render_template('muted')
+        end
+
+        it "should assign the muted" do
+          assigns(:mutee).should eq(mutee)
+        end
+
+        it "should mute the mutee" do
+          mutee_subscription.reload
+          mutee_subscription.muted.should be_true
+        end
+      end
+    end
+  end
+
   context "when the command is a direct message" do
     let(:number) { "5551313" }
 
@@ -325,9 +358,10 @@ describe TxtsController do
 
       context "to this relay" do
         let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+        let(:message) { "this is not a command" }
 
         def send_message
-          post :incoming, From: number, Body: "this is not a command", To: relay_number
+          post :incoming, From: number, Body: message, To: relay_number
         end
 
         it "relays to everyone but the sender" do
@@ -346,6 +380,34 @@ describe TxtsController do
             controller.should_receive(:render_simple_response).with('the relay is frozen').and_call_original
             post :incoming, From: number, Body: "this is a relay message", To: relay_number
             response.should_not render_template('relay')
+          end
+        end
+
+        context "but the subscriber is muted and an admin exists" do
+          let(:admin_number) { '12333' }
+          let(:admin) { Subscriber.create(name: 'admin', number: admin_number) }
+          let!(:admin_subscription) { Subscription.create(subscriber: admin, relay: relay) }
+
+          before do
+            admin.update_attribute(:admin, true)
+            subscription.update_attribute(:muted, true)
+            send_message
+          end
+
+          it "should render the direct message template" do
+            response.should render_template('muted_relay_fail')
+          end
+
+          it "should assign the original message" do
+            expect(assigns(:original_message)).to eq(message)
+          end
+
+          it "should assign the admin numbers" do
+            assigns(:admin_destinations).should include(admin_number)
+          end
+
+          it "should assign the mutee" do
+            assigns(:mutee).should eq(subscriber)
           end
         end
       end

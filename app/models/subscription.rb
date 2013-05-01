@@ -6,4 +6,6 @@ class Subscription
 
   belongs_to :relay
   belongs_to :subscriber
+
+  field :muted, type: Boolean, default: false
 end
