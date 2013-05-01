@@ -8,6 +8,7 @@ class Relay
   field :name, type: String
 
   field :frozen, type: Boolean, default: false
+  field :closed, type: Boolean, default: false
 
   has_many :subscriptions
 

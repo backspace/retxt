@@ -79,6 +79,14 @@ describe TxtsController do
         controller.should_receive(:welcome).and_call_original
         post :incoming, Body: "subscribe", To: relay_number
       end
+
+      context "but subscriptions are closed" do
+        before { relay.update_attribute(:closed, true) }
+        it "should render the bounced template" do
+          post :incoming, Body: "subscribe", To: relay_number
+          response.should render_template('bounce_subscription')
+        end
+      end
     end
   end
 
@@ -285,6 +293,29 @@ describe TxtsController do
           unmutee_subscription.reload
           unmutee_subscription.muted.should be_false
         end
+      end
+    end
+  end
+
+  context "when the command is '/close'" do
+    context "and the sender is subscribed an an admin" do
+      let(:number) { "5551313" }
+      let!(:subscriber) { Subscriber.create!(number: number) }
+      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+
+      before { subscriber.update_attribute(:admin, true) }
+
+      let(:message) { "/close" }
+
+      before { send_message(message) }
+
+      it "should render the closed template" do
+        response.should render_template('closed')
+      end
+
+      it "should close the relay" do
+        relay.reload
+        relay.closed.should be_true
       end
     end
   end

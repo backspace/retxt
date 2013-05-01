@@ -16,7 +16,10 @@ class TxtsController < ApplicationController
 
       render_simple_response render_to_string(partial: 'name', formats: [:text], locals: {name: subscriber.name_or_anon})
     elsif command == 'subscribe'
-      if subscriber.present?
+      if target_relay.closed
+        @admin_destinations = target_relay_admins.map(&:number)
+        render_xml_template 'bounce_subscription'
+      elsif subscriber.present?
         if target_relay.subscribed?(subscriber)
           already_subscribed
         else
@@ -101,6 +104,11 @@ class TxtsController < ApplicationController
           end
         end
       end
+    elsif command == '/close'
+      if subscriber.admin?
+        target_relay.update_attribute(:closed, true)
+        render_xml_template 'closed'
+      end
     elsif command.starts_with? '@'
       if subscriber.present?
         if command == '@anon'
@@ -151,7 +159,7 @@ class TxtsController < ApplicationController
       elsif Subscription.find_by(subscriber: subscriber, relay: target_relay).muted
         @mutee = subscriber
         @original_message = params[:Body]
-        @admin_destinations = target_relay.subscriptions.map(&:subscriber).select(&:admin).map(&:number)
+        @admin_destinations = target_relay_admins.map(&:number)
         render_xml_template 'muted_relay_fail'
       else
         @destinations = target_relay.subscriptions.map(&:subscriber).map(&:number) - [Subscriber.find_by(number: params[:From]).number]
@@ -174,6 +182,10 @@ class TxtsController < ApplicationController
 
   def target_relay
     @relay ||= find_or_create_relay
+  end
+
+  def target_relay_admins
+    target_relay.subscriptions.map(&:subscriber).select(&:admin)
   end
 
   def find_or_create_relay
