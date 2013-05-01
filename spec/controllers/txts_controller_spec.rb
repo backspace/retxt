@@ -256,6 +256,39 @@ describe TxtsController do
     end
   end
 
+  context "when the command is '/unmute'" do
+    context "and the sender is subscribed and an admin" do
+      let(:number) { "5551313" }
+      let!(:subscriber) { Subscriber.create!(number: number) }
+      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+
+      before { subscriber.update_attribute(:admin, true) }
+
+      context "and the target is subscribed and muted" do
+        let(:unmutee_name) { "bob" }
+        let!(:unmutee) { Subscriber.create(number: Time.now.to_f, name: unmutee_name) }
+        let!(:unmutee_subscription) { Subscription.create(subscriber: unmutee, relay: relay, muted: true) }
+
+        let(:message) { "/unmute @#{unmutee_name}" }
+
+        before { send_message(message) }
+
+        it "should render the unmuted template" do
+          response.should render_template('unmuted')
+        end
+
+        it "should assign the unmuted" do
+          assigns(:unmutee).should eq(unmutee)
+        end
+
+        it "should unmute the unmutee" do
+          unmutee_subscription.reload
+          unmutee_subscription.muted.should be_false
+        end
+      end
+    end
+  end
+
   context "when the command is a direct message" do
     let(:number) { "5551313" }
 

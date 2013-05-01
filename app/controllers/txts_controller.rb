@@ -87,6 +87,20 @@ class TxtsController < ApplicationController
           end
         end
       end
+    elsif command == '/unmute'
+      if subscriber.admin?
+        @unmutee = Subscriber.where(name: after_command[1..-1]).first
+
+        if @unmutee.present?
+          subscription = Subscription.where(subscriber: @unmutee, relay: target_relay).first
+
+          if subscription.present?
+            subscription.update_attribute(:muted, false)
+
+            render_xml_template 'unmuted'
+          end
+        end
+      end
     elsif command.starts_with? '@'
       if subscriber.present?
         if command == '@anon'
