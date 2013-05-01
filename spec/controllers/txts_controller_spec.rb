@@ -137,7 +137,7 @@ describe TxtsController do
 
   context "when the command is 'freeze'" do
     let(:number) { "5551313" }
-    let(:message) { 'freeze' }
+    let(:message) { '/freeze' }
 
     context "and the sender is subscribed" do
       let!(:subscriber) { Subscriber.create!(number: number) }
@@ -163,7 +163,7 @@ describe TxtsController do
 
   context "when the command is 'thaw'" do
     let(:number) { "5551313" }
-    let(:message) { 'thaw' }
+    let(:message) { '/thaw' }
 
     before { relay.update_attribute(:frozen, true) }
 
