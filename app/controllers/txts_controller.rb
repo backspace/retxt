@@ -75,7 +75,7 @@ class TxtsController < ApplicationController
       end
     elsif command == '/mute'
       if subscriber.admin?
-        @mutee = Subscriber.where(name: after_command[1..-1]).first
+        @mutee = FindsSubscribers.find(after_command)
 
         if @mutee.present?
           subscription = Subscription.where(subscriber: @mutee, relay: target_relay).first
@@ -89,7 +89,7 @@ class TxtsController < ApplicationController
       end
     elsif command == '/unmute'
       if subscriber.admin?
-        @unmutee = Subscriber.where(name: after_command[1..-1]).first
+        @unmutee = FindsSubscribers.find(after_command)
 
         if @unmutee.present?
           subscription = Subscription.where(subscriber: @unmutee, relay: target_relay).first
