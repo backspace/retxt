@@ -7,6 +7,8 @@ class Relay
   field :number, type: String
   field :name, type: String
 
+  field :frozen, type: Boolean, default: false
+
   has_many :subscriptions
 
   def subscribed?(subscriber)

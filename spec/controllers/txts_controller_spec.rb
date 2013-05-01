@@ -124,7 +124,7 @@ describe TxtsController do
   end
 
   def send_message(message)
-    post :incoming, From: number, Body: message
+    post :incoming, From: number, Body: message, To: relay_number
   end
 
   context "when the command is 'freeze'" do
@@ -133,19 +133,22 @@ describe TxtsController do
 
     context "and the sender is subscribed" do
       let!(:subscriber) { Subscriber.create!(number: number) }
+      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
 
       context "and the sender is an admin" do
         before { subscriber.update_attribute(:admin, true) }
 
         it "should freeze the relay" do
           send_message(message)
-          RelaySettings.frozen.should be_true
+          relay.reload
+          relay.frozen.should be_true
         end
       end
 
       it "should not freeze the relay" do
         send_message(message)
-        RelaySettings.frozen.should be_false
+        relay.reload
+        relay.frozen.should be_false
       end
     end
   end
@@ -154,23 +157,26 @@ describe TxtsController do
     let(:number) { "5551313" }
     let(:message) { 'thaw' }
 
-    before { RelaySettings.frozen = true }
+    before { relay.update_attribute(:frozen, true) }
 
     context "and the sender is subscribed" do
       let!(:subscriber) { Subscriber.create!(number: number) }
+      let!(:subscription) { Subscription.create!(subscriber: subscriber, relay: relay) }
 
       context "and the sender is an admin" do
         before { subscriber.update_attribute(:admin, true) }
 
         it "should thaw the relay" do
           send_message(message)
-          RelaySettings.frozen.should be_false
+          relay.reload
+          relay.frozen.should be_false
         end
       end
 
       it "should not thaw the relay" do
         send_message(message)
-        RelaySettings.frozen.should be_true
+        relay.reload
+        relay.frozen.should be_true
       end
     end
   end
@@ -261,21 +267,25 @@ describe TxtsController do
       context "to this relay" do
         let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
 
-      before { post :incoming, From: number, Body: "this is not a command", To: relay_number }
+        def send_message
+          post :incoming, From: number, Body: "this is not a command", To: relay_number
+        end
 
         it "relays to everyone but the sender" do
+          send_message
           expect(assigns(:destinations)).to eq([other_number])
         end
 
         it "renders the relay view" do
+          send_message
           response.should render_template('relay')
         end
 
         context "but the list is frozen" do
           it "does not relay the message" do
-            RelaySettings.frozen = true
+            relay.update_attribute(:frozen, true)
             controller.should_receive(:render_simple_response).with('the relay is frozen').and_call_original
-            post :incoming, From: number, Body: "this is a relay message"
+            post :incoming, From: number, Body: "this is a relay message", To: relay_number
             response.should_not render_template('relay')
           end
         end

@@ -54,14 +54,14 @@ class TxtsController < ApplicationController
       end
     elsif command == 'freeze'
       if subscriber.admin?
-        RelaySettings.frozen = true
+        target_relay.update_attribute(:frozen, true)
         render_simple_response 'the relay is now frozen'
       else
         render_simple_response 'you are not an admin'
       end
     elsif command == 'thaw' || command == 'unthaw'
       if subscriber.admin?
-        RelaySettings.frozen = false
+        target_relay.update_attribute(:frozen, false)
         render_simple_response 'the relay is thawed'
       else
         render_simple_response 'you are not an admin'
@@ -109,7 +109,7 @@ class TxtsController < ApplicationController
 
   def relay
     if subscriber.present? && target_relay.subscribed?(subscriber)
-      if RelaySettings.frozen
+      if target_relay.frozen
         render_simple_response 'the relay is frozen'
       else
         @destinations = target_relay.subscriptions.map(&:subscriber).map(&:number) - [Subscriber.find_by(number: params[:From]).number]

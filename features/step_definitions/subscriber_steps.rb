@@ -13,7 +13,12 @@ end
 Given(/^I am subscribed( to relay (\w*))?( as an admin)?$/) do |non_default_relay, relay_name, admin|
   subscriber = Subscriber.create(number: my_number)
 
-  create_relay_with_subscriber(relay_name, subscriber) if non_default_relay
+  if non_default_relay
+    create_relay_with_subscriber(relay_name, subscriber)
+  else
+    relay = Relay.first || Relay.create
+    Subscription.create(relay: relay, subscriber: subscriber)
+  end
 
   subscriber.update_attribute(:admin, true) if admin
 end
@@ -21,12 +26,14 @@ end
 Given(/^I am subscribed( to relay (\w*))? as '(\w*)'$/) do |non_default_relay, relay_name, name|
   subscriber = Subscriber.create(number: my_number, name: name)
 
-  create_relay_with_subscriber(relay_name, subscriber) if non_default_relay
+  create_relay_with_subscriber(non_default_relay ? relay_name : nil, subscriber)
 end
 
 Given(/^two other people are subscribed$/) do
-  Subscriber.create(number: '5145551313')
-  Subscriber.create(number: '4385551313')
+  relay = Relay.first || Relay.create
+
+  Subscription.create(subscriber: Subscriber.create(number: '5145551313'), relay: relay)
+  Subscription.create(subscriber: Subscriber.create(number: '4385551313'), relay: relay)
 end
 
 Given(/^someone is subscribed( to relay (.*))? as '(.*)'$/) do |non_default_relay, relay_name, name|
