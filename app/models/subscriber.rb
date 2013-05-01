@@ -16,6 +16,10 @@ class Subscriber
     name.present? ? name : 'anon'
   end
 
+  def addressable_name
+    name.present? ? "@#{name}" : 'anon'
+  end
+
   scope :admins, where(admin: true)
 
   def sent

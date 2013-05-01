@@ -5,6 +5,7 @@ Feature: Who
 
     And someone is subscribed to relay A as 'bob'
     And someone is subscribed to relay A as 'colleen'
+    And someone is subscribed to relay A
 
     And someone is subscribed to relay B as 'dean'
 
@@ -12,4 +13,5 @@ Feature: Who
     Then I should receive a txt including '@alice*'
     And I should receive a txt including '@bob'
     And I should receive a txt including '@colleen'
+    And I should receive a txt including 'anon'
     But I should not receive a txt including '@dean'

@@ -1,5 +1,5 @@
 roll_items = @subscribers.map{|subscriber|
-  "@#{subscriber.name}#{subscriber.admin ? '*' : ''} #{subscriber.number}"
+  "#{subscriber.addressable_name}#{subscriber.admin ? '*' : ''} #{subscriber.number}"
 }
 
 max_message_length = 160 - 1
