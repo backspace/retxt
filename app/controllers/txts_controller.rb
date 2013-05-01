@@ -77,6 +77,8 @@ class TxtsController < ApplicationController
       if subscriber.present?
         if command == '@anon'
           render_xml_template 'failed_direct_message'
+        elsif subscriber.anonymous?
+          render_xml_template 'forbid_anon_direct_message'
         else
           @subscriber = subscriber
           @recipient = Subscriber.where(name: command[1..-1]).first

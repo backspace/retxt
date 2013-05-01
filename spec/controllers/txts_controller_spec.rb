@@ -235,45 +235,62 @@ describe TxtsController do
 
         let(:message) { '@bob hello there' }
 
-        before { send_message(message) }
+        context "and the sender is not anonymous" do
 
-        it "should render the direct message template" do
-          response.should render_template('direct_message')
+          before do
+            subscriber.update_attribute(:name, 'francine')
+            send_message(message)
+          end
+
+          it "should render the direct message template" do
+            response.should render_template('direct_message')
+          end
+
+          it "should assign the subscriber" do
+            expect(assigns(:subscriber)).to eq(subscriber)
+          end
+
+          it "should assign the recipient" do
+            expect(assigns(:recipient)).to eq(recipient)
+          end
+
         end
 
-        it "should assign the subscriber" do
-          expect(assigns(:subscriber)).to eq(subscriber)
-        end
-
-        it "should assign the recipient" do
-          expect(assigns(:recipient)).to eq(recipient)
+        context "and the sender is anonymous" do
+          it "should render the anon forbidden template" do
+            send_message(message)
+            response.should render_template('forbid_anon_direct_message')
+          end
         end
       end
 
-      context "and the message is to anon" do
-        let(:recipient_name) { 'anon' }
-        let!(:recipient) { Subscriber.create!(name: recipient_name) }
-        let(:message) { '@anon who are you?' }
+      context "and the sender is not anonymous" do
+        before { subscriber.update_attribute(:name, 'someone') }
+        context "and the message is to anon" do
+          let(:recipient_name) { 'anon' }
+          let!(:recipient) { Subscriber.create!(name: recipient_name) }
+          let(:message) { '@anon who are you?' }
 
-        before { send_message(message) }
+          before { send_message(message) }
 
-        it "should render the failed direct message template" do
-          response.should render_template('failed_direct_message')
-        end
-      end
-
-      context "but the message recipient does not exist" do
-        let(:recipient_name) { 'colleen' }
-        let(:message) { '@colleen are you there?' }
-
-        before { send_message(message) }
-
-        it "should render the failed direct message template" do
-          response.should render_template('failed_direct_message')
+          it "should render the failed direct message template" do
+            response.should render_template('failed_direct_message')
+          end
         end
 
-        it "should assign the recipient" do
-          expect(assigns(:recipient)).to eq('@colleen')
+        context "but the message recipient does not exist" do
+          let(:recipient_name) { 'colleen' }
+          let(:message) { '@colleen are you there?' }
+
+          before { send_message(message) }
+
+          it "should render the failed direct message template" do
+            response.should render_template('failed_direct_message')
+          end
+
+          it "should assign the recipient" do
+            expect(assigns(:recipient)).to eq('@colleen')
+          end
         end
       end
     end

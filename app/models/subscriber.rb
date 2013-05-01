@@ -20,6 +20,10 @@ class Subscriber
     name.present? ? "@#{name}" : 'anon'
   end
 
+  def anonymous?
+    !name.present?
+  end
+
   scope :admins, where(admin: true)
 
   def sent
