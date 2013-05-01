@@ -44,6 +44,10 @@ Then(/^I should receive a message that the relay is frozen$/) do
   response_should_include 'frozen'
 end
 
+Then(/^I should not receive a txt including '(.*)'$/) do |content|
+  response_should_not_include content
+end
+
 Then(/^I should receive a txt including '(.*)'$/) do |content|
   response_should_include content
 end
@@ -95,4 +99,8 @@ end
 
 def response_should_include(content)
   Nokogiri::XML(last_response.body).xpath("//Sms[not(@to)]").text.should include(content)
+end
+
+def response_should_not_include(content)
+  Nokogiri::XML(last_response.body).xpath("//Sms[not(@to)]").text.should_not include(content)
 end

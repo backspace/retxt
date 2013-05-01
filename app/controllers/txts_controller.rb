@@ -66,6 +66,13 @@ class TxtsController < ApplicationController
       else
         render_simple_response 'you are not an admin'
       end
+    elsif command == '/who'
+      if subscriber.admin?
+        @subscribers = target_relay.subscriptions.map(&:subscriber)
+        render_xml_template 'who'
+      else
+        render_simple_response 'you are not an admin'
+      end
     elsif command.starts_with? '@'
       if subscriber.present?
         if command == '@anon'
