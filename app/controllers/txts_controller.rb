@@ -114,6 +114,8 @@ class TxtsController < ApplicationController
         target_relay.update_attribute(:closed, false)
         render_xml_template 'opened'
       end
+    elsif command.starts_with? '/'
+      render_xml_template 'unknown_command'
     elsif command.starts_with? '@'
       if subscriber.present?
         if command == '@anon'

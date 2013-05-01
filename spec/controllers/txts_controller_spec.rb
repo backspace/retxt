@@ -345,6 +345,17 @@ describe TxtsController do
     end
   end
 
+  context "when the command is unrecognised" do
+    let(:number) { "5551313" }
+    let(:message) { "/skronk" }
+
+    before { send_message(message) }
+
+    it "should render the unknown command template" do
+      response.should render_template('unknown_command')
+    end
+  end
+
   context "when the command is a direct message" do
     let(:number) { "5551313" }
 
