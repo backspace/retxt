@@ -320,6 +320,31 @@ describe TxtsController do
     end
   end
 
+  context "when the command is '/open' and the relay is closed" do
+    before { relay.update_attribute(:closed, true) }
+
+    context "and the sender is subscribed an an admin" do
+      let(:number) { "5551313" }
+      let!(:subscriber) { Subscriber.create!(number: number) }
+      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+
+      before { subscriber.update_attribute(:admin, true) }
+
+      let(:message) { "/open" }
+
+      before { send_message(message) }
+
+      it "should render the opened template" do
+        response.should render_template('opened')
+      end
+
+      it "should open the relay" do
+        relay.reload
+        relay.closed.should be_false
+      end
+    end
+  end
+
   context "when the command is a direct message" do
     let(:number) { "5551313" }
 
