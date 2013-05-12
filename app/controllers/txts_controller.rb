@@ -124,6 +124,11 @@ class TxtsController < ApplicationController
         target_relay.subscriptions.reject{|subscription| subscription.subscriber == subscriber}.each(&:destroy)
         render_xml_template 'cleared'
       end
+    elsif command == '/delete'
+      if subscriber.admin?
+        DeletesRelays.delete_relay(subscriber: subscriber, relay: target_relay)
+        render nothing: true
+      end
     elsif command.starts_with? '/'
       render_xml_template 'unknown_command'
     elsif command.starts_with? '@'

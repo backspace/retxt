@@ -10,7 +10,7 @@ class Relay
   field :frozen, type: Boolean, default: false
   field :closed, type: Boolean, default: false
 
-  has_many :subscriptions
+  has_many :subscriptions, dependent: :delete
 
   def subscribed?(subscriber)
     subscriptions.map(&:subscriber).include? subscriber

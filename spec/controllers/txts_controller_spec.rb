@@ -401,6 +401,26 @@ describe TxtsController do
     end
   end
 
+  context "when the command is '/delete'" do
+    context "and the sender is subscribed as an admin" do
+      let(:number) { "5551313" }
+      let!(:subscriber) { Subscriber.create!(number: number) }
+      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+
+      let(:message) { "/delete" }
+
+      before do
+        subscriber.update_attribute(:admin, true)
+      end
+
+      it "should delegate to DeletesRelays" do
+        DeletesRelays.should_receive(:delete_relay).with(subscriber: subscriber, relay: relay)
+        send_message(message)
+      end
+    end
+  end
+
+
   context "when the command is unrecognised" do
     let(:number) { "5551313" }
     let(:message) { "/skronk" }
