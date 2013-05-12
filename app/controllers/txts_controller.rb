@@ -156,7 +156,7 @@ class TxtsController < ApplicationController
   end
 
   def welcome
-    @subscriber_count = Subscriber.count - 1
+    @subscriber_count = target_relay.subscriptions.count - 1
     @name = subscriber.name_or_anon
     @number = subscriber.number
 
