@@ -114,6 +114,11 @@ class TxtsController < ApplicationController
         target_relay.update_attribute(:closed, false)
         render_xml_template 'opened'
       end
+    elsif command == '/rename'
+      if subscriber.admin?
+        target_relay.update_attribute(:name, after_command)
+        render_xml_template 'renamed'
+      end
     elsif command.starts_with? '/'
       render_xml_template 'unknown_command'
     elsif command.starts_with? '@'

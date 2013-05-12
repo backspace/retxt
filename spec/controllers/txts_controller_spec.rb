@@ -345,6 +345,32 @@ describe TxtsController do
     end
   end
 
+  context "when the command is '/rename (name)'" do
+    context "and the sender is subscribed as an admin" do
+      let(:number) { "5551313" }
+      let!(:subscriber) { Subscriber.create!(number: number) }
+      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+
+      let(:new_relay_name) { "newname" }
+
+      let(:message) { "/rename #{new_relay_name}" }
+
+      before do
+        subscriber.update_attribute(:admin, true)
+        send_message(message)
+      end
+
+      it "should render the renamed template" do
+        response.should render_template('renamed')
+      end
+
+      it "should rename the relay" do
+        relay.reload
+        relay.name.should eq(new_relay_name)
+      end
+    end
+  end
+
   context "when the command is unrecognised" do
     let(:number) { "5551313" }
     let(:message) { "/skronk" }
