@@ -414,7 +414,10 @@ describe TxtsController do
       end
 
       it "should delegate to DeletesRelays" do
-        DeletesRelays.should_receive(:delete_relay).with(subscriber: subscriber, relay: relay)
+        other_relay_number = "1555"
+        other_relay = double('another_relay', number: other_relay_number)
+        controller.stub(:another_relay).and_return(other_relay)
+        DeletesRelays.should_receive(:delete_relay).with(subscriber: subscriber, relay: relay, substitute_relay_number: other_relay_number)
         send_message(message)
       end
     end

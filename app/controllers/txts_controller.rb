@@ -126,7 +126,7 @@ class TxtsController < ApplicationController
       end
     elsif command == '/delete'
       if subscriber.admin?
-        DeletesRelays.delete_relay(subscriber: subscriber, relay: target_relay)
+        DeletesRelays.delete_relay(subscriber: subscriber, relay: target_relay, substitute_relay_number: another_relay.number)
         render nothing: true
       end
     elsif command.starts_with? '/'
@@ -262,5 +262,9 @@ class TxtsController < ApplicationController
         render template_name, formats: :xml
       end
     end
+  end
+
+  def another_relay
+    (Relay.all - [target_relay]).first
   end
 end
