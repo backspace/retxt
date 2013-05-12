@@ -119,6 +119,11 @@ class TxtsController < ApplicationController
         target_relay.update_attribute(:name, after_command)
         render_xml_template 'renamed'
       end
+    elsif command == '/clear'
+      if subscriber.admin?
+        target_relay.subscriptions.reject{|subscription| subscription.subscriber == subscriber}.each(&:destroy)
+        render_xml_template 'cleared'
+      end
     elsif command.starts_with? '/'
       render_xml_template 'unknown_command'
     elsif command.starts_with? '@'
