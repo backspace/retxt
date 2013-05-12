@@ -13,7 +13,7 @@ describe DeletesRelays do
   let(:client) { double('client') }
   let(:account) { double('account') }
   let(:incoming_phone_numbers) { double('incoming_phone_numbers') }
-  let(:find) { double('find') }
+  let(:phone_number_list) { double('list') }
   let(:phone_number) { double('phone_number').as_null_object }
 
   let(:messages) { double('messages').as_null_object }
@@ -22,16 +22,15 @@ describe DeletesRelays do
   before do
     client.stub(:account).and_return(account)
     account.stub(:incoming_phone_numbers).and_return(incoming_phone_numbers)
-    incoming_phone_numbers.stub(:find).and_return(phone_number)
-
-    incoming_phone_numbers.stub(:list).and_return(double('list', first: double('first', phone_number: substitute_relay_number)))
+    incoming_phone_numbers.stub(:list).and_return(phone_number_list)
+    phone_number_list.stub(:first).and_return(phone_number)
 
     account.stub(:sms).and_return(sms)
     sms.stub(:messages).and_return(messages)
   end
 
   def call_method
-    DeletesRelays.delete_relay(relay: relay, client: client, subscriber: subscriber)
+    DeletesRelays.delete_relay(relay: relay, client: client, subscriber: subscriber, substitute_relay_number: substitute_relay_number)
   end
 
   it 'should trigger API calls to delete the relay number' do

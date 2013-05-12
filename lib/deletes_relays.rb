@@ -3,15 +3,13 @@ class DeletesRelays
     client = options[:client] || Twilio::REST::Client.new(ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN'])
     relay = options[:relay]
 
-    client.account.incoming_phone_numbers.find(phone_number: relay.number).delete
+    client.account.incoming_phone_numbers.list(phone_number: relay.number).first.delete
 
     relay.destroy
 
-    substitute_relay_number = client.account.incoming_phone_numbers.list.first.phone_number
-
     client.account.sms.messages.create(
       to: options[:subscriber].number,
-      from: substitute_relay_number,
+      from: options[:substitute_relay_number],
       body: "the relay #{relay.name} was deleted"
     )
   end
