@@ -1,5 +1,5 @@
 Given(/^the number buyer will buy number (\d+)$/) do |number|
-  BuysNumbers.stub(:buy_number).and_return(number)
+  BuysNumbers.stubs(:buy_number).returns(number)
 end
 
 Then(/^I should see that relay B has number (\d+)$/) do |number|

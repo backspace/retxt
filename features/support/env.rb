@@ -56,4 +56,7 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
-require 'cucumber/rspec/doubles'
+require 'rspec/core'
+RSpec.configure do |config|
+  config.mock_with :mocha
+end
