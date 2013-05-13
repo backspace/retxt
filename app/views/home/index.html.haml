@@ -26,9 +26,10 @@
 %section.row
   .large-6.small-12.columns
     %h2 Relay a message
-    .row.txtpair=txt_pair('there\'s a tornado destroying super c!', txt_partial('relayed', destination_count: @subscriber_count))
+    .row.txtpair=txt_pair('there\'s a tornado destroying super c!', txt_partial('relayed', destination_count: @subscriber_count), sender: 'alice')
     %p Other subscribers will receive the message like this:
-    .row.txtpair=txt_pair('', "@alice sez: there's a tornado destroying super c!")
+    -%w{francine pascal}.each do |name|
+      .row.txtpair=txt_pair('', "@alice sez: there's a tornado destroying super c!", receiver: name)
   .large-6.small-12.columns
     %h2 Etiquette
     %p
@@ -52,9 +53,9 @@
   .large-6.small-12.columns
     %h2 Direct messaging
     -message = '@alice see you there!'
-    .row.txtpair=txt_pair(message, txt_partial('direct_message_success', recipient_name: 'alice'))
+    .row.txtpair=txt_pair(message, txt_partial('direct_message_success', recipient_name: 'alice'), sender: 'bob')
     %p @alice will receive the message like this:
-    .row.txtpair=txt_pair('', txt_partial('direct_message_content', subscriber_name: 'your_name', message: message))
+    .row.txtpair=txt_pair('', txt_partial('direct_message_content', subscriber_name: 'bob', message: message), receiver: 'alice')
   .large-6.small-12.columns
     %h2 Freeze/thaw
     %p These are admin-only commands to temporarily pause relaying messages in case of spamming or technical failures.
