@@ -185,6 +185,11 @@ class TxtsController < ApplicationController
         render_xml_template 'muted_relay_fail'
       else
         @destinations = target_relay.subscriptions.map(&:subscriber).map(&:number) - [Subscriber.find_by(number: params[:From]).number]
+
+        @destinations.each do |destination|
+          SendsTxts.send_txt(to: destination, from: target_relay.number, body: "#{@subscriber.addressable_name} sez: #{params[:Body]}".truncate(160))
+        end
+
         render_xml_template 'relay'
       end
     else

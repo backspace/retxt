@@ -58,15 +58,23 @@ Then(/^'bob' should receive a txt including '(.*)'$/) do |content|
 end
 
 Then(/^subscribers other than me should( not)? receive that message( signed by '(.*?)')?$/) do |negation, signature_exists, signature|
-  page = Nokogiri::XML(last_response.body)
-  matcher = negation ? :should_not : :should
+  if @monitor_outgoing
+    txt = "#{signature == 'anon' ? '' : '@'}#{signature} sez: #{@txt_content}"
 
-  subscribers_other_than_me.each do |subscriber|
-    message_text = page.xpath("//Sms[@to='#{subscriber.number}']").text
-    message_text.send(matcher, include(@txt_content))
+    subscribers_other_than_me.each do |subscriber|
+      SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number)
+    end
+  else
+    page = Nokogiri::XML(last_response.body)
+    matcher = negation ? :should_not : :should
 
-    if !negation && signature_exists
-      message_text.should include(signature)
+    subscribers_other_than_me.each do |subscriber|
+      message_text = page.xpath("//Sms[@to='#{subscriber.number}']").text
+      message_text.send(matcher, include(@txt_content))
+
+      if !negation && signature_exists
+        message_text.should include(signature)
+      end
     end
   end
 end
@@ -97,6 +105,10 @@ Then(/^(.*) should( not)? receive '(.*)'$/) do |name, negation, message|
   text = page.xpath("//Sms[@to='#{Subscriber.find_by(name: name).number}']").text
 
   text.send(negation ? :should_not : :should, include(message))
+end
+
+Then(/^bob should receive '@alice sez: this message should not go to everyone' from relay A$/) do
+  SendsTxts.should have_received(:send_txt).with(from: Relay.find_by(name: "A").number, to: Subscriber.find_by(name: "bob").number, body: "@alice sez: this message should not go to everyone")
 end
 
 Then(/^(.*) should not receive a message$/) do |name|

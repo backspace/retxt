@@ -539,6 +539,10 @@ describe TxtsController do
         let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
         let(:message) { "this is not a command" }
 
+        before do
+          SendsTxts.stub(:send_txt).as_null_object
+        end
+
         def send_message
           post :incoming, From: number, Body: message, To: relay_number
         end
@@ -551,6 +555,12 @@ describe TxtsController do
         it "renders the relay view" do
           send_message
           response.should render_template('relay')
+        end
+
+        it "delegates to SendsTxts" do
+          SendsTxts.should_receive(:send_txt).with(to: other_number, from: relay_number, body: "anon sez: #{message}")
+
+          send_message
         end
 
         context "but the list is frozen" do
