@@ -28,8 +28,7 @@
     %h2 Relay a message
     .row.txtpair=txt_pair('there\'s a tornado destroying super c!', txt_partial('relayed', destination_count: @subscriber_count))
     %p Other subscribers will receive the message like this:
-    %pre.txt.small-5.columns
-      @alice sez: there's a tornado destroying super c!
+    .row.txtpair=txt_pair('', "@alice sez: there's a tornado destroying super c!")
   .large-6.small-12.columns
     %h2 Etiquette
     %p
@@ -55,7 +54,7 @@
     -message = '@alice see you there!'
     .row.txtpair=txt_pair(message, txt_partial('direct_message_success', recipient_name: 'alice'))
     %p @alice will receive the message like this:
-    %pre.txt.small-5.columns=txt_partial('direct_message_content', subscriber_name: 'your_name', message: message)
+    .row.txtpair=txt_pair('', txt_partial('direct_message_content', subscriber_name: 'your_name', message: message))
   .large-6.small-12.columns
     %h2 Freeze/thaw
     %p These are admin-only commands to temporarily pause relaying messages in case of spamming or technical failures.

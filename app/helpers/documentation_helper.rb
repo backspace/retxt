@@ -4,9 +4,17 @@ module DocumentationHelper
   end
 
   def txt_pair(outgoing, incoming)
-    content_tag(:pre, outgoing, class: 'txt small-5 columns') + 
+    txt_screen(outgoing) +
       content_tag(:div, "&rarr;".html_safe, class: 'small-1 columns') +
-      content_tag(:pre, incoming, class: 'txt small-5 columns response') +
+      txt_screen(incoming) +
       content_tag(:div, "", class: 'small-1 columns')
+  end
+
+  def txt_screen(message)
+    if message.blank?
+      content_tag(:div, '&nbsp;'.html_safe, class: 'small-5 column')
+    else
+      content_tag(:pre, message, class: 'txt small-5 columns')
+    end
   end
 end
