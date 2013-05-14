@@ -18,12 +18,18 @@
   = javascript_include_tag "vendor/custom.modernizr"
   = csrf_meta_tags
 
-%body
-  .row
-    -if user_signed_in?
-      =link_to "Sign out", destroy_user_session_path, method: :delete
-    %p.notice=notice
-    %p.alert=alert
+%body{class: controller_name, id: action_name}
+  .row.header
+    .small-12.columns
+      =image_tag 'tower.png', size: '100x100'
+      %h1
+        =link_to "Relay", '/'
+      -if user_signed_in?
+        -if current_user.admin
+          =link_to "Subscribers", subscribers_url
+        =link_to "Sign out", destroy_user_session_path, method: :delete
+      %p.notice=notice
+      %p.alert=alert
 
   = yield
   = javascript_include_tag "application"
