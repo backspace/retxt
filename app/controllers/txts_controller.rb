@@ -190,7 +190,9 @@ class TxtsController < ApplicationController
           SendsTxts.send_txt(to: destination, from: target_relay.number, body: "#{@subscriber.addressable_name} sez: #{params[:Body]}".truncate(160))
         end
 
-        render_xml_template 'relay'
+        SendsTxts.send_txt(to: subscriber.number, from: target_relay.number, body: I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: @destinations.size)))
+
+        render nothing: true
       end
     else
       render_simple_response 'you are not subscribed'

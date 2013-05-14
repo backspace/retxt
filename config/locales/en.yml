@@ -4,7 +4,13 @@
 en:
   hello: "Hello world"
 
+  subscribers:
+    zero: 0 subscribers
+    one: 1 subscriber
+    other: "%{count} subscribers"
+
   txts:
+    relayed: "your message was sent to %{subscriber_count}"
     create: "created a new relay! called %{relay_name}"
     freeze: 'the relay is now frozen'
     frozen: 'the relay is frozen'

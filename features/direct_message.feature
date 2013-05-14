@@ -6,7 +6,7 @@ Feature: Direct message
     And someone is subscribed as 'colleen'
 
     When I txt '@bob you are kewl'
-    Then I should receive a confirmation txt
+    Then I should receive a directconfirmation txt
     And bob should receive '@alice said to you: @bob you are kewl'
     And colleen should not receive 'you are kewl'
 

@@ -4,7 +4,8 @@ When(/^I txt '(.*?)'( to relay (.*))?$/) do |content, non_default_relay, relay_n
   @txt_content = content
 
   if non_default_relay
-    post '/txts/incoming', Body: content, From: my_number, To: Relay.find_by(name: relay_name).number
+    @recent_relay = Relay.find_by(name: relay_name)
+    post '/txts/incoming', Body: content, From: my_number, To: @recent_relay.number
   else
     post '/txts/incoming', Body: content, From: my_number
   end
@@ -15,12 +16,14 @@ When(/^'bob' txts '([^']*)'( to relay A)?$/) do |content, relay_given|
   post '/txts/incoming', Body: content, From: Subscriber.find_by(name: 'bob').number, To: relay.number
 end
 
-Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|goodbye|created) txt( from (\d+))?$/) do |message_type, non_default_source, source|
+Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created) txt( from (\d+))?$/) do |message_type, non_default_source, source|
   if message_type == 'help'
     message = 'cmds'
   elsif message_type == 'welcome'
     message = 'welcome'
   elsif message_type == 'confirmation'
+    message = I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
+  elsif message_type == 'directconfirmation'
     message = 'your message was sent'
   elsif message_type == 'already-subscribed'
     message = 'you are already subscribed'
@@ -42,7 +45,7 @@ Then(/^I should receive a message that I am not subscribed$/) do
 end
 
 Then(/^I should receive a message that the relay is frozen$/) do
-  response_should_include 'frozen'
+  response_should_include I18n.t('txts.freeze')
 end
 
 Then(/^I should not receive a txt including '(.*)'$/) do |content|
@@ -62,7 +65,11 @@ Then(/^subscribers other than me should( not)? receive that message( signed by '
     txt = "#{signature == 'anon' ? '' : '@'}#{signature} sez: #{@txt_content}"
 
     subscribers_other_than_me.each do |subscriber|
-      SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number)
+      if negation
+        SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number).never
+      else
+        SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number)
+      end
     end
   else
     page = Nokogiri::XML(last_response.body)
@@ -121,7 +128,12 @@ def subscribers_other_than_me
 end
 
 def response_should_include(content)
-  Nokogiri::XML(last_response.body).xpath("//Sms[not(@to)]").text.should include(content)
+  if @monitor_outgoing
+    relay = @recent_relay || Relay.first
+    SendsTxts.should have_received(:send_txt).with(from: relay.number, to: my_number, body: content)
+  else
+    Nokogiri::XML(last_response.body).xpath("//Sms[not(@to)]").text.should include(content)
+  end
 end
 
 def response_should_not_include(content)

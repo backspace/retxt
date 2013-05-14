@@ -552,13 +552,9 @@ describe TxtsController do
           expect(assigns(:destinations)).to eq([other_number])
         end
 
-        it "renders the relay view" do
-          send_message
-          response.should render_template('relay')
-        end
-
-        it "delegates to SendsTxts" do
+        it "delegates to SendsTxts to relay and respond" do
           SendsTxts.should_receive(:send_txt).with(to: other_number, from: relay_number, body: "anon sez: #{message}")
+          SendsTxts.should_receive(:send_txt).with(to: number, from: relay_number, body: I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: 1)))
 
           send_message
         end

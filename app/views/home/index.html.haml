@@ -23,7 +23,7 @@
 %section.row
   .large-6.small-12.columns
     %h2 Relay a message
-    =txt_pair('there\'s a tornado destroying super c!', txt_partial('relayed', destination_count: @subscriber_count), sender: 'alice')
+    =txt_pair('there\'s a tornado destroying super c!', t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
     %p Other subscribers will receive the message like this:
     -%w{francine pascal}.each do |name|
       =txt_pair('', "@alice sez: there's a tornado destroying super c!", receiver: name)
@@ -79,7 +79,7 @@
       =txt_pair('/thaw', t('txts.thaw'), sender: 'admin')
     .large-6.small-12.columns
       %h2 Mute/unmute
-      =txt_pair('i keep spamming the list!', txt_partial('relayed', destination_count: 1337), sender: 'rogers')
+      =txt_pair('i keep spamming the list!', t('txts.relayed', subscriber_count: t('subscribers', count: 1337)), sender: 'rogers')
       =txt_pair('/mute @rogers', t('txts.mute', mutee_name: '@rogers'), sender: 'admin')
       =txt_pair('i want to spam again!', t('txts.muted_fail'), sender: 'rogers')
       =txt_pair('', t('txts.muted_report', mutee_name: '@rogers', muted_message: 'i want to spam again!'), receiver: 'admin')
