@@ -14,3 +14,7 @@ Feature: Freeze and thaw
     When I txt 'a train derailed'
     Then I should receive a message that the relay is frozen
     And subscribers other than me should not receive that message
+
+    When I txt '/thaw'
+    And I visit the subscribers list
+    Then I should not see that the relay is frozen

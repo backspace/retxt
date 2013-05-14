@@ -37,7 +37,12 @@ Then(/^I should see that '(\w*)' is muted$/) do |subscriber_name|
   page.find(".subscriber_#{subscriber.id}").should have_content("muted")
 end
 
-Then(/^I should see that the relay is (\w*)/) do |state|
-  page.should have_css("th.relay.#{state}")
-  page.find("th.relay.#{state}").should have_content(state)
+Then(/^I should( not)? see that the relay is (\w*)/) do |negation, state|
+  if negation
+    page.should_not have_css("th.relay.#{state}")
+    page.find("th.relay").should_not have_content(state)
+  else
+    page.should have_css("th.relay.#{state}")
+    page.find("th.relay.#{state}").should have_content(state)
+  end
 end

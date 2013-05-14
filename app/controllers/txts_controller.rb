@@ -59,12 +59,8 @@ class TxtsController < ApplicationController
       Freeze.new(sender: subscriber, relay: target_relay).execute
       render nothing: true
     elsif command == '/thaw' || command == '/unthaw'
-      if subscriber.admin?
-        target_relay.update_attribute(:frozen, false)
-        render_simple_response I18n.t('txts.thaw')
-      else
-        render_simple_response 'you are not an admin'
-      end
+      Thaw.new(sender: subscriber, relay: target_relay).execute
+      render nothing: true
     elsif command == '/who'
       if subscriber.admin?
         @subscribers = target_relay.subscriptions.map(&:subscriber)

@@ -27,4 +27,8 @@ class Relay
   def freeze!
     update_attribute(:frozen, true)
   end
+
+  def thaw!
+    update_attribute(:frozen, false)
+  end
 end

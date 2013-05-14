@@ -155,28 +155,14 @@ describe TxtsController do
   context "when the command is 'thaw'" do
     let(:number) { "5551313" }
     let(:message) { '/thaw' }
+    let!(:subscriber) { Subscriber.create!(number: number) }
 
-    before { relay.update_attribute(:frozen, true) }
+    it "should execute Thaw" do
+      thaw = double('thaw')
+      Thaw.should_receive(:new).with(sender: subscriber, relay: relay).and_return(thaw)
+      thaw.should_receive(:execute)
 
-    context "and the sender is subscribed" do
-      let!(:subscriber) { Subscriber.create!(number: number) }
-      let!(:subscription) { Subscription.create!(subscriber: subscriber, relay: relay) }
-
-      context "and the sender is an admin" do
-        before { subscriber.update_attribute(:admin, true) }
-
-        it "should thaw the relay" do
-          send_message(message)
-          relay.reload
-          relay.frozen.should be_false
-        end
-      end
-
-      it "should not thaw the relay" do
-        send_message(message)
-        relay.reload
-        relay.frozen.should be_true
-      end
+      send_message(message)
     end
   end
 
