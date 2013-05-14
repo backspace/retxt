@@ -1,7 +1,7 @@
 xml.Response do
-  xml.Sms 'subscriptions are closed'
+  xml.Sms I18n.t('txts.close')
 
   @admin_destinations.each do |number|
-    xml.Sms "#{params[:From]} tried to subscribe: #{params[:Body]}", to: number
+    xml.Sms I18n.t('txts.bounce_notification', number: params[:From], message: params[:Body]), to: number
   end
 end

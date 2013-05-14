@@ -1,3 +1,3 @@
 xml.Response do
-  xml.Sms "subscriptions are open"
+  xml.Sms t('txts.open')
 end

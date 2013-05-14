@@ -1,3 +1,3 @@
 xml.Response do
-  xml.Sms "subscriptions are closed"
+  xml.Sms I18n.t('txts.close')
 end

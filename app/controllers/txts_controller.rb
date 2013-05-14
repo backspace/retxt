@@ -51,21 +51,21 @@ class TxtsController < ApplicationController
         @from = BuysNumbers.buy_number('514', incoming_txts_url)
         @relay = Relay.create(name: after_command, number: @from)
         Subscription.create(relay: @relay, subscriber: subscriber)
-        render_simple_response "created a new relay! called #{@relay.name}"
+        render_simple_response I18n.t('txts.create', relay_name: @relay.name)
       else
         render_simple_response 'you are not an admin'
       end
     elsif command == '/freeze'
       if subscriber.admin?
         target_relay.update_attribute(:frozen, true)
-        render_simple_response 'the relay is now frozen'
+        render_simple_response I18n.t('txts.freeze')
       else
         render_simple_response 'you are not an admin'
       end
     elsif command == '/thaw' || command == '/unthaw'
       if subscriber.admin?
         target_relay.update_attribute(:frozen, false)
-        render_simple_response 'the relay is thawed'
+        render_simple_response I18n.t('txts.thaw')
       else
         render_simple_response 'you are not an admin'
       end
@@ -177,7 +177,7 @@ class TxtsController < ApplicationController
   def relay
     if subscriber.present? && target_relay.subscribed?(subscriber)
       if target_relay.frozen
-        render_simple_response 'the relay is frozen'
+        render_simple_response I18n.t('txts.frozen')
       elsif Subscription.find_by(subscriber: subscriber, relay: target_relay).muted
         @mutee = subscriber
         @original_message = params[:Body]
@@ -239,7 +239,11 @@ class TxtsController < ApplicationController
   end
 
   def commands_content
-    render_to_string partial: 'commands_content', formats: [:text], locals: {subscriber_count: (Subscriber.count - 1)}
+    text_partial_to_string('commands_content', subscriber_count: (Subscriber.count - 1))
+  end
+
+  def text_partial_to_string(partial_name, locals = {})
+    render_to_string partial: partial_name, formats: [:text], locals: locals
   end
 
   def validate_twilio_request

@@ -14,22 +14,22 @@
 %section.row
   .large-6.small-12.columns
     %h2 Subscribing
-    .row.txtpair=txt_pair('subscribe', txt_partial('welcome', name: 'anon', subscriber_count: @subscriber_count))
+    =txt_pair('subscribe', txt_partial('welcome', name: 'anon', subscriber_count: @subscriber_count))
     .row
       .small-12.columns
         %p Optionally, specify a name when subscribing.
-    .row.txtpair=txt_pair('subscribe alice', txt_partial('welcome', name: 'alice', subscriber_count: @subscriber_count))
+    =txt_pair('subscribe alice', txt_partial('welcome', name: 'alice', subscriber_count: @subscriber_count))
   .large-6.small-12.columns
     %h2 Unsubscribing
-    .row.txtpair=txt_pair('unsubscribe', '(this message is intercepted by the text message gateway and out of our control. you need to send \'start\' to get back in communication with the relay.)')
+    =txt_pair('unsubscribe', '(this message is intercepted by the text message gateway and out of our control. you need to send \'start\' to get back in communication with the relay.)')
 
 %section.row
   .large-6.small-12.columns
     %h2 Relay a message
-    .row.txtpair=txt_pair('there\'s a tornado destroying super c!', txt_partial('relayed', destination_count: @subscriber_count), sender: 'alice')
+    =txt_pair('there\'s a tornado destroying super c!', txt_partial('relayed', destination_count: @subscriber_count), sender: 'alice')
     %p Other subscribers will receive the message like this:
     -%w{francine pascal}.each do |name|
-      .row.txtpair=txt_pair('', "@alice sez: there's a tornado destroying super c!", receiver: name)
+      =txt_pair('', "@alice sez: there's a tornado destroying super c!", receiver: name)
   .large-6.small-12.columns
     %h2 Etiquette
     %p
@@ -43,22 +43,67 @@
 %section.row
   .large-6.small-12.columns
     %h2 About
-    .row.txtpair=txt_pair('about', txt_partial('commands_content', subscriber_count: @subscriber_count))
+    =txt_pair('about', txt_partial('commands_content', subscriber_count: @subscriber_count))
   .large-6.small-12.columns
     %h2 Names
-    .row.txtpair=txt_pair('name', txt_partial('name', name: 'alice'))
-    .row.txtpair=txt_pair('name bob', txt_partial('name', name: 'bob'))
+    =txt_pair('name', txt_partial('name', name: 'alice'))
+    =txt_pair('name bob', txt_partial('name', name: 'bob'))
 
 %section.row
   .large-6.small-12.columns
     %h2 Direct messaging
     -message = '@alice see you there!'
-    .row.txtpair=txt_pair(message, txt_partial('direct_message_success', recipient_name: 'alice'), sender: 'bob')
+    =txt_pair(message, txt_partial('direct_message_success', recipient_name: 'alice'), sender: 'bob')
     %p @alice will receive the message like this:
-    .row.txtpair=txt_pair('', txt_partial('direct_message_content', subscriber_name: 'bob', message: message), receiver: 'alice')
-  .large-6.small-12.columns
-    %h2 Freeze/thaw
-    %p These are admin-only commands to temporarily pause relaying messages in case of spamming or technical failures.
+    =txt_pair('', txt_partial('direct_message_content', subscriber_name: 'bob', message: message), receiver: 'alice')
+
+-if current_user.try(:admin?)
+  %section.row
+    .small-12.columns
+      %p The following commands are admin-only.
+  %section.row
+    .large-6.small-12.columns
+      %h2 Create a new relay
+      =txt_pair('create temp', t('txts.create', relay_name: 'temp'), sender: 'admin', receiver: 'admin, from new #')
+    .large-6.small-12.columns
+      %h2 Who
+      -replies = who_messages(Subscriber.all)
+      =txt_pair('/who', replies.first, sender: 'admin')
+      -if replies.length > 1
+        =txt_pair('', replies[1])
+      -if replies.length > 2
+        =txt_pair('', '…')
+      %p The * indicates an admin.
+  %section.row
+    .large-6.small-12.columns
+      %h2 Freeze/thaw
+      =txt_pair('/freeze', t('txts.freeze'), sender: 'admin')
+      =txt_pair('everyone okay?', t('txts.frozen'), sender: 'francine')
+      =txt_pair('/thaw', t('txts.thaw'), sender: 'admin')
+    .large-6.small-12.columns
+      %h2 Mute/unmute
+      =txt_pair('i keep spamming the list!', txt_partial('relayed', destination_count: 1337), sender: 'rogers')
+      =txt_pair('/mute @rogers', t('txts.mute', mutee_name: '@rogers'), sender: 'admin')
+      =txt_pair('i want to spam again!', t('txts.muted_fail'), sender: 'rogers')
+      =txt_pair('', t('txts.muted_report', mutee_name: '@rogers', muted_message: 'i want to spam again!'), receiver: 'admin')
+      =txt_pair('/unmute @rogers', t('txts.unmute', unmutee_name: '@rogers'), sender: 'admin')
+  %section.row
+    .large-6.small-12.columns
+      %h2 Close/open
+      =txt_pair('/close', t('txts.close'), sender: 'admin')
+      =txt_pair('subscribe nefarious', t('txts.close'), sender: '+15145551212')
+      =txt_pair('', t('txts.bounce_notification', number: '+15145551212', message: 'subscribe nefarious'), receiver: 'admin')
+      =txt_pair('/open', t('txts.open'), sender: 'admin')
+    .large-6.small-12.columns
+      %h2 Rename
+      =txt_pair('/rename awesome', t('txts.rename', relay_name: 'awesome'), sender: 'admin')
+  %section.row
+    .large-6.small-12.columns
+      %h2 Clear
+      =txt_pair('/clear', t('txts.clear'), sender: 'admin')
+    .large-6.small-12.columns
+      %h2 Delete
+      =txt_pair('/delete', 'the relay was deleted', sender: 'admin', receiver: 'admin, from different #')
 
 %section.row
   .large-6.small-12.columns

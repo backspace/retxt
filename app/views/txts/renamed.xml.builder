@@ -1,3 +1,3 @@
 xml.Response do
-  xml.Sms "renamed relay to #{target_relay.name}"
+  xml.Sms t('txts.rename', relay_name: target_relay.name)
 end

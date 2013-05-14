@@ -4,10 +4,10 @@ module DocumentationHelper
   end
 
   def txt_pair(outgoing, incoming, options = {})
-    txt_screen(outgoing, options[:sender]) +
+    content_tag(:div, txt_screen(outgoing, options[:sender]) +
       content_tag(:div, "&rarr;".html_safe, class: 'small-1 columns') +
       txt_screen(incoming, options[:receiver]) +
-      content_tag(:div, "", class: 'small-1 columns')
+      content_tag(:div, "", class: 'small-1 columns'), class: 'row txtpair')
   end
 
   def txt_screen(message, subscriber = nil)

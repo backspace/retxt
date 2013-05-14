@@ -1,3 +1,3 @@
 xml.Response do
-  xml.Sms "#{@mutee.addressable_name} is muted"
+  xml.Sms t('txts.mute', mutee_name: @mutee.addressable_name)
 end

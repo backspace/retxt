@@ -3,3 +3,18 @@
 
 en:
   hello: "Hello world"
+
+  txts:
+    create: "created a new relay! called %{relay_name}"
+    freeze: 'the relay is now frozen'
+    frozen: 'the relay is frozen'
+    thaw: 'the relay is thawed'
+    mute: "%{mutee_name} is muted"
+    muted_fail: "did not forward your message because you have been muted by an admin"
+    muted_report: "%{mutee_name} tried to say: %{muted_message}"
+    unmute: "%{unmutee_name} is unmuted"
+    close: 'subscriptions are closed'
+    bounce_notification: "%{number} tried to subscribe: %{message}"
+    open: 'subscriptions are open'
+    rename: "renamed relay to %{relay_name}"
+    clear: "this relay has been cleared of all subscribers but you."

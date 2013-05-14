@@ -1,3 +1,3 @@
 xml.Response do
-  xml.Sms "this relay has been cleared of all subscribers but you."
+  xml.Sms t('txts.clear')
 end
