@@ -16,7 +16,7 @@ When(/^'bob' txts '([^']*)'( to relay A)?$/) do |content, relay_given|
   post '/txts/incoming', Body: content, From: Subscriber.find_by(name: 'bob').number, To: relay.number
 end
 
-Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created) txt( from (\d+))?$/) do |message_type, non_default_source, source|
+Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|non-admin) txt( from (\d+))?$/) do |message_type, non_default_source, source|
   if message_type == 'help'
     message = 'cmds'
   elsif message_type == 'welcome'
@@ -31,6 +31,8 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
     message = 'goodbye'
   elsif message_type == 'created'
     message = 'created'
+  elsif message_type == 'non-admin'
+    message = I18n.t('txts.nonadmin')
   end
 
   response_should_include message

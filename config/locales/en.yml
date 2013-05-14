@@ -24,3 +24,5 @@ en:
     open: 'subscriptions are open'
     rename: "renamed relay to %{relay_name}"
     clear: "this relay has been cleared of all subscribers but you."
+
+    nonadmin: 'you are not an admin'
