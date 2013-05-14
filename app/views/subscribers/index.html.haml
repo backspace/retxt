@@ -6,6 +6,10 @@
         %th name
         %th admin?
         %th sent
+        -@relays.each do |relay|
+          %th[relay]
+            .name=relay.name
+            .number=relay.number
     %tbody
       -@subscribers.each do |subscriber|
         %tr[subscriber]
@@ -13,3 +17,8 @@
           %td=subscriber.name_or_anon
           %td=subscriber.admin? ? check : cross
           %td.sent=subscriber.sent.count
+          -@relays.each do |relay|
+            -if relay.subscribed?(subscriber)
+              %td{class: "relay_#{relay.id} subscriber_#{subscriber.id}"}=check
+            -else
+              %td

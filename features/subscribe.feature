@@ -18,3 +18,21 @@ Feature: Subscribe
     Given I am subscribed
     When I txt 'subscribe'
     Then I should receive an already-subscribed txt
+
+  Scenario: Users subscribe to different relays
+    Given I am signed in as an admin
+
+    And someone is subscribed to relay A as 'alice'
+    And someone is subscribed to relay B as 'bob'
+
+    When I visit the subscribers list
+    Then I should see that 'alice' is subscribed to relay A
+    And I should see that 'bob' is subscribed to relay B
+
+    But I should not see that 'alice' is subscribed to relay B
+    And I should not see that 'bob' is subscribed to relay A
+
+
+    When 'bob' txts 'subscribe' to relay A
+    And I visit the subscribers list
+    Then I should see that 'bob' is subscribed to relay A

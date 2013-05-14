@@ -3,5 +3,6 @@ xml.Response do
     xml.Sms("#{@name} subscribed from #{@number}", to: admin.number)
   end
 
-  xml.Sms render(partial: 'welcome', formats: [:text], locals: {subscriber_count: @subscriber_count, name: @name})
+  xml.Sms render(partial: 'welcome', formats: [:text], locals: {subscriber_count: @subscriber_count, name: @name}).truncate(160)
+  xml.Sms "note: this relay is in no way secure! your txts could me monitored, as could the relay itself. act accordingly!"
 end

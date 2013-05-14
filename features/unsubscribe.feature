@@ -1,15 +1,15 @@
 Feature: Unsubscribe
 
   Scenario: A user unsubscribes
-    Given I am subscribed
+    Given someone is subscribed to relay A as 'bob'
     And an admin is subscribed
-    When I txt 'unsubscribe'
+    When 'bob' txts 'unsubscribe' to relay A
     Then I should receive a goodbye txt
-    And the admin should receive a txt saying anon unsubscribed
+    And the admin should receive a txt saying 'bob' unsubscribed
 
     Given I am signed in as an admin
     When I visit the subscribers list
-    Then I should not see myself
+    Then I should not see that 'bob' is subscribed to relay A
 
   Scenario: A non-subscriber unsubscribes
     When I txt 'unsubscribe'

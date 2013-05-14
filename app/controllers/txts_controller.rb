@@ -4,6 +4,8 @@ class TxtsController < ApplicationController
   before_filter :reload_settings
   before_filter :store_incoming_message, only: :incoming
 
+  helper_method :target_relay
+
   def incoming
     if command == 'help' || command == 'about'
       help
@@ -14,10 +16,19 @@ class TxtsController < ApplicationController
 
       render_simple_response render_to_string(partial: 'name', formats: [:text], locals: {name: subscriber.name_or_anon})
     elsif command == 'subscribe'
-      if Subscriber.where(number: params[:From]).present?
-        already_subscribed
+      if target_relay.closed
+        @admin_destinations = target_relay_admins.map(&:number)
+        render_xml_template 'bounce_subscription'
+      elsif subscriber.present?
+        if target_relay.subscribed?(subscriber)
+          already_subscribed
+        else
+          Subscription.create(relay: target_relay, subscriber: subscriber)
+          welcome
+        end
       else
         @subscriber = Subscriber.create(number: params[:From])
+        Subscription.create(subscriber: @subscriber, relay: target_relay)
 
         new_name = after_command.parameterize
 
@@ -26,8 +37,8 @@ class TxtsController < ApplicationController
         welcome
       end
     elsif command == 'unsubscribe'
-      if subscriber.present?
-        subscriber.destroy
+      if subscriber.present? && target_relay.subscribed?(subscriber)
+        Subscription.find_by(relay: target_relay, subscriber: subscriber).destroy
 
         @unsubscriber = subscriber
         @admins = Subscriber.admins
@@ -35,24 +46,97 @@ class TxtsController < ApplicationController
       else
         render_simple_response 'you are not subscribed'
       end
-    elsif command == 'freeze'
+    elsif command == 'create'
       if subscriber.admin?
-        RelaySettings.frozen = true
-        render_simple_response 'the relay is now frozen'
+        @from = BuysNumbers.buy_number('514', incoming_txts_url)
+        @relay = Relay.create(name: after_command, number: @from)
+        Subscription.create(relay: @relay, subscriber: subscriber)
+        render_simple_response I18n.t('txts.create', relay_name: @relay.name)
       else
         render_simple_response 'you are not an admin'
       end
-    elsif command == 'thaw' || command == 'unthaw'
+    elsif command == '/freeze'
       if subscriber.admin?
-        RelaySettings.frozen = false
-        render_simple_response 'the relay is thawed'
+        target_relay.update_attribute(:frozen, true)
+        render_simple_response I18n.t('txts.freeze')
       else
         render_simple_response 'you are not an admin'
       end
+    elsif command == '/thaw' || command == '/unthaw'
+      if subscriber.admin?
+        target_relay.update_attribute(:frozen, false)
+        render_simple_response I18n.t('txts.thaw')
+      else
+        render_simple_response 'you are not an admin'
+      end
+    elsif command == '/who'
+      if subscriber.admin?
+        @subscribers = target_relay.subscriptions.map(&:subscriber)
+        render_xml_template 'who'
+      else
+        render_simple_response 'you are not an admin'
+      end
+    elsif command == '/mute'
+      if subscriber.admin?
+        @mutee = FindsSubscribers.find(after_command)
+
+        if @mutee.present?
+          subscription = Subscription.where(subscriber: @mutee, relay: target_relay).first
+
+          if subscription.present?
+            subscription.update_attribute(:muted, true)
+
+            render_xml_template 'muted'
+          end
+        end
+      end
+    elsif command == '/unmute'
+      if subscriber.admin?
+        @unmutee = FindsSubscribers.find(after_command)
+
+        if @unmutee.present?
+          subscription = Subscription.where(subscriber: @unmutee, relay: target_relay).first
+
+          if subscription.present?
+            subscription.update_attribute(:muted, false)
+
+            render_xml_template 'unmuted'
+          end
+        end
+      end
+    elsif command == '/close'
+      if subscriber.admin?
+        target_relay.update_attribute(:closed, true)
+        render_xml_template 'closed'
+      end
+    elsif command == '/open'
+      if subscriber.admin?
+        target_relay.update_attribute(:closed, false)
+        render_xml_template 'opened'
+      end
+    elsif command == '/rename'
+      if subscriber.admin?
+        target_relay.update_attribute(:name, after_command)
+        render_xml_template 'renamed'
+      end
+    elsif command == '/clear'
+      if subscriber.admin?
+        target_relay.subscriptions.reject{|subscription| subscription.subscriber == subscriber}.each(&:destroy)
+        render_xml_template 'cleared'
+      end
+    elsif command == '/delete'
+      if subscriber.admin?
+        DeletesRelays.delete_relay(subscriber: subscriber, relay: target_relay, substitute_relay_number: another_relay.number)
+        render nothing: true
+      end
+    elsif command.starts_with? '/'
+      render_xml_template 'unknown_command'
     elsif command.starts_with? '@'
       if subscriber.present?
         if command == '@anon'
           render_xml_template 'failed_direct_message'
+        elsif subscriber.anonymous?
+          render_xml_template 'forbid_anon_direct_message'
         else
           @subscriber = subscriber
           @recipient = Subscriber.where(name: command[1..-1]).first
@@ -77,7 +161,7 @@ class TxtsController < ApplicationController
   end
 
   def welcome
-    @subscriber_count = Subscriber.count - 1
+    @subscriber_count = target_relay.subscriptions.count - 1
     @name = subscriber.name_or_anon
     @number = subscriber.number
 
@@ -91,11 +175,21 @@ class TxtsController < ApplicationController
   end
 
   def relay
-    if subscriber.present?
-      if RelaySettings.frozen
-        render_simple_response 'the relay is frozen'
+    if subscriber.present? && target_relay.subscribed?(subscriber)
+      if target_relay.frozen
+        render_simple_response I18n.t('txts.frozen')
+      elsif Subscription.find_by(subscriber: subscriber, relay: target_relay).muted
+        @mutee = subscriber
+        @original_message = params[:Body]
+        @admin_destinations = target_relay_admins.map(&:number)
+        render_xml_template 'muted_relay_fail'
       else
-        @destinations = (Subscriber.all - [Subscriber.find_by(number: params[:From])]).map(&:number)
+        @destinations = target_relay.subscriptions.map(&:subscriber).map(&:number) - [Subscriber.find_by(number: params[:From]).number]
+
+        @destinations.each do |destination|
+          SendsTxts.send_txt(to: destination, from: target_relay.number, body: "#{@subscriber.addressable_name} sez: #{params[:Body]}".truncate(160))
+        end
+
         render_xml_template 'relay'
       end
     else
@@ -113,6 +207,29 @@ class TxtsController < ApplicationController
     @subscriber ||= Subscriber.where(number: params[:From]).first
   end
 
+  def target_relay
+    @relay ||= find_or_create_relay
+  end
+
+  def target_relay_admins
+    target_relay.subscriptions.map(&:subscriber).select(&:admin)
+  end
+
+  def find_or_create_relay
+    matching = Relay.where(number: params[:To]).first
+
+    if matching.nil?
+      relay = Relay.create(number: params[:To])
+      Subscriber.all.each do |subscriber|
+        relay.subscriptions << Subscription.create(subscriber: subscriber, relay: relay)
+      end
+
+      relay
+    else
+      matching
+    end
+  end
+
   def command
     params[:Body].split.first.downcase
   end
@@ -122,7 +239,11 @@ class TxtsController < ApplicationController
   end
 
   def commands_content
-    render_to_string partial: 'commands_content', formats: [:text], locals: {subscriber_count: (Subscriber.count - 1)}
+    text_partial_to_string('commands_content', subscriber_count: (Subscriber.count - 1))
+  end
+
+  def text_partial_to_string(partial_name, locals = {})
+    render_to_string partial: partial_name, formats: [:text], locals: locals
   end
 
   def validate_twilio_request
@@ -150,5 +271,9 @@ class TxtsController < ApplicationController
         render template_name, formats: :xml
       end
     end
+  end
+
+  def another_relay
+    (Relay.all - [target_relay]).first
   end
 end
