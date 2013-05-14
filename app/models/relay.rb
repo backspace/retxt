@@ -13,7 +13,11 @@ class Relay
   has_many :subscriptions, dependent: :delete
 
   def subscribed?(subscriber)
-    subscriptions.map(&:subscriber).include? subscriber
+    subscription_for(subscriber).present?
+  end
+
+  def subscription_for(subscriber)
+    subscriptions.where(subscriber: subscriber).first
   end
 
   def self.master

@@ -18,7 +18,7 @@
   = javascript_include_tag "vendor/custom.modernizr"
   = csrf_meta_tags
 
-%body
+%body{class: controller_name, id: action_name}
   .row
     -if user_signed_in?
       =link_to "Sign out", destroy_user_session_path, method: :delete

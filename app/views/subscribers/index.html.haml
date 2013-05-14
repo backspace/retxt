@@ -19,6 +19,10 @@
           %td.sent=subscriber.sent.count
           -@relays.each do |relay|
             -if relay.subscribed?(subscriber)
-              %td{class: "relay_#{relay.id} subscriber_#{subscriber.id}"}=check
+              -muted = relay.subscription_for(subscriber).muted
+              %td{class: "relay_#{relay.id} subscriber_#{subscriber.id} #{muted ? 'muted' : ''}"}
+                =check
+                -if muted
+                  (muted)
             -else
               %td

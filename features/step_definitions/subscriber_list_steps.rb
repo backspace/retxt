@@ -29,3 +29,10 @@ Then(/^I should( not)? see that '(\w*)' is subscribed to relay (\w*)$/) do |nega
 
   page.send(matcher, have_selector(".relay_#{relay.id}.subscriber_#{subscriber.id}"))
 end
+
+Then(/^I should see that '(\w*)' is muted$/) do |subscriber_name|
+  subscriber = Subscriber.find_by(name: subscriber_name)
+
+  page.should have_css(".subscriber_#{subscriber.id}.muted")
+  page.find(".subscriber_#{subscriber.id}").should have_content("muted")
+end

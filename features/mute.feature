@@ -10,3 +10,7 @@ Feature: Mute
     When 'bob' txts 'I want to relay something'
     Then 'bob' should receive a txt including 'have been muted'
     And the admin should receive a txt including '@bob tried to say'
+
+    Given I am signed in as an admin
+    When I visit the subscribers list
+    Then I should see that 'bob' is muted
