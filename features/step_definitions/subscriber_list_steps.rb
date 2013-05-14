@@ -37,7 +37,7 @@ Then(/^I should see that '(\w*)' is muted$/) do |subscriber_name|
   page.find(".subscriber_#{subscriber.id}").should have_content("muted")
 end
 
-Then(/^I should see that the relay is frozen$/) do
-  page.should have_css("th.relay.frozen")
-  page.find("th.relay.frozen").should have_content("frozen")
+Then(/^I should see that the relay is (\w*)/) do |state|
+  page.should have_css("th.relay.#{state}")
+  page.find("th.relay.#{state}").should have_content(state)
 end

@@ -7,11 +7,13 @@
         %th admin?
         %th sent
         -@relays.each do |relay|
-          %th[relay]{class: relay.frozen ? "frozen" : ''}
+          %th[relay]{class: "#{relay.frozen ? "frozen" : ''} #{relay.closed ? 'closed' : ''}"}
             .name=relay.name
             .number=relay.number
             -if relay.frozen
               (frozen)
+            -if relay.closed
+              (closed)
     %tbody
       -@subscribers.each do |subscriber|
         %tr[subscriber]
