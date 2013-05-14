@@ -23,4 +23,8 @@ class Relay
   def self.master
     Relay.asc(:created_at).first
   end
+
+  def freeze!
+    update_attribute(:frozen, true)
+  end
 end

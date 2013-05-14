@@ -56,12 +56,8 @@ class TxtsController < ApplicationController
         render_simple_response 'you are not an admin'
       end
     elsif command == '/freeze'
-      if subscriber.admin?
-        target_relay.update_attribute(:frozen, true)
-        render_simple_response I18n.t('txts.freeze')
-      else
-        render_simple_response 'you are not an admin'
-      end
+      Freeze.new(sender: subscriber, relay: target_relay).execute
+      render nothing: true
     elsif command == '/thaw' || command == '/unthaw'
       if subscriber.admin?
         target_relay.update_attribute(:frozen, false)

@@ -141,22 +141,13 @@ describe TxtsController do
 
     context "and the sender is subscribed" do
       let!(:subscriber) { Subscriber.create!(number: number) }
-      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
 
-      context "and the sender is an admin" do
-        before { subscriber.update_attribute(:admin, true) }
+      it "should execute Freeze" do
+        freeze = double('freeze')
+        Freeze.should_receive(:new).with(sender: subscriber, relay: relay).and_return(freeze)
+        freeze.should_receive(:execute)
 
-        it "should freeze the relay" do
-          send_message(message)
-          relay.reload
-          relay.frozen.should be_true
-        end
-      end
-
-      it "should not freeze the relay" do
         send_message(message)
-        relay.reload
-        relay.frozen.should be_false
       end
     end
   end
