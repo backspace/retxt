@@ -8,11 +8,6 @@ class Freeze
   end
 
   def execute
-    if @sender.admin
-      @relay.freeze!
-      @sends_txts.send_txt(from: @relay.number, to: @sender.number, body: @i18n.t('txts.freeze'))
-    else
-      @sends_txts.send_txt(from: @relay.number, to: @sender.number, body: @i18n.t('txts.nonadmin'))
-    end
+    ModifyRelay.new(sender: @sender, relay: @relay, i18n: @i18n, sends_txts: @sends_txts, modifier: :freeze!, success_message: @i18n.t('txts.freeze')).execute
   end
 end
