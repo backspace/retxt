@@ -2,7 +2,7 @@ Feature: Close
 
   Scenario: Close subscriptions
     Given I am subscribed as an admin
-    And someone is subscribed to relay X as 'bob'
+    And someone is subscribed to relay X as 'bob' at '1337'
     And outgoing txts are monitored
 
     When I txt '/close'
@@ -10,7 +10,7 @@ Feature: Close
 
     When 'bob' txts 'subscribe'
     Then 'bob' should receive a txt including 'subscriptions are closed'
-    And the admin should receive a txt including 'tried to subscribe'
+    And the admin should receive a txt including '1337 tried to subscribe: subscribe'
 
     Given I am signed in as an admin
     When I visit the subscribers list

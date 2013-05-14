@@ -18,7 +18,13 @@ class TxtsController < ApplicationController
     elsif command == 'subscribe'
       if target_relay.closed
         @admin_destinations = target_relay_admins.map(&:number)
-        render_xml_template 'bounce_subscription'
+        SendsTxts.send_txt(from: target_relay.number, to: params[:From], body: I18n.t('txts.close'))
+
+        @admin_destinations.each do |destination|
+          SendsTxts.send_txt(from: target_relay.number, to: destination, body: I18n.t('txts.bounce_notification', number: params[:From], message: params[:Body]).truncate(160))
+        end
+
+        render nothing: true
       elsif subscriber.present?
         if target_relay.subscribed?(subscriber)
           already_subscribed
@@ -69,33 +75,11 @@ class TxtsController < ApplicationController
         render_simple_response 'you are not an admin'
       end
     elsif command == '/mute'
-      if subscriber.admin?
-        @mutee = FindsSubscribers.find(after_command)
-
-        if @mutee.present?
-          subscription = Subscription.where(subscriber: @mutee, relay: target_relay).first
-
-          if subscription.present?
-            subscription.update_attribute(:muted, true)
-
-            render_xml_template 'muted'
-          end
-        end
-      end
+      Mute.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
+      render nothing: true
     elsif command == '/unmute'
-      if subscriber.admin?
-        @unmutee = FindsSubscribers.find(after_command)
-
-        if @unmutee.present?
-          subscription = Subscription.where(subscriber: @unmutee, relay: target_relay).first
-
-          if subscription.present?
-            subscription.update_attribute(:muted, false)
-
-            render_xml_template 'unmuted'
-          end
-        end
-      end
+      Unmute.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
+      render nothing: true
     elsif command == '/close'
       Close.new(sender: subscriber, relay: target_relay).execute
       render nothing: true
@@ -168,7 +152,13 @@ class TxtsController < ApplicationController
         @mutee = subscriber
         @original_message = params[:Body]
         @admin_destinations = target_relay_admins.map(&:number)
-        render_xml_template 'muted_relay_fail'
+        SendsTxts.send_txt(from: target_relay.number, to: subscriber.number, body: I18n.t('txts.muted_fail'))
+
+        @admin_destinations.each do |destination|
+          SendsTxts.send_txt(from: target_relay.number, to: destination, body: I18n.t('txts.muted_report', mutee_name: subscriber.addressable_name, muted_message: @original_message).truncate(160))
+        end
+
+        render nothing: true
       else
         @destinations = target_relay.subscriptions.map(&:subscriber).map(&:number) - [Subscriber.find_by(number: params[:From]).number]
 

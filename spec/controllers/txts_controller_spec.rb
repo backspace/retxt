@@ -83,8 +83,7 @@ describe TxtsController do
       context "but subscriptions are closed" do
         before { relay.update_attribute(:closed, true) }
         it "should render the bounced template" do
-          post :incoming, Body: "subscribe", To: relay_number
-          response.should render_template('bounce_subscription')
+          SendsTxts.stub(:send_txt).as_null_object
         end
       end
     end
@@ -208,69 +207,33 @@ describe TxtsController do
     end
   end
 
-  context "when the command is '/mute'" do
-    context "and the sender is subscribed and an admin" do
-      let(:number) { "5551313" }
-      let!(:subscriber) { Subscriber.create!(number: number) }
-      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+  context "when the command is '/mute @bob'" do
+    let(:number) { "5551313" }
+    let(:target) { "@bob" }
+    let(:message) { "/mute #{target}" }
+    let!(:subscriber) { Subscriber.create!(number: number) }
 
-      before { subscriber.update_attribute(:admin, true) }
+    it "should execute Mute" do
+      mute = double('mute')
+      Mute.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(mute)
+      mute.should_receive(:execute)
 
-      context "and the target is subscribed" do
-        let(:mutee_name) { "bob" }
-        let!(:mutee) { Subscriber.create(number: Time.now.to_f, name: mutee_name) }
-        let!(:mutee_subscription) { Subscription.create(subscriber: mutee, relay: relay) }
-
-        let(:message) { "/mute @#{mutee_name}" }
-
-        before { send_message(message) }
-
-        it "should render the muted template" do
-          response.should render_template('muted')
-        end
-
-        it "should assign the muted" do
-          assigns(:mutee).should eq(mutee)
-        end
-
-        it "should mute the mutee" do
-          mutee_subscription.reload
-          mutee_subscription.muted.should be_true
-        end
-      end
+      send_message(message)
     end
   end
 
-  context "when the command is '/unmute'" do
-    context "and the sender is subscribed and an admin" do
-      let(:number) { "5551313" }
-      let!(:subscriber) { Subscriber.create!(number: number) }
-      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+  context "when the command is '/unmute @bob'" do
+    let(:number) { "5551313" }
+    let(:target) { "@bob" }
+    let(:message) { "/unmute #{target}" }
+    let!(:subscriber) { Subscriber.create!(number: number) }
 
-      before { subscriber.update_attribute(:admin, true) }
+    it "should execute Unmute" do
+      unmute = double('unmute')
+      Unmute.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(unmute)
+      unmute.should_receive(:execute)
 
-      context "and the target is subscribed and muted" do
-        let(:unmutee_name) { "bob" }
-        let!(:unmutee) { Subscriber.create(number: Time.now.to_f, name: unmutee_name) }
-        let!(:unmutee_subscription) { Subscription.create(subscriber: unmutee, relay: relay, muted: true) }
-
-        let(:message) { "/unmute @#{unmutee_name}" }
-
-        before { send_message(message) }
-
-        it "should render the unmuted template" do
-          response.should render_template('unmuted')
-        end
-
-        it "should assign the unmuted" do
-          assigns(:unmutee).should eq(unmutee)
-        end
-
-        it "should unmute the unmutee" do
-          unmutee_subscription.reload
-          unmutee_subscription.muted.should be_false
-        end
-      end
+      send_message(message)
     end
   end
 
@@ -523,10 +486,6 @@ describe TxtsController do
             admin.update_attribute(:admin, true)
             subscription.update_attribute(:muted, true)
             send_message
-          end
-
-          it "should render the direct message template" do
-            response.should render_template('muted_relay_fail')
           end
 
           it "should assign the original message" do

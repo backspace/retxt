@@ -59,7 +59,7 @@ Then(/^I should receive a txt including '(.*)'$/) do |content|
 end
 
 Then(/^'bob' should receive a txt including '(.*)'$/) do |content|
-  response_should_include content
+  response_should_include content, Subscriber.find_by(name: 'bob').number
 end
 
 Then(/^subscribers other than me should( not)? receive that message( signed by '(.*?)')?$/) do |negation, signature_exists, signature|
@@ -104,9 +104,13 @@ Then(/^the admin should receive a txt saying 'bob' unsubscribed$/) do
 end
 
 Then(/^the admin should receive a txt including '([^']*)'$/) do |content|
-  admin_text = Nokogiri::XML(last_response.body).xpath("//Sms[@to='#{Subscriber.find_by(admin: true).number}']").text
+  if @monitor_outgoing
+    response_should_include content, Subscriber.find_by(admin: true).number
+  else
+    admin_text = Nokogiri::XML(last_response.body).xpath("//Sms[@to='#{Subscriber.find_by(admin: true).number}']").text
 
-  admin_text.should include(content)
+    admin_text.should include(content)
+  end
 end
 
 Then(/^(.*) should( not)? receive '(.*)'$/) do |name, negation, message|
@@ -129,10 +133,10 @@ def subscribers_other_than_me
   Subscriber.all - [Subscriber.where(number: my_number).first]
 end
 
-def response_should_include(content)
+def response_should_include(content, recipient_number = my_number)
   if @monitor_outgoing
     relay = @recent_relay || Relay.first
-    SendsTxts.should have_received(:send_txt).with(from: relay.number, to: my_number, body: content)
+    SendsTxts.should have_received(:send_txt).with(from: relay.number, to: recipient_number, body: content)
   else
     Nokogiri::XML(last_response.body).xpath("//Sms[not(@to)]").text.should include(content)
   end

@@ -34,10 +34,14 @@ Given(/^two other people are subscribed$/) do
   Subscription.create(subscriber: Subscriber.create(number: '4385551313'), relay: relay)
 end
 
-Given(/^someone is subscribed( to relay (\w*))?( as '(\w*)')?$/) do |non_default_relay, relay_name, name_given, name|
+Given(/^someone is subscribed( to relay (\w*))?( as '(\w*)')?( at '(\d*)')?$/) do |non_default_relay, relay_name, name_given, name, number_given, number|
   subscriber = Subscriber.create(number: Time.now.to_f)
 
   subscriber.update_attribute(:name, name) if name_given
+
+  if number_given
+    subscriber.update_attribute(:number, number)
+  end
 
   if non_default_relay
     create_relay_with_subscriber(relay_name, subscriber)
