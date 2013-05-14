@@ -31,4 +31,12 @@ class Relay
   def thaw!
     update_attribute(:frozen, false)
   end
+
+  def close!
+    update_attribute(:closed, true)
+  end
+
+  def open!
+    update_attribute(:closed, false)
+  end
 end

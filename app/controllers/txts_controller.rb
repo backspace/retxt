@@ -97,15 +97,11 @@ class TxtsController < ApplicationController
         end
       end
     elsif command == '/close'
-      if subscriber.admin?
-        target_relay.update_attribute(:closed, true)
-        render_xml_template 'closed'
-      end
+      Close.new(sender: subscriber, relay: target_relay).execute
+      render nothing: true
     elsif command == '/open'
-      if subscriber.admin?
-        target_relay.update_attribute(:closed, false)
-        render_xml_template 'opened'
-      end
+      Open.new(sender: subscriber, relay: target_relay).execute
+      render nothing: true
     elsif command == '/rename'
       if subscriber.admin?
         target_relay.update_attribute(:name, after_command)

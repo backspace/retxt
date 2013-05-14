@@ -275,50 +275,30 @@ describe TxtsController do
   end
 
   context "when the command is '/close'" do
-    context "and the sender is subscribed an an admin" do
-      let(:number) { "5551313" }
-      let!(:subscriber) { Subscriber.create!(number: number) }
-      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+    let(:number) { '5551313' }
+    let(:message) { '/close' }
+    let!(:subscriber) { Subscriber.create!(number: number) }
 
-      before { subscriber.update_attribute(:admin, true) }
+    it "should execute Close" do
+      close = double('close')
+      Close.should_receive(:new).with(sender: subscriber, relay: relay).and_return(close)
+      close.should_receive(:execute)
 
-      let(:message) { "/close" }
-
-      before { send_message(message) }
-
-      it "should render the closed template" do
-        response.should render_template('closed')
-      end
-
-      it "should close the relay" do
-        relay.reload
-        relay.closed.should be_true
-      end
+      send_message(message)
     end
   end
 
-  context "when the command is '/open' and the relay is closed" do
-    before { relay.update_attribute(:closed, true) }
+  context "when the command is '/open'" do
+    let(:number) { '5551313' }
+    let(:message) { '/open' }
+    let!(:subscriber) { Subscriber.create!(number: number) }
 
-    context "and the sender is subscribed an an admin" do
-      let(:number) { "5551313" }
-      let!(:subscriber) { Subscriber.create!(number: number) }
-      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+    it "should execute open" do
+      open = double('open')
+      Open.should_receive(:new).with(sender: subscriber, relay: relay).and_return(open)
+      open.should_receive(:execute)
 
-      before { subscriber.update_attribute(:admin, true) }
-
-      let(:message) { "/open" }
-
-      before { send_message(message) }
-
-      it "should render the opened template" do
-        response.should render_template('opened')
-      end
-
-      it "should open the relay" do
-        relay.reload
-        relay.closed.should be_false
-      end
+      send_message(message)
     end
   end
 

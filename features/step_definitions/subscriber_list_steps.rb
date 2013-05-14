@@ -40,7 +40,6 @@ end
 Then(/^I should( not)? see that the relay is (\w*)/) do |negation, state|
   if negation
     page.should_not have_css("th.relay.#{state}")
-    page.find("th.relay").should_not have_content(state)
   else
     page.should have_css("th.relay.#{state}")
     page.find("th.relay.#{state}").should have_content(state)
