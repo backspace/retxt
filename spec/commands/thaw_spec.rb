@@ -1,18 +1,19 @@
 require_relative '../../app/commands/thaw'
+require 'command_context'
 
 describe Thaw do
 
-  let(:relay) { double('relay', number: '1234').as_null_object }
-
-  let(:i18n) { double('i18n', t: 'response') }
-  let(:sends_txts) { double('sends_txts').as_null_object }
+  include_context 'command context'
 
   def execute
     Thaw.new(sender: sender, relay: relay, i18n: i18n, sends_txts: sends_txts).execute
   end
 
   context 'from an admin' do
-    let(:sender) { double('sender', admin: true, number: '5551313') }
+
+    before do
+      sender_is_admin
+    end
 
     it 'thaws the relay' do
       relay.should_receive(:thaw!)
@@ -27,7 +28,6 @@ describe Thaw do
   end
 
   context 'from a non-admin' do
-     let(:sender) { double('sender', admin: false, number: '5551313') }
 
      it 'does not thaw the relay' do
        relay.should_not_receive(:thaw!)
