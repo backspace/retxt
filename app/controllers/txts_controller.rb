@@ -103,10 +103,8 @@ class TxtsController < ApplicationController
       Open.new(sender: subscriber, relay: target_relay).execute
       render nothing: true
     elsif command == '/rename'
-      if subscriber.admin?
-        target_relay.update_attribute(:name, after_command)
-        render_xml_template 'renamed'
-      end
+      Rename.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
+      render nothing: true
     elsif command == '/clear'
       if subscriber.admin?
         target_relay.subscriptions.reject{|subscription| subscription.subscriber == subscriber}.each(&:destroy)

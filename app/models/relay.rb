@@ -39,4 +39,8 @@ class Relay
   def open!
     update_attribute(:closed, false)
   end
+
+  def rename!(name)
+    update_attribute(:name, name)
+  end
 end

@@ -302,29 +302,18 @@ describe TxtsController do
     end
   end
 
-  context "when the command is '/rename (name)'" do
-    context "and the sender is subscribed as an admin" do
-      let(:number) { "5551313" }
-      let!(:subscriber) { Subscriber.create!(number: number) }
-      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+  context "when the command is '/rename newname'" do
+    let(:number) { '5551313' }
+    let(:message) { "/rename #{new_relay_name}" }
+    let(:new_relay_name) { 'newname' }
+    let!(:subscriber) { Subscriber.create!(number: number) }
 
-      let(:new_relay_name) { "newname" }
+    it "should execute Rename" do
+      rename = double('rename')
+      Rename.should_receive(:new).with(sender: subscriber, relay: relay, arguments: new_relay_name).and_return(rename)
+      rename.should_receive(:execute)
 
-      let(:message) { "/rename #{new_relay_name}" }
-
-      before do
-        subscriber.update_attribute(:admin, true)
-        send_message(message)
-      end
-
-      it "should render the renamed template" do
-        response.should render_template('renamed')
-      end
-
-      it "should rename the relay" do
-        relay.reload
-        relay.name.should eq(new_relay_name)
-      end
+      send_message(message)
     end
   end
 
