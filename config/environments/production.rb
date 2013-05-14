@@ -67,4 +67,6 @@ Sssr::Application.configure do
   # https://github.com/ryanb/cancan/issues/511#issuecomment-3643266
   config.logger = Logger.new(STDOUT) 
   config.logger.level = Logger::INFO
+
+  config.force_ssl = true
 end

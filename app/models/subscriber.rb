@@ -10,8 +10,18 @@ class Subscriber
   field :admin, type: Boolean
   attr_protected :admin
 
+  has_many :subscriptions
+
   def name_or_anon
     name.present? ? name : 'anon'
+  end
+
+  def addressable_name
+    name.present? ? "@#{name}" : 'anon'
+  end
+
+  def anonymous?
+    !name.present?
   end
 
   scope :admins, where(admin: true)

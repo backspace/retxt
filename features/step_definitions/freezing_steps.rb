@@ -1,3 +1,3 @@
 Given(/^the relay is frozen$/) do
-  RelaySettings.frozen = true
+  Relay.first.update_attribute(:frozen, true)
 end

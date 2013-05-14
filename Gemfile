@@ -15,6 +15,8 @@ gem 'twilio-ruby'
 
 group :test do
   gem 'rspec-rails'
+  gem 'mocha', require: false
+  gem 'bourne'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
 end
