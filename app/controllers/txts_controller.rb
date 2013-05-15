@@ -68,12 +68,8 @@ class TxtsController < ApplicationController
       Thaw.new(sender: subscriber, relay: target_relay).execute
       render nothing: true
     elsif command == '/who'
-      if subscriber.admin?
-        @subscribers = target_relay.subscriptions.map(&:subscriber)
-        render_xml_template 'who'
-      else
-        render_simple_response 'you are not an admin'
-      end
+      Who.new(sender: subscriber, relay: target_relay).execute
+      render nothing: true
     elsif command == '/mute'
       Mute.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
       render nothing: true

@@ -165,45 +165,18 @@ describe TxtsController do
     end
   end
 
-  context "when the command is '/who'" do
+
+  context "when the command is 'who'" do
     let(:number) { "5551313" }
     let(:message) { '/who' }
+    let!(:subscriber) { Subscriber.create!(number: number) }
 
-    context "and the sender is subscribed" do
-      let!(:subscriber) { Subscriber.create!(number: number) }
-      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+    it "should execute Who" do
+      who = double('thaw')
+      Who.should_receive(:new).with(sender: subscriber, relay: relay).and_return(who)
+      who.should_receive(:execute)
 
-      let!(:other_subscriber_1) { Subscriber.create }
-      let!(:other_subscriber_2) { Subscriber.create }
-
-      let!(:other_subscription_1) { Subscription.create(subscriber: other_subscriber_1, relay: relay) }
-      let!(:other_subscription_2) { Subscription.create(subscriber: other_subscriber_2, relay: relay) }
-
-      let!(:other_relay) { Relay.create }
-      let!(:other_relay_subscriber) { Subscriber.create }
-      let!(:other_relay_subscription) { Subscription.create(subscriber: other_relay_subscriber, relay: other_relay) }
-
-      it 'should render a non-admin response' do
-        controller.should_receive(:render_simple_response).with('you are not an admin').and_call_original
-        send_message(message)
-      end
-
-      context "and the sender is an admin" do
-        before do
-          subscriber.update_attribute(:admin, true)
-
-          send_message(message)
-        end
-
-        it "should render the who template" do
-          response.should render_template('who')
-        end
-
-        it "should assign the subscribers" do
-          expect(assigns(:subscribers)).to include(subscriber, other_subscriber_1, other_subscriber_2)
-          assigns(:subscribers).should_not include(other_relay_subscriber)
-        end
-      end
+      send_message(message)
     end
   end
 

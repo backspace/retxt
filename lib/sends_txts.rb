@@ -8,4 +8,12 @@ class SendsTxts
       body: options[:body]
     )
   end
+
+  def self.send_txts(options)
+    splitter = Splitter.new(options[:body])
+
+    splitter.split.each do |txt|
+      send_txt(to: options[:to], from: options[:from], body: txt)
+    end
+  end
 end

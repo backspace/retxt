@@ -43,4 +43,8 @@ class Relay
   def rename!(name)
     update_attribute(:name, name)
   end
+
+  def subscribers
+    subscriptions.map(&:subscriber)
+  end
 end

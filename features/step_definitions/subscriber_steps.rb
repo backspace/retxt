@@ -1,5 +1,5 @@
 def my_number
-  '2045551313'
+  @my_number ||= '2045551313'
 end
 
 def create_relay_with_subscriber(name, subscriber)
@@ -10,11 +10,16 @@ def create_relay_with_subscriber(name, subscriber)
   relay.subscriptions << Subscription.create(subscriber: subscriber, relay: relay)
 end
 
-Given(/^I am subscribed( to relay (\w*))?( as an admin)?( as '(\w*)')?$/) do |non_default_relay, relay_name, admin, name_given, name|
+Given(/^I am subscribed( to relay (\w*))?( as an admin)?( as '(\w*)')?( at '(\d*)')?$/) do |non_default_relay, relay_name, admin, name_given, name, number_given, number|
   subscriber = Subscriber.create(number: my_number)
 
   if name_given
     subscriber.update_attribute(:name, name)
+  end
+  
+  if number_given
+    subscriber.update_attribute(:number, number) 
+    @my_number = number
   end
 
   if non_default_relay

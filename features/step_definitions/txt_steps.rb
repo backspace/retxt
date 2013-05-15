@@ -62,6 +62,11 @@ Then(/^'bob' should receive a txt including '(.*)'$/) do |content|
   response_should_include content, Subscriber.find_by(name: 'bob').number
 end
 
+Then(/^I should receive a txt including$/) do |content|
+  response_should_include content
+end
+
+
 Then(/^subscribers other than me should( not)? receive that message( signed by '(.*?)')?$/) do |negation, signature_exists, signature|
   if @monitor_outgoing
     txt = "#{signature == 'anon' ? '' : '@'}#{signature} sez: #{@txt_content}"
