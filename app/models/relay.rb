@@ -47,4 +47,8 @@ class Relay
   def subscribers
     subscriptions.map(&:subscriber)
   end
+
+  def admins
+    subscribers.select(&:admin)
+  end
 end

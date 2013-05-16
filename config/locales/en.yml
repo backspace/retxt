@@ -26,3 +26,4 @@ en:
     clear: "this relay has been cleared of all subscribers but you."
 
     nonadmin: 'you are not an admin'
+    not_subscribed: 'you are not subscribed'

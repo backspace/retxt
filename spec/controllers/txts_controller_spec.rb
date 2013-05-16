@@ -398,89 +398,16 @@ describe TxtsController do
   end
 
   context "when there is no command" do
-    let(:number) { "5551313" }
+    let(:number) { '5551313' }
+    let(:message) { "this is not a command" }
+    let!(:subscriber) { Subscriber.create!(number: number) }
 
-    context "and the sender is subscribed" do
-      let!(:subscriber) { Subscriber.create!(number: number) }
+    it "should execute Relay" do
+      relay_command = double('relay command')
+      RelayCommand.should_receive(:new).with(sender: subscriber, relay: relay, content: message).and_return(relay_command)
+      relay_command.should_receive(:execute)
 
-      let(:other_number) { "5551212" }
-      let!(:other_subscriber) { Subscriber.create!(number: other_number) }
-      let!(:other_subscription) { Subscription.create(relay: relay, subscriber: other_subscriber) }
-
-      context "to another relay" do
-        let!(:other_relay) { Relay.create(number: "66116") }
-        let!(:other_relay_subscription) { Subscription.create(relay: other_relay, subscriber: subscriber) }
-
-        it "renders the not subscribed message" do
-          controller.should_receive(:render_simple_response).with('you are not subscribed').and_call_original
-          post :incoming, From: number, Body: "this is not a command", To: relay_number
-        end
-      end
-
-      context "to this relay" do
-        let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
-        let(:message) { "this is not a command" }
-
-        before do
-          SendsTxts.stub(:send_txt).as_null_object
-        end
-
-        def send_message
-          post :incoming, From: number, Body: message, To: relay_number
-        end
-
-        it "relays to everyone but the sender" do
-          send_message
-          expect(assigns(:destinations)).to eq([other_number])
-        end
-
-        it "delegates to SendsTxts to relay and respond" do
-          SendsTxts.should_receive(:send_txt).with(to: other_number, from: relay_number, body: "anon sez: #{message}")
-          SendsTxts.should_receive(:send_txt).with(to: number, from: relay_number, body: I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: 1)))
-
-          send_message
-        end
-
-        context "but the list is frozen" do
-          it "does not relay the message" do
-            relay.update_attribute(:frozen, true)
-            controller.should_receive(:render_simple_response).with('the relay is frozen').and_call_original
-            post :incoming, From: number, Body: "this is a relay message", To: relay_number
-            response.should_not render_template('relay')
-          end
-        end
-
-        context "but the subscriber is muted and an admin exists" do
-          let(:admin_number) { '12333' }
-          let(:admin) { Subscriber.create(name: 'admin', number: admin_number) }
-          let!(:admin_subscription) { Subscription.create(subscriber: admin, relay: relay) }
-
-          before do
-            admin.update_attribute(:admin, true)
-            subscription.update_attribute(:muted, true)
-            send_message
-          end
-
-          it "should assign the original message" do
-            expect(assigns(:original_message)).to eq(message)
-          end
-
-          it "should assign the admin numbers" do
-            assigns(:admin_destinations).should include(admin_number)
-          end
-
-          it "should assign the mutee" do
-            assigns(:mutee).should eq(subscriber)
-          end
-        end
-      end
-    end
-
-    context "and the sender is not subscribed" do
-      it "renders the not subscribed message" do
-        controller.should_receive(:render_simple_response).with('you are not subscribed').and_call_original
-        post :incoming, From: number, Body: "this is not a command"
-      end
+      send_message(message)
     end
   end
 end

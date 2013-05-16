@@ -118,7 +118,8 @@ class TxtsController < ApplicationController
         render_simple_response 'you are not subscribed'
       end
     else
-      relay
+      RelayCommand.new(sender: subscriber || Subscriber.new(number: params[:From]), relay: target_relay, content: params[:Body]).execute
+      render nothing: true
     end
   end
 
@@ -138,37 +139,6 @@ class TxtsController < ApplicationController
 
   def already_subscribed
     render_simple_response 'you are already subscribed'
-  end
-
-  def relay
-    if subscriber.present? && target_relay.subscribed?(subscriber)
-      if target_relay.frozen
-        render_simple_response I18n.t('txts.frozen')
-      elsif Subscription.find_by(subscriber: subscriber, relay: target_relay).muted
-        @mutee = subscriber
-        @original_message = params[:Body]
-        @admin_destinations = target_relay_admins.map(&:number)
-        SendsTxts.send_txt(from: target_relay.number, to: subscriber.number, body: I18n.t('txts.muted_fail'))
-
-        @admin_destinations.each do |destination|
-          SendsTxts.send_txt(from: target_relay.number, to: destination, body: I18n.t('txts.muted_report', mutee_name: subscriber.addressable_name, muted_message: @original_message).truncate(160))
-        end
-
-        render nothing: true
-      else
-        @destinations = target_relay.subscriptions.map(&:subscriber).map(&:number) - [Subscriber.find_by(number: params[:From]).number]
-
-        @destinations.each do |destination|
-          SendsTxts.send_txt(to: destination, from: target_relay.number, body: "#{@subscriber.addressable_name} sez: #{params[:Body]}".truncate(160))
-        end
-
-        SendsTxts.send_txt(to: subscriber.number, from: target_relay.number, body: I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: @destinations.size)))
-
-        render nothing: true
-      end
-    else
-      render_simple_response 'you are not subscribed'
-    end
   end
 
   private
