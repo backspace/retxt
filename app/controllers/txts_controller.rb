@@ -10,38 +10,11 @@ class TxtsController < ApplicationController
     if command == 'help' || command == 'about'
       help
     elsif command == 'name'
-      new_name = after_command.parameterize
-
-      ChangesNames.change_name(subscriber, new_name)
-
-      render_simple_response render_to_string(partial: 'name', formats: [:text], locals: {name: subscriber.name_or_anon})
+      Name.new(sender: subscriber, relay: target_relay, arguments: after_command.parameterize).execute
+      render nothing: true
     elsif command == 'subscribe'
-      if target_relay.closed
-        @admin_destinations = target_relay_admins.map(&:number)
-        SendsTxts.send_txt(from: target_relay.number, to: params[:From], body: I18n.t('txts.close'))
-
-        @admin_destinations.each do |destination|
-          SendsTxts.send_txt(from: target_relay.number, to: destination, body: I18n.t('txts.bounce_notification', number: params[:From], message: params[:Body]).truncate(160))
-        end
-
-        render nothing: true
-      elsif subscriber.present?
-        if target_relay.subscribed?(subscriber)
-          already_subscribed
-        else
-          Subscription.create(relay: target_relay, subscriber: subscriber)
-          welcome
-        end
-      else
-        @subscriber = Subscriber.create(number: params[:From])
-        Subscription.create(subscriber: @subscriber, relay: target_relay)
-
-        new_name = after_command.parameterize
-
-        ChangesNames.change_name(@subscriber, new_name)
-
-        welcome
-      end
+      Subscribe.new(relay: target_relay, sender: subscriber || Subscriber.new(number: params[:From]), arguments: after_command).execute
+      render nothing: true
     elsif command == 'unsubscribe'
       if subscriber.present? && target_relay.subscribed?(subscriber)
         Subscription.find_by(relay: target_relay, subscriber: subscriber).destroy

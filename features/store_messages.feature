@@ -2,6 +2,7 @@ Feature: Store messages
 
   Scenario: Messages are counted
     Given I am subscribed
+    And outgoing txts are monitored
     When I txt 'about'
 
     Given I am signed in as an admin

@@ -27,3 +27,10 @@ en:
 
     nonadmin: 'you are not an admin'
     not_subscribed: 'you are not subscribed'
+    name: "your name is %{name}. change it with 'name (new name)'"
+    welcome: "welcome to the relay"
+    disclaimer: "note: this relay is in no way secure! your txts could me monitored, as could the relay itself. act accordingly!"
+    already_subscribed: "you are already subscribed"
+
+    admin:
+      subscribed: "%{name} subscribed from %{number}"

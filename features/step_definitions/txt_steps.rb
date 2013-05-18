@@ -94,11 +94,15 @@ Then(/^subscribers other than me should( not)? receive that message( signed by '
 end
 
 Then(/^the admin should receive a txt saying anon (un)?subscribed$/) do |unsubscribed|
-  page = Nokogiri::XML(last_response.body)
-  admin_text = page.xpath("//Sms[@to='#{@admin.number}']").text
+  if @monitor_outgoing
+    response_should_include I18n.t('txts.admin.subscribed', name: 'anon', number: my_number), @admin.number
+  else
+    page = Nokogiri::XML(last_response.body)
+    admin_text = page.xpath("//Sms[@to='#{@admin.number}']").text
 
-  admin_text.should include('anon')
-  admin_text.should include(unsubscribed ? 'unsubscribed' : 'subscribed')
+    admin_text.should include('anon')
+    admin_text.should include(unsubscribed ? 'unsubscribed' : 'subscribed')
+  end
 end
 
 Then(/^the admin should receive a txt saying 'bob' unsubscribed$/) do

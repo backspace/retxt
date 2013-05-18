@@ -13,78 +13,47 @@ describe TxtsController do
 
   context "when the command is 'name'" do
     let(:number) { "5551313" }
-    let!(:subscriber) { Subscriber.create!(number: number) }
+    let(:message) { 'name test' }
 
-    context "and a new name is supplied" do
-      it "changes the subscriber's name" do
-        new_name = "newname"
-        post :incoming, From: number, Body: "name #{new_name}"
+    context "and the sender is subscribed" do
+      let!(:subscriber) { Subscriber.create!(number: number) }
 
-        subscriber.reload
-        subscriber.name.should == new_name
+      it "should execute Name" do
+        name = double('name')
+        Name.should_receive(:new).with(sender: subscriber, relay: relay, arguments: 'test').and_return(name)
+        name.should_receive(:execute)
+
+        send_message(message)
       end
-    end
-
-    it "renders the name message" do
-      number = "5551313"
-      controller.should_receive(:render_to_string).with(hash_including(partial: 'name'))
-      post :incoming, From: number, Body: "name"
     end
   end
 
   context "when the command is 'subscribe'" do
     let(:number) { "5551313" }
-    context "and the sender is subscribed to this relay" do
-      it "renders the already-subscribed message" do
-        subscriber = Subscriber.create!(number: number)
-        Subscription.create(relay: relay, subscriber: subscriber)
-        controller.should_receive(:render_simple_response).with('you are already subscribed').and_call_original
-        post :incoming, From: number, Body: "subscribe", To: relay_number
-      end
-    end
+    let(:message) { 'subscribe test' }
 
-    context "and the sender is subscribed to another relay" do
-      before do
-        other_relay = Relay.create(number: '11', name: 'X')
-        subscriber = Subscriber.create!(number: number)
-        Subscription.create(relay: other_relay, subscriber: subscriber)
-      end
+    context "and the sender is subscribed" do
+      let!(:subscriber) { Subscriber.create!(number: number) }
 
-      it "subscribers the number" do
-        post :incoming, From: number, Body: "subscribe", To: relay_number
+      it "should execute Subscribe" do
+        subscribe = double('subscribe')
+        Subscribe.should_receive(:new).with(sender: subscriber, relay: relay, arguments: 'test').and_return(subscribe)
+        subscribe.should_receive(:execute)
 
-        Subscriber.count.should eq(1)
-        Subscription.where(relay: relay, subscriber: Subscriber.first).should be_present
+        send_message(message)
       end
     end
 
     context "and the sender is not subscribed" do
-      it "subscribes the number" do
-        post :incoming, From: number, Body: "subscribe", To: relay_number
+      it "should execute Subscribe" do
+        subscriber = double('subscriber')
+        Subscriber.should_receive(:new).with(number: number).and_return(subscriber)
 
-        Subscriber.first.number.should == number
-        Subscription.first.relay.should == relay
-      end
+        subscribe = double('subscribe')
+        Subscribe.should_receive(:new).with(sender: subscriber, relay: relay, arguments: 'test').and_return(subscribe)
+        subscribe.should_receive(:execute)
 
-      context "and a name is supplied" do
-        it "sets the subscriber's name" do
-          name = "myname"
-          post :incoming, From: number, Body: "subscribe #{name}", To: relay_number
-
-          Subscriber.first.name.should == name
-        end
-      end
-
-      it "renders the welcome message" do
-        controller.should_receive(:welcome).and_call_original
-        post :incoming, Body: "subscribe", To: relay_number
-      end
-
-      context "but subscriptions are closed" do
-        before { relay.update_attribute(:closed, true) }
-        it "should render the bounced template" do
-          SendsTxts.stub(:send_txt).as_null_object
-        end
+        send_message(message)
       end
     end
   end
