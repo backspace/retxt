@@ -11,11 +11,11 @@
 %section.row
   .large-6.small-12.columns
     %h2 Subscribing
-    =txt_pair('subscribe', txt_partial('welcome', name: 'anon', subscriber_count: @subscriber_count))
+    =txt_pair('subscribe', t('txts.welcome'))
     .row
       .small-12.columns
         %p Optionally, specify a name when subscribing.
-    =txt_pair('subscribe alice', txt_partial('welcome', name: 'alice', subscriber_count: @subscriber_count))
+    =txt_pair('subscribe alice', t('txts.welcome'))
   .large-6.small-12.columns
     %h2 Unsubscribing
     =txt_pair('unsubscribe', '(this message is intercepted by the text message gateway and out of our control. you need to send \'start\' to get back in communication with the relay.)')
@@ -40,19 +40,19 @@
 %section.row
   .large-6.small-12.columns
     %h2 About
-    =txt_pair('about', txt_partial('commands_content', subscriber_count: @subscriber_count))
+    =txt_pair('about', t('txts.help'))
   .large-6.small-12.columns
     %h2 Names
-    =txt_pair('name', txt_partial('name', name: 'alice'))
-    =txt_pair('name bob', txt_partial('name', name: 'bob'))
+    =txt_pair('name', t('txts.name', name: 'anon'))
+    =txt_pair('name bob', t('txts.name', name: 'bob'))
 
 %section.row
   .large-6.small-12.columns
     %h2 Direct messaging
     -message = '@alice see you there!'
-    =txt_pair(message, txt_partial('direct_message_success', recipient_name: 'alice'), sender: 'bob')
+    =txt_pair(message, t('txts.direct.sent', target_name: '@alice'))
     %p @alice will receive the message like this:
-    =txt_pair('', txt_partial('direct_message_content', subscriber_name: 'bob', message: message), receiver: 'alice')
+    =txt_pair('', t('txts.direct.outgoing', sender: '@bob', message: message))
 
 -if current_user.try(:admin?)
   %section.row
