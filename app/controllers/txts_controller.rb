@@ -8,7 +8,8 @@ class TxtsController < ApplicationController
 
   def incoming
     if command == 'help' || command == 'about'
-      help
+      Help.new(sender: subscriber, relay: target_relay).execute
+      render nothing: true
     elsif command == 'name'
       Name.new(sender: subscriber, relay: target_relay, arguments: after_command.parameterize).execute
       render nothing: true

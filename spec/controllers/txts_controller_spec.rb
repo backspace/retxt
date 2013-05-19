@@ -4,24 +4,17 @@ describe TxtsController do
   let(:relay_number) { '123455' }
   let!(:relay) { Relay.create(number: relay_number) }
 
-  context "when the command is 'help'" do
-    it "renders the help message" do
-      controller.should_receive(:render_to_string).with(hash_including(partial: 'commands_content'))
-      post :incoming, Body: 'help'
-    end
-  end
-
-  context "when the command is 'name'" do
+  context 'when the command is help' do
     let(:number) { "5551313" }
-    let(:message) { 'name test' }
+    let(:message) { 'help' }
 
     context "and the sender is subscribed" do
       let!(:subscriber) { Subscriber.create!(number: number) }
 
-      it "should execute Name" do
-        name = double('name')
-        Name.should_receive(:new).with(sender: subscriber, relay: relay, arguments: 'test').and_return(name)
-        name.should_receive(:execute)
+      it "should execute Help" do
+        help = double('help')
+        Help.should_receive(:new).with(sender: subscriber, relay: relay).and_return(help)
+        help.should_receive(:execute)
 
         send_message(message)
       end

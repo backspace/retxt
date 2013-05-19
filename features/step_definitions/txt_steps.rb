@@ -18,7 +18,8 @@ end
 
 Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|non-admin) txt( from (\d+))?$/) do |message_type, non_default_source, source|
   if message_type == 'help'
-    message = 'cmds'
+
+    message = I18n.t('txts.help', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
   elsif message_type == 'welcome'
     message = 'welcome'
   elsif message_type == 'confirmation'
