@@ -9,7 +9,7 @@ describe Unmute do
   let(:finds_subscribers) { double('finds_subscribers') }
 
   def execute
-    Unmute.new(sender: sender, relay: relay, i18n: i18n, sends_txts: sends_txts, arguments: arguments, finds_subscribers: finds_subscribers).execute
+    Unmute.new(sender: sender, relay: relay, arguments: arguments, finds_subscribers: finds_subscribers).execute
   end
 
   context 'the sender is an admin' do
@@ -39,8 +39,8 @@ describe Unmute do
         end
 
         it 'replies with the unmute message' do
-          i18n.should_receive('t').with('txts.unmute', unmutee_name: arguments).and_return('unmute')
-          sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'unmute')
+          I18n.should_receive('t').with('txts.unmute', unmutee_name: arguments).and_return('unmute')
+          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'unmute')
           execute
         end
       end
@@ -50,8 +50,8 @@ describe Unmute do
       end
 
       it 'replies with the unsubscribed target message' do
-        i18n.should_receive('t').with('txts.unsubscribed_target', target: arguments).and_return('unsubscribed')
-        sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'unsubscribed')
+        I18n.should_receive('t').with('txts.unsubscribed_target', target: arguments).and_return('unsubscribed')
+        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'unsubscribed')
         execute
       end
     end
@@ -61,16 +61,16 @@ describe Unmute do
     end
 
     it 'replies with the missing target message' do
-      i18n.should_receive('t').with('txts.missing_target', target: arguments).and_return('missing')
-      sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'missing')
+      I18n.should_receive('t').with('txts.missing_target', target: arguments).and_return('missing')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'missing')
       execute
     end
   end
 
   context 'from a non-admin' do
     it 'replies with the non-admin message' do
-      i18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-      sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
+      I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
       execute
     end
   end

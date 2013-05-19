@@ -7,7 +7,7 @@ describe Delete do
   include_context 'command context'
 
   def execute
-    Delete.new(sender: sender, relay: relay, i18n: i18n, sends_txts: sends_txts).execute
+    Delete.new(sender: sender, relay: relay).execute
   end
 
   context 'from an admin' do
@@ -16,7 +16,7 @@ describe Delete do
     end
 
     it 'notifies admins and deletes the relay' do
-      i18n.stub(:t).with('txts.admin.delete', admin_name: sender.addressable_name).and_return('delete')
+      I18n.stub(:t).with('txts.admin.delete', admin_name: sender.addressable_name).and_return('delete')
       TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'delete')
 
       DeletesRelays.should_receive(:delete_relay).with(relay: relay)
@@ -32,8 +32,8 @@ describe Delete do
     end
 
     it 'replies with the non-admin message' do
-      i18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-      sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
+      I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
       execute
     end
   end

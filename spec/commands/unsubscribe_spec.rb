@@ -8,7 +8,7 @@ describe Unsubscribe do
   let(:subscriptionRepository) { double('subscription repository') }
 
   def execute
-    Unsubscribe.new(sender: sender, relay: relay, i18n: i18n, sends_txts: sends_txts).execute
+    Unsubscribe.new(sender: sender, relay: relay).execute
   end
 
   context 'when the sender is subscribed' do
@@ -22,12 +22,12 @@ describe Unsubscribe do
 
       subscription.should_receive(:destroy)
 
-      i18n.should_receive('t').with('txts.goodbye').and_return('goodbye')
-      sends_txts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'goodbye')
+      I18n.should_receive('t').with('txts.goodbye').and_return('goodbye')
+      SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'goodbye')
 
       sender.stub(:name_or_anon).and_return('name')
 
-      i18n.should_receive('t').with('txts.admin.unsubscribed', name: sender.name_or_anon, number: sender.number).and_return('unsubscribed')
+      I18n.should_receive('t').with('txts.admin.unsubscribed', name: sender.name_or_anon, number: sender.number).and_return('unsubscribed')
       TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'unsubscribed')
 
       execute
@@ -40,8 +40,8 @@ describe Unsubscribe do
     end
 
     it 'sends the not subscribed message' do
-      i18n.should_receive('t').with('txts.not_subscribed').and_return('not subscribed')
-      sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'not subscribed')
+      I18n.should_receive('t').with('txts.not_subscribed').and_return('not subscribed')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'not subscribed')
       execute
     end
   end

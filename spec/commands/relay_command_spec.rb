@@ -9,7 +9,7 @@ describe RelayCommand do
   let(:content) { 'preformatted text' }
 
   def execute
-    RelayCommand.new(sender: sender, relay: relay, i18n: i18n, sends_txts: sends_txts, content: content).execute
+    RelayCommand.new(sender: sender, relay: relay, content: content).execute
   end
 
   context 'from a sender who is subscribed' do
@@ -28,12 +28,12 @@ describe RelayCommand do
     end
 
     it 'relays the message and notifies the sender' do
-      sends_txts.should_receive(:send_txt).with(from: relay.number, to: other_subscriber.number, body: formatted_txt)
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: other_subscriber.number, body: formatted_txt)
 
-      i18n.should_receive('t').with('subscribers', count: subscribers.length - 1).and_return("1 subscriber")
-      i18n.should_receive('t').with('txts.relayed', subscriber_count: "1 subscriber").and_return('relayed')
+      I18n.should_receive('t').with('subscribers', count: subscribers.length - 1).and_return("1 subscriber")
+      I18n.should_receive('t').with('txts.relayed', subscriber_count: "1 subscriber").and_return('relayed')
 
-      sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'relayed')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'relayed')
 
       execute
     end
@@ -44,8 +44,8 @@ describe RelayCommand do
       end
 
       it 'responds that the relay is frozen' do
-        i18n.should_receive('t').with('txts.frozen').and_return('frozen')
-        sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'frozen')
+        I18n.should_receive('t').with('txts.frozen').and_return('frozen')
+        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'frozen')
 
         execute
       end
@@ -60,11 +60,11 @@ describe RelayCommand do
         admin = double('admin', number: 5)
         relay.stub(:admins).and_return([admin])
 
-        i18n.should_receive('t').with('txts.muted_fail').and_return('muted fail')
-        sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'muted fail')
+        I18n.should_receive('t').with('txts.muted_fail').and_return('muted fail')
+        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'muted fail')
 
-        i18n.should_receive('t').with('txts.muted_report', mutee_name: sender.addressable_name, muted_message: content).and_return('muted report')
-        sends_txts.should_receive(:send_txt).with(from: relay.number, to: admin.number, body: 'muted report')
+        I18n.should_receive('t').with('txts.muted_report', mutee_name: sender.addressable_name, muted_message: content).and_return('muted report')
+        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: admin.number, body: 'muted report')
 
         execute
       end
@@ -78,8 +78,8 @@ describe RelayCommand do
     end
 
     it 'responds that the sender is not subscribed' do
-      i18n.should_receive('t').with('txts.not_subscribed').and_return('not subscribed')
-      sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'not subscribed')
+      I18n.should_receive('t').with('txts.not_subscribed').and_return('not subscribed')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'not subscribed')
 
       execute
     end
