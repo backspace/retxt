@@ -61,7 +61,7 @@
   %section.row
     .large-6.small-12.columns
       %h2 Create a new relay
-      =txt_pair('create temp', t('txts.create', relay_name: 'temp'), sender: 'admin', receiver: 'admin, from new #')
+      =txt_pair('create temp', t('txts.admin.create', admin_name: '@admin', relay_name: 'temp'), sender: 'admin', receiver: 'admin, from new #')
     .large-6.small-12.columns
       %h2 Who
       -replies = who_messages(Subscriber.all)

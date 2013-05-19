@@ -20,14 +20,8 @@ class TxtsController < ApplicationController
       Unsubscribe.new(relay: target_relay, sender: subscriber || Subscriber.new(number: params[:From])).execute
       render nothing: true
     elsif command == 'create'
-      if subscriber.admin?
-        @from = BuysNumbers.buy_number('514', incoming_txts_url)
-        @relay = Relay.create(name: after_command, number: @from)
-        Subscription.create(relay: @relay, subscriber: subscriber)
-        render_simple_response I18n.t('txts.create', relay_name: @relay.name)
-      else
-        render_simple_response 'you are not an admin'
-      end
+      Create.new(relay: target_relay, sender: subscriber, application_url: incoming_txts_url, arguments: after_command).execute
+      render nothing: true
     elsif command == '/freeze'
       Freeze.new(sender: subscriber, relay: target_relay).execute
       render nothing: true

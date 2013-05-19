@@ -16,6 +16,7 @@ Feature: Multi-relay
 
   Scenario: Create a relay
     Given the number buyer will buy number 123
+    And outgoing txts are monitored
     And I am subscribed as an admin
     And someone is subscribed to relay A as 'bob'
     And I txt 'create B'

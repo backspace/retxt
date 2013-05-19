@@ -31,15 +31,15 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
   elsif message_type == 'goodbye'
     message = 'goodbye'
   elsif message_type == 'created'
-    message = 'created'
+    message = I18n.t('txts.admin.create', relay_name: 'B', admin_name: 'anon')
   elsif message_type == 'non-admin'
     message = I18n.t('txts.nonadmin')
   end
 
-  response_should_include message
-
   if non_default_source
-    Nokogiri::XML(last_response.body).xpath("//Sms[@from='#{source}']").should_not be_empty
+    response_should_include message, my_number, source
+  else
+    response_should_include message
   end
 end
 
@@ -147,10 +147,10 @@ def subscribers_other_than_me
   Subscriber.all - [Subscriber.where(number: my_number).first]
 end
 
-def response_should_include(content, recipient_number = my_number)
+def response_should_include(content, recipient_number = my_number, sender_number = nil)
   if @monitor_outgoing
     relay = @recent_relay || Relay.first
-    SendsTxts.should have_received(:send_txt).with(from: relay.number, to: recipient_number, body: content)
+    SendsTxts.should have_received(:send_txt).with(from: relay.number || sender_number, to: recipient_number, body: content)
   else
     Nokogiri::XML(last_response.body).xpath("//Sms[not(@to)]").text.should include(content)
   end

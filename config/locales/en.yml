@@ -11,7 +11,6 @@ en:
 
   txts:
     relayed: "your message was sent to %{subscriber_count}"
-    create: "created a new relay! called %{relay_name}"
     freeze: 'the relay is now frozen'
     frozen: 'the relay is frozen'
     thaw: 'the relay is thawed'
@@ -36,6 +35,7 @@ en:
     help: "cmds: about, unsubscribe, name. start txt w/'@' & a name to direct txt. any other txt is sent to %{subscriber_count}"
 
     admin:
+      create: "%{admin_name} created a new relay! called %{relay_name}"
       subscribed: "%{name} subscribed from %{number}"
       unsubscribed: "%{name} unsubscribed :("
       clear: "this relay has been cleared of all subscribers but you."
