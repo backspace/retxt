@@ -24,6 +24,9 @@ end
 group :development, :test do
   gem 'pry'
   gem 'pry-nav'
+
+  gem 'localtunnel'
+  gem 'foreman'
 end
 
 group :assets do

@@ -1,0 +1,2 @@
+tunnel: bundle exec rake update_twilio
+web: bundle exec rails s
