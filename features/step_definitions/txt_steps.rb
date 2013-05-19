@@ -25,7 +25,7 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
   elsif message_type == 'confirmation'
     message = I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
   elsif message_type == 'directconfirmation'
-    message = 'your message was sent'
+    message = I18n.t('txts.direct.sent', target_name: '@bob')
   elsif message_type == 'already-subscribed'
     message = 'you are already subscribed'
   elsif message_type == 'goodbye'
@@ -128,10 +128,14 @@ Then(/^the admin should receive a txt including '([^']*)'$/) do |content|
 end
 
 Then(/^(.*) should( not)? receive '(.*)'$/) do |name, negation, message|
-  page = Nokogiri::XML(last_response.body)
-  text = page.xpath("//Sms[@to='#{Subscriber.find_by(name: name).number}']").text
+  if @monitor_outgoing
+    response_should_include(message, Subscriber.find_by(name: name).number) unless negation
+  else
+    page = Nokogiri::XML(last_response.body)
+    text = page.xpath("//Sms[@to='#{Subscriber.find_by(name: name).number}']").text
 
-  text.send(negation ? :should_not : :should, include(message))
+    text.send(negation ? :should_not : :should, include(message))
+  end
 end
 
 Then(/^bob should receive '@alice sez: this message should not go to everyone' from relay A$/) do

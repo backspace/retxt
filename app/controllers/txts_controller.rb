@@ -56,25 +56,8 @@ class TxtsController < ApplicationController
       Unknown.new(sender: subscriber, relay: target_relay).execute
       render nothing: true
     elsif command.starts_with? '@'
-      if subscriber.present?
-        if command == '@anon'
-          render_xml_template 'failed_direct_message'
-        elsif subscriber.anonymous?
-          render_xml_template 'forbid_anon_direct_message'
-        else
-          @subscriber = subscriber
-          @recipient = Subscriber.where(name: command[1..-1]).first
-
-          if @recipient.present?
-            render_xml_template 'direct_message'
-          else
-            @recipient = command
-            render_xml_template 'failed_direct_message'
-          end
-        end
-      else
-        render_simple_response 'you are not subscribed'
-      end
+      DirectMessage.new(sender: subscriber, relay: target_relay, content: params[:Body]).execute
+      render nothing: true
     else
       RelayCommand.new(sender: subscriber || Subscriber.new(number: params[:From]), relay: target_relay, content: params[:Body]).execute
       render nothing: true

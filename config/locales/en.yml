@@ -42,3 +42,9 @@ en:
       unsubscribed: "%{name} unsubscribed :("
       clear: "this relay has been cleared of all subscribers but you."
       delete: "%{admin_name} is deleting this relay. this number will no longer respond."
+
+    direct:
+      sent: "your message was sent to %{target_name}"
+      outgoing: "%{sender} said to you: %{message}"
+      missing_target: "your message was not sent because %{target_name} could not be found"
+      anonymous: "you cannot send a message when you are anonymous. change your name with 'name yourname' to set your name"
