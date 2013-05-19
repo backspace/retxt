@@ -16,15 +16,8 @@ class TxtsController < ApplicationController
       Subscribe.new(relay: target_relay, sender: subscriber || Subscriber.new(number: params[:From]), arguments: after_command).execute
       render nothing: true
     elsif command == 'unsubscribe'
-      if subscriber.present? && target_relay.subscribed?(subscriber)
-        Subscription.find_by(relay: target_relay, subscriber: subscriber).destroy
-
-        @unsubscriber = subscriber
-        @admins = Subscriber.admins
-        render 'goodbye_and_notification', formats: [:xml]
-      else
-        render_simple_response 'you are not subscribed'
-      end
+      Unsubscribe.new(relay: target_relay, sender: subscriber || Subscriber.new(number: params[:From])).execute
+      render nothing: true
     elsif command == 'create'
       if subscriber.admin?
         @from = BuysNumbers.buy_number('514', incoming_txts_url)

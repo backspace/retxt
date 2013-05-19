@@ -95,7 +95,7 @@ end
 
 Then(/^the admin should receive a txt saying anon (un)?subscribed$/) do |unsubscribed|
   if @monitor_outgoing
-    response_should_include I18n.t('txts.admin.subscribed', name: 'anon', number: my_number), @admin.number
+    response_should_include I18n.t("txts.admin.#{unsubscribed ? 'un' : ''}subscribed", name: 'anon', number: my_number), @admin.number
   else
     page = Nokogiri::XML(last_response.body)
     admin_text = page.xpath("//Sms[@to='#{@admin.number}']").text
@@ -106,10 +106,14 @@ Then(/^the admin should receive a txt saying anon (un)?subscribed$/) do |unsubsc
 end
 
 Then(/^the admin should receive a txt saying 'bob' unsubscribed$/) do
-  admin_text = Nokogiri::XML(last_response.body).xpath("//Sms[@to='#{@admin.number}']").text
+  if @monitor_outgoing
+    response_should_include I18n.t("txts.admin.unsubscribed", name: 'bob', number: my_number), @admin.number
+  else
+    admin_text = Nokogiri::XML(last_response.body).xpath("//Sms[@to='#{@admin.number}']").text
 
-  admin_text.should include('bob')
-  admin_text.should include('unsubscribed')
+    admin_text.should include('bob')
+    admin_text.should include('unsubscribed')
+  end
 end
 
 Then(/^the admin should receive a txt including '([^']*)'$/) do |content|

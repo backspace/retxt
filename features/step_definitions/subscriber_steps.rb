@@ -60,4 +60,8 @@ Given(/^an admin is subscribed$/) do
   @admin = Subscriber.create(number: '6045551313')
   @admin.admin = true
   @admin.save
+
+  relay = Relay.first
+
+  Subscription.create(relay: relay, subscriber: @admin) if relay.present?
 end

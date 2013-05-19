@@ -32,5 +32,8 @@ en:
     disclaimer: "note: this relay is in no way secure! your txts could me monitored, as could the relay itself. act accordingly!"
     already_subscribed: "you are already subscribed"
 
+    goodbye: "goodbye"
+
     admin:
       subscribed: "%{name} subscribed from %{number}"
+      unsubscribed: "%{name} unsubscribed :("

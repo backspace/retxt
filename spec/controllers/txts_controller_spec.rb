@@ -60,41 +60,17 @@ describe TxtsController do
 
   context "when the command is 'unsubscribe'" do
     let(:number) { "5551313" }
+    let(:message) { 'unsubscribe' }
+
     context "and the sender is subscribed" do
       let!(:subscriber) { Subscriber.create!(number: number) }
 
-      context "to another relay" do
-        let!(:other_relay) { Relay.create(number: '313') }
-        let!(:subscription) { Subscription.create(subscriber: subscriber, relay: other_relay) }
+      it "should execute Unsubscribe" do
+        unsubscribe = double('unsubscribe')
+        Unsubscribe.should_receive(:new).with(sender: subscriber, relay: relay).and_return(unsubscribe)
+        unsubscribe.should_receive(:execute)
 
-        it "renders the not subscribed message" do
-          controller.should_receive(:render_simple_response).with('you are not subscribed').and_call_original
-          post :incoming, From: number, Body: "unsubscribe", To: relay_number
-        end
-      end
-
-      context "to this relay" do
-        let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
-
-        before { post :incoming, From: number, Body: "unsubscribe", To: relay_number }
-        it "destroys the subscription" do
-          Subscription.deleted.should include(subscription)
-        end
-
-        it "keeps the subscriber" do
-          Subscriber.all.should include(subscriber)
-        end
-
-        it "renders the goodbye message" do
-          response.should render_template('goodbye_and_notification')
-        end
-      end
-    end
-
-    context "and the sender is not subscribed" do
-      it "renders the not subscribed message" do
-        controller.should_receive(:render_simple_response).with('you are not subscribed').and_call_original
-        post :incoming, From: number, Body: "unsubscribe"
+        send_message(message)
       end
     end
   end
