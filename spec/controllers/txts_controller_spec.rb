@@ -206,24 +206,17 @@ describe TxtsController do
   end
 
   context "when the command is '/delete'" do
-    context "and the sender is subscribed as an admin" do
-      let(:number) { "5551313" }
-      let!(:subscriber) { Subscriber.create!(number: number) }
-      let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
+    let(:number) { "5551313" }
+    let!(:subscriber) { Subscriber.create!(number: number) }
 
-      let(:message) { "/delete" }
+    let(:message) { "/delete" }
 
-      before do
-        subscriber.update_attribute(:admin, true)
-      end
+    it "should execute delete" do
+      delete = double('delete')
+      Delete.should_receive(:new).with(relay: relay, sender: subscriber).and_return(delete)
+      delete.should_receive(:execute)
 
-      it "should delegate to DeletesRelays" do
-        other_relay_number = "1555"
-        other_relay = double('another_relay', number: other_relay_number)
-        controller.stub(:another_relay).and_return(other_relay)
-        DeletesRelays.should_receive(:delete_relay).with(subscriber: subscriber, relay: relay, substitute_relay_number: other_relay_number)
-        send_message(message)
-      end
+      send_message(message)
     end
   end
 

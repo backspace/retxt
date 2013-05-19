@@ -50,10 +50,8 @@ class TxtsController < ApplicationController
       Clear.new(sender: subscriber, relay: target_relay).execute
       render nothing: true
     elsif command == '/delete'
-      if subscriber.admin?
-        DeletesRelays.delete_relay(subscriber: subscriber, relay: target_relay, substitute_relay_number: another_relay.number)
-        render nothing: true
-      end
+      Delete.new(sender: subscriber, relay: target_relay).execute
+      render nothing: true
     elsif command.starts_with? '/'
       render_xml_template 'unknown_command'
     elsif command.starts_with? '@'

@@ -42,9 +42,4 @@ describe DeletesRelays do
     relay.should_receive :destroy
     call_method
   end
-
-  it 'should send the subscriber a success message' do
-    messages.should_receive(:create).with(from: substitute_relay_number, to: subscriber_number, body: "the relay #{relay_name} was deleted")
-    call_method
-  end
 end

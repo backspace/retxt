@@ -1,0 +1,40 @@
+require_relative '../../app/commands/delete'
+require 'command_context'
+require 'txts_relay_admins'
+require 'deletes_relays'
+
+describe Delete do
+  include_context 'command context'
+
+  def execute
+    Delete.new(sender: sender, relay: relay, i18n: i18n, sends_txts: sends_txts).execute
+  end
+
+  context 'from an admin' do
+    before do
+      sender_is_admin
+    end
+
+    it 'notifies admins and deletes the relay' do
+      i18n.stub(:t).with('txts.admin.delete', admin_name: sender.addressable_name).and_return('delete')
+      TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'delete')
+
+      DeletesRelays.should_receive(:delete_relay).with(relay: relay)
+
+      execute
+    end
+  end
+
+  context 'from a non-admin' do
+    it 'does not rename the relay' do
+      relay.should_not_receive(:rename!)
+      execute
+    end
+
+    it 'replies with the non-admin message' do
+      i18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
+      sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
+      execute
+    end
+  end
+end

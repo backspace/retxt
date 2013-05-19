@@ -39,3 +39,4 @@ en:
       subscribed: "%{name} subscribed from %{number}"
       unsubscribed: "%{name} unsubscribed :("
       clear: "this relay has been cleared of all subscribers but you."
+      delete: "%{admin_name} is deleting this relay. this number will no longer respond."
