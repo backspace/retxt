@@ -2,7 +2,6 @@ Feature: Subscribe
 
   Scenario: A user subscribes
     Given an admin is subscribed
-    And outgoing txts are monitored
     When I txt 'subscribe'
     Then I should receive a welcome txt saying my name is 'anon'
     And the admin should receive a txt saying anon subscribed
@@ -12,19 +11,16 @@ Feature: Subscribe
     Then I should see myself
 
   Scenario: A user subscribes with a name
-    Given outgoing txts are monitored
     When I txt 'subscribe morrison'
     Then I should receive a welcome txt saying my name is 'morrison'
 
   Scenario: A subscribed user tries to subscribe
     Given I am subscribed
-    And outgoing txts are monitored
     When I txt 'subscribe'
     Then I should receive an already-subscribed txt
 
   Scenario: Users subscribe to different relays
     Given I am signed in as an admin
-    And outgoing txts are monitored
 
     And someone is subscribed to relay A as 'alice'
     And someone is subscribed to relay B as 'bob'

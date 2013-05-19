@@ -2,7 +2,6 @@ Feature: Mute
 
   Scenario: Mute a subscriber
     Given I am subscribed as an admin
-    And outgoing txts are monitored
     And someone is subscribed as 'bob'
 
     When I txt '/mute @bob'

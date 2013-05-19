@@ -2,7 +2,6 @@ Feature: Clear
 
   Scenario: An admin clears a relay
     Given I am signed in as an admin
-    And outgoing txts are monitored
     And someone is subscribed to relay A as 'alice'
     And I am subscribed to relay A as an admin
 

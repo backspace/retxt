@@ -3,7 +3,6 @@ Feature: Freeze and thaw
   Scenario: Prevent relaying when frozen
     Given two other people are subscribed
     And I am subscribed as an admin
-    And outgoing txts are monitored
 
     When I txt '/freeze'
 

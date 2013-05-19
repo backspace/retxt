@@ -2,7 +2,6 @@ Feature: Who
 
   Scenario: List who is subscribed to a relay
     Given I am subscribed to relay A as an admin as 'alice' at '000'
-    And outgoing txts are monitored
 
     And someone is subscribed to relay A as 'bob' at '123'
     And someone is subscribed to relay A as 'colleen' at '456'

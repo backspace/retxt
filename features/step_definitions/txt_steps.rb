@@ -69,73 +69,31 @@ end
 
 
 Then(/^subscribers other than me should( not)? receive that message( signed by '(.*?)')?$/) do |negation, signature_exists, signature|
-  if @monitor_outgoing
-    txt = "#{signature == 'anon' ? '' : '@'}#{signature} sez: #{@txt_content}"
+  txt = "#{signature == 'anon' ? '' : '@'}#{signature} sez: #{@txt_content}"
 
-    subscribers_other_than_me.each do |subscriber|
-      if negation
-        SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number).never
-      else
-        SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number)
-      end
-    end
-  else
-    page = Nokogiri::XML(last_response.body)
-    matcher = negation ? :should_not : :should
-
-    subscribers_other_than_me.each do |subscriber|
-      message_text = page.xpath("//Sms[@to='#{subscriber.number}']").text
-      message_text.send(matcher, include(@txt_content))
-
-      if !negation && signature_exists
-        message_text.should include(signature)
-      end
+  subscribers_other_than_me.each do |subscriber|
+    if negation
+      SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number).never
+    else
+      SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number)
     end
   end
 end
 
 Then(/^the admin should receive a txt saying anon (un)?subscribed$/) do |unsubscribed|
-  if @monitor_outgoing
-    response_should_include I18n.t("txts.admin.#{unsubscribed ? 'un' : ''}subscribed", name: 'anon', number: my_number), @admin.number
-  else
-    page = Nokogiri::XML(last_response.body)
-    admin_text = page.xpath("//Sms[@to='#{@admin.number}']").text
-
-    admin_text.should include('anon')
-    admin_text.should include(unsubscribed ? 'unsubscribed' : 'subscribed')
-  end
+  response_should_include I18n.t("txts.admin.#{unsubscribed ? 'un' : ''}subscribed", name: 'anon', number: my_number), @admin.number
 end
 
 Then(/^the admin should receive a txt saying 'bob' unsubscribed$/) do
-  if @monitor_outgoing
-    response_should_include I18n.t("txts.admin.unsubscribed", name: 'bob', number: my_number), @admin.number
-  else
-    admin_text = Nokogiri::XML(last_response.body).xpath("//Sms[@to='#{@admin.number}']").text
-
-    admin_text.should include('bob')
-    admin_text.should include('unsubscribed')
-  end
+  response_should_include I18n.t("txts.admin.unsubscribed", name: 'bob', number: my_number), @admin.number
 end
 
 Then(/^the admin should receive a txt including '([^']*)'$/) do |content|
-  if @monitor_outgoing
-    response_should_include content, Subscriber.find_by(admin: true).number
-  else
-    admin_text = Nokogiri::XML(last_response.body).xpath("//Sms[@to='#{Subscriber.find_by(admin: true).number}']").text
-
-    admin_text.should include(content)
-  end
+  response_should_include content, Subscriber.find_by(admin: true).number
 end
 
 Then(/^(.*) should( not)? receive '(.*)'$/) do |name, negation, message|
-  if @monitor_outgoing
-    response_should_include(message, Subscriber.find_by(name: name).number) unless negation
-  else
-    page = Nokogiri::XML(last_response.body)
-    text = page.xpath("//Sms[@to='#{Subscriber.find_by(name: name).number}']").text
-
-    text.send(negation ? :should_not : :should, include(message))
-  end
+  response_should_include(message, Subscriber.find_by(name: name).number) unless negation
 end
 
 Then(/^bob should receive '@alice sez: this message should not go to everyone' from relay A$/) do
@@ -152,12 +110,8 @@ def subscribers_other_than_me
 end
 
 def response_should_include(content, recipient_number = my_number, sender_number = nil)
-  if @monitor_outgoing
-    relay = @recent_relay || Relay.first
-    SendsTxts.should have_received(:send_txt).with(from: relay.number || sender_number, to: recipient_number, body: content)
-  else
-    Nokogiri::XML(last_response.body).xpath("//Sms[not(@to)]").text.should include(content)
-  end
+  relay = @recent_relay || Relay.first
+  SendsTxts.should have_received(:send_txt).with(from: relay.number || sender_number, to: recipient_number, body: content)
 end
 
 def response_should_not_include(content)

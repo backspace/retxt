@@ -5,7 +5,6 @@ Feature: Direct message
     And someone is subscribed as 'bob'
     And someone is subscribed as 'colleen'
 
-    And outgoing txts are monitored
 
     When I txt '@bob you are kewl'
     Then I should receive a directconfirmation txt
@@ -14,6 +13,5 @@ Feature: Direct message
 
   Scenario: I direct message a non-existent subscriber
     Given I am subscribed as 'alice'
-    And outgoing txts are monitored
     When I txt '@francine i love you'
     Then I should receive a txt including 'your message was not sent because @francine could not be found'
