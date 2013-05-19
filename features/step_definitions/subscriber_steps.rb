@@ -61,7 +61,7 @@ Given(/^an admin is subscribed$/) do
   @admin.admin = true
   @admin.save
 
-  relay = Relay.first
+  relay = Relay.first || Relay.create
 
-  Subscription.create(relay: relay, subscriber: @admin) if relay.present?
+  Subscription.create(relay: relay, subscriber: @admin)
 end

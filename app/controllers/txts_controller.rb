@@ -70,22 +70,7 @@ class TxtsController < ApplicationController
   end
 
   def target_relay
-    @relay ||= find_or_create_relay
-  end
-
-  def find_or_create_relay
-    matching = Relay.where(number: params[:To]).first
-
-    if matching.nil?
-      relay = Relay.create(number: params[:To])
-      Subscriber.all.each do |subscriber|
-        relay.subscriptions << Subscription.create(subscriber: subscriber, relay: relay)
-      end
-
-      relay
-    else
-      matching
-    end
+    @relay ||= Relay.find_or_create_by(number: params[:To])
   end
 
   def command
