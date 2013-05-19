@@ -224,11 +224,14 @@ describe TxtsController do
   context "when the command is unrecognised" do
     let(:number) { "5551313" }
     let(:message) { "/skronk" }
+    let!(:subscriber) { Subscriber.create!(number: number) }
 
-    before { send_message(message) }
+    it "should execute Unknown" do
+      unknown = double('unknown')
+      Unknown.should_receive(:new).with(relay: relay, sender: subscriber).and_return(unknown)
+      unknown.should_receive(:execute)
 
-    it "should render the unknown command template" do
-      response.should render_template('unknown_command')
+      send_message(message)
     end
   end
 

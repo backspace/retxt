@@ -34,6 +34,8 @@ en:
 
     help: "cmds: about, unsubscribe, name. start txt w/'@' & a name to direct txt. any other txt is sent to %{subscriber_count}"
 
+    unknown: "sorry, did not understand your command. messages beginning with a / are reserved for commands to the relay."
+
     admin:
       create: "%{admin_name} created a new relay! called %{relay_name}"
       subscribed: "%{name} subscribed from %{number}"

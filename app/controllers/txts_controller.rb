@@ -53,7 +53,8 @@ class TxtsController < ApplicationController
       Delete.new(sender: subscriber, relay: target_relay).execute
       render nothing: true
     elsif command.starts_with? '/'
-      render_xml_template 'unknown_command'
+      Unknown.new(sender: subscriber, relay: target_relay).execute
+      render nothing: true
     elsif command.starts_with? '@'
       if subscriber.present?
         if command == '@anon'
