@@ -52,10 +52,8 @@ class TxtsController < ApplicationController
       Rename.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
       render nothing: true
     elsif command == '/clear'
-      if subscriber.admin?
-        target_relay.subscriptions.reject{|subscription| subscription.subscriber == subscriber}.each(&:destroy)
-        render_xml_template 'cleared'
-      end
+      Clear.new(sender: subscriber, relay: target_relay).execute
+      render nothing: true
     elsif command == '/delete'
       if subscriber.admin?
         DeletesRelays.delete_relay(subscriber: subscriber, relay: target_relay, substitute_relay_number: another_relay.number)

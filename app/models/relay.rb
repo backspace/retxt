@@ -51,4 +51,8 @@ class Relay
   def admins
     subscribers.select(&:admin)
   end
+
+  def non_admins
+    subscribers.reject(&:admin)
+  end
 end

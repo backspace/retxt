@@ -96,6 +96,20 @@ describe TxtsController do
     end
   end
 
+  context "when the command is 'clear'" do
+    let(:number) { "5551313" }
+    let(:message) { '/clear' }
+    let!(:subscriber) { Subscriber.create!(number: number) }
+
+    it "should execute Clear" do
+      clear = double('clear')
+      Clear.should_receive(:new).with(sender: subscriber, relay: relay).and_return(clear)
+      clear.should_receive(:execute)
+
+      send_message(message)
+    end
+  end
+
   context "when the command is 'thaw'" do
     let(:number) { "5551313" }
     let(:message) { '/thaw' }
@@ -195,36 +209,6 @@ describe TxtsController do
       rename.should_receive(:execute)
 
       send_message(message)
-    end
-  end
-
-  context "when the command is '/clear'" do
-    context "and another person is subscribed" do
-      let!(:other_subscriber) { Subscriber.create!(number: "1234") }
-      let!(:other_subscription) { Subscription.create(subscriber: other_subscriber, relay: relay) }
-
-      context "and the sender is subscribed as an admin" do
-        let(:number) { "5551313" }
-        let!(:subscriber) { Subscriber.create!(number: number) }
-        let!(:subscription) { Subscription.create(subscriber: subscriber, relay: relay) }
-
-        let(:message) { "/clear" }
-
-        before do
-          subscriber.update_attribute(:admin, true)
-          send_message(message)
-        end
-
-        it "should render the renamed template" do
-          response.should render_template('cleared')
-        end
-
-        it "should clear the relay of everyone but the sender" do
-          relay.reload
-          relay.subscribed?(other_subscriber).should be_false
-          relay.subscribed?(subscriber).should be_true
-        end
-      end
     end
   end
 

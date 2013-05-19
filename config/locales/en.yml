@@ -23,7 +23,6 @@ en:
     bounce_notification: "%{number} tried to subscribe: %{message}"
     open: 'subscriptions are open'
     rename: "renamed relay to %{relay_name}"
-    clear: "this relay has been cleared of all subscribers but you."
 
     nonadmin: 'you are not an admin'
     not_subscribed: 'you are not subscribed'
@@ -37,3 +36,4 @@ en:
     admin:
       subscribed: "%{name} subscribed from %{number}"
       unsubscribed: "%{name} unsubscribed :("
+      clear: "this relay has been cleared of all subscribers but you."
