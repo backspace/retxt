@@ -45,6 +45,10 @@ class Executor
       Mute.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
     elsif command == '/unmute'
       Unmute.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
+    elsif command == '/admin'
+      Admin.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
+    elsif command == '/unadmin'
+      Unadmin.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
     elsif command == '/close'
       Close.new(sender: subscriber, relay: target_relay).execute
     elsif command == '/open'

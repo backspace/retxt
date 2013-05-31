@@ -65,3 +65,13 @@ Given(/^an admin is subscribed$/) do
 
   Subscription.create(relay: relay, subscriber: @admin)
 end
+
+Given(/^'(\w*)' is subscribed as an admin$/) do |name|
+  subscriber = Subscriber.create(number: Time.now.to_f, name: name)
+  subscriber.admin = true
+  subscriber.save
+
+  relay = Relay.first || Relay.create
+
+  Subscription.create(relay: relay, subscriber: subscriber)
+end

@@ -11,9 +11,9 @@ When(/^I txt '(.*?)'( to relay (.*))?$/) do |content, non_default_relay, relay_n
   end
 end
 
-When(/^'bob' txts '([^']*)'( to relay A)?$/) do |content, relay_given|
+When(/^'(\w*)' txts '([^']*)'( to relay A)?$/) do |name, content, relay_given|
   relay = relay_given ? Relay.find_by(name: 'A') : Relay.first
-  post '/txts/incoming', Body: content, From: Subscriber.find_by(name: 'bob').number, To: relay.number
+  post '/txts/incoming', Body: content, From: Subscriber.find_by(name: name).number, To: relay.number
 end
 
 Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|non-admin) txt( from (\d+))?$/) do |message_type, non_default_source, source|
@@ -103,6 +103,12 @@ end
 Then(/^(.*) should not receive a message$/) do |name|
   page = Nokogiri::XML(last_response.body)
   page.xpath("//Sms[@to='#{Subscriber.find_by(name: name).number}']").should be_empty
+end
+
+Then(/^(\w*) should receive a txt including '([^']*)'$/) do |name, message|
+  subscriber = Subscriber.find_by(name: name)
+
+  SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: message, from: Relay.first.number)
 end
 
 def subscribers_other_than_me

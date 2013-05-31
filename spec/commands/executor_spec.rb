@@ -1,5 +1,6 @@
 require_relative '../../app/commands/executor'
 
+require_relative '../../app/commands/admin'
 require_relative '../../app/commands/clear'
 require_relative '../../app/commands/close'
 require_relative '../../app/commands/create'
@@ -13,6 +14,7 @@ require_relative '../../app/commands/relay_command'
 require_relative '../../app/commands/rename'
 require_relative '../../app/commands/subscribe'
 require_relative '../../app/commands/thaw'
+require_relative '../../app/commands/unadmin'
 require_relative '../../app/commands/unknown'
 require_relative '../../app/commands/unmute'
 require_relative '../../app/commands/unsubscribe'
@@ -195,6 +197,36 @@ describe Executor do
       unmute = double('unmute')
       Unmute.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(unmute)
       unmute.should_receive(:execute)
+
+      send_message(message)
+    end
+  end
+
+  context "when the command is '/admin @alice'" do
+    let(:number) { '5551313' }
+    let(:target) { '@alice' }
+    let(:message) { "/admin #{target}" }
+    let!(:subscriber) { Subscriber.create!(number: number) }
+
+    it "should execute Admin" do
+      admin = double('admin')
+      Admin.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(admin)
+      admin.should_receive(:execute)
+
+      send_message(message)
+    end
+  end
+
+  context "when the command is '/unadmin @alice'" do
+    let(:number) { '5551313' }
+    let(:target) { '@alice' }
+    let(:message) { "/unadmin #{target}" }
+    let!(:subscriber) { Subscriber.create!(number: number) }
+
+    it "should execute Unadmin" do
+      unadmin = double('unadmin')
+      Unadmin.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(unadmin)
+      unadmin.should_receive(:execute)
 
       send_message(message)
     end

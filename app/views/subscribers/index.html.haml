@@ -16,7 +16,7 @@
               (closed)
     %tbody
       -@subscribers.each do |subscriber|
-        %tr[subscriber]
+        %tr[subscriber]{class: subscriber.admin ? "admin" : ""}
           %td=subscriber.number
           %td=subscriber.name_or_anon
           %td=subscriber.admin? ? check : cross
