@@ -8,7 +8,7 @@ describe DirectMessage do
   let(:content) { '@user hello' }
 
   def execute
-    DirectMessage.new(sender: sender, relay: relay, sends_txts: sends_txts, i18n: i18n, content: content).execute
+    DirectMessage.new(sender: sender, relay: relay, content: content).execute
   end
 
   context 'when the sender exists' do
@@ -29,11 +29,11 @@ describe DirectMessage do
         end
 
         it 'sends the message and replies' do
-          i18n.stub(:t).with('txts.direct.outgoing', sender: sender.addressable_name, message: content).and_return('outgoing')
-          sends_txts.should_receive(:send_txt).with(from: relay.number, to: target.number, body: 'outgoing')
+          I18n.stub(:t).with('txts.direct.outgoing', sender: sender.addressable_name, message: content).and_return('outgoing')
+          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: target.number, body: 'outgoing')
 
-          i18n.stub(:t).with('txts.direct.sent', target_name: '@user').and_return('sent')
-          sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'sent')
+          I18n.stub(:t).with('txts.direct.sent', target_name: '@user').and_return('sent')
+          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'sent')
 
           execute
         end
@@ -45,8 +45,8 @@ describe DirectMessage do
         end
 
         it 'sends the failed message' do
-          i18n.stub(:t).with('txts.direct.missing_target', target_name: '@user').and_return('failed')
-          sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'failed')
+          I18n.stub(:t).with('txts.direct.missing_target', target_name: '@user').and_return('failed')
+          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'failed')
 
           execute
         end
@@ -59,8 +59,8 @@ describe DirectMessage do
       end
 
       it 'forbids the message' do
-        i18n.stub(:t).with('txts.direct.anonymous').and_return('forbidden')
-        sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'forbidden')
+        I18n.stub(:t).with('txts.direct.anonymous').and_return('forbidden')
+        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'forbidden')
 
         execute
       end

@@ -2,9 +2,6 @@ class Clear
   def initialize(options)
     @sender = options[:sender]
     @relay = options[:relay]
-
-    @i18n = options[:i18n] || I18n
-    @sends_txts = options[:sends_txts] || SendsTxts
   end
 
   def execute
@@ -13,9 +10,9 @@ class Clear
         @relay.subscription_for(subscriber).destroy
       end
 
-      TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: @i18n.t('txts.admin.clear'))
+      TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: I18n.t('txts.admin.clear'))
     else
-      @sends_txts.send_txt(from: @relay.number, to: @sender.number, body: @i18n.t('txts.nonadmin'))
+      SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.nonadmin'))
     end
   end
 end

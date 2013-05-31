@@ -15,7 +15,7 @@ describe Subscribe do
   end
 
   def execute
-    Subscribe.new(sender: sender, relay: relay, i18n: i18n, sends_txts: sends_txts, arguments: arguments, subscriberRepository: subscriberRepository, subscriptionRepository: subscriptionRepository).execute
+    Subscribe.new(sender: sender, relay: relay, arguments: arguments, subscriberRepository: subscriberRepository, subscriptionRepository: subscriptionRepository).execute
   end
 
   context 'when the sender is not subscribed' do
@@ -29,14 +29,14 @@ describe Subscribe do
       subscriberRepository.should_receive(:create).with(number: sender.number).and_return(subscriber)
       subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: subscriber)
 
-      i18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: 'anon').and_return('welcome')
-      sends_txts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'welcome')
+      I18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: 'anon').and_return('welcome')
+      SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'welcome')
 
-      i18n.should_receive('t').with('txts.disclaimer').and_return('disclaimer')
-      sends_txts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer')
+      I18n.should_receive('t').with('txts.disclaimer').and_return('disclaimer')
+      SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer')
 
 
-      i18n.should_receive('t').with('txts.admin.subscribed', name: 'anon', number: sender.number).and_return('subscribed')
+      I18n.should_receive('t').with('txts.admin.subscribed', name: 'anon', number: sender.number).and_return('subscribed')
       TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'subscribed')
 
       execute
@@ -53,14 +53,14 @@ describe Subscribe do
         ChangesNames.should_receive(:change_name).with(subscriber, arguments)
         subscriber.stub(:name_or_anon).and_return(arguments)
 
-        i18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: arguments).and_return('welcome')
-        sends_txts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'welcome')
+        I18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: arguments).and_return('welcome')
+        SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'welcome')
 
-        i18n.should_receive('t').with('txts.disclaimer').and_return('disclaimer')
-        sends_txts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer')
+        I18n.should_receive('t').with('txts.disclaimer').and_return('disclaimer')
+        SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer')
 
 
-        i18n.should_receive('t').with('txts.admin.subscribed', name: arguments, number: sender.number).and_return('subscribed')
+        I18n.should_receive('t').with('txts.admin.subscribed', name: arguments, number: sender.number).and_return('subscribed')
         TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'subscribed')
 
         execute
@@ -73,10 +73,10 @@ describe Subscribe do
       end
 
       it 'bounces the sender and notifies admins' do
-        i18n.should_receive('t').with('txts.close').and_return('closed')
-        sends_txts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'closed')
+        I18n.should_receive('t').with('txts.close').and_return('closed')
+        SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'closed')
 
-        i18n.should_receive('t').with('txts.bounce_notification', number: sender.number, message: "subscribe#{arguments.present? ? " #{arguments}" : ''}").and_return('bounce')
+        I18n.should_receive('t').with('txts.bounce_notification', number: sender.number, message: "subscribe#{arguments.present? ? " #{arguments}" : ''}").and_return('bounce')
         TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'bounce')
 
         execute
@@ -92,14 +92,14 @@ describe Subscribe do
       it 'creates a subscription and notifies admins' do
         subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: sender)
 
-        i18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: 'anon').and_return('welcome')
-        sends_txts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'welcome')
+        I18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: 'anon').and_return('welcome')
+        SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'welcome')
 
-        i18n.should_receive('t').with('txts.disclaimer').and_return('disclaimer')
-        sends_txts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer')
+        I18n.should_receive('t').with('txts.disclaimer').and_return('disclaimer')
+        SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer')
 
 
-        i18n.should_receive('t').with('txts.admin.subscribed', name: 'anon', number: sender.number).and_return('subscribed')
+        I18n.should_receive('t').with('txts.admin.subscribed', name: 'anon', number: sender.number).and_return('subscribed')
         TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'subscribed')
 
         execute
@@ -113,9 +113,9 @@ describe Subscribe do
     end
 
     it 'sends the already-subscribed message' do
-      i18n.should_receive('t').with('txts.already_subscribed').and_return('already subscribed')
+      I18n.should_receive('t').with('txts.already_subscribed').and_return('already subscribed')
 
-      sends_txts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'already subscribed')
+      SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'already subscribed')
 
       execute
     end

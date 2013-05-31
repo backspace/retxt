@@ -49,3 +49,11 @@ Then(/^I should( not)? see that the relay is (\w*)/) do |negation, state|
     page.find("th.relay.#{state}").should have_content(state)
   end
 end
+
+Then(/^I should( not)? see that '(\w*)' is an admin$/) do |negation, name|
+  subscriber = Subscriber.find_by(name: name)
+
+  matcher = negation ? :should_not : :should
+
+  page.send(matcher, have_selector("#subscriber_#{subscriber.id}.admin"))
+end

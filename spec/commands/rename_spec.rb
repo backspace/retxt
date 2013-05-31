@@ -8,7 +8,7 @@ describe Rename do
   let(:arguments) { 'newname' }
 
   def execute
-    Rename.new(sender: sender, relay: relay, i18n: i18n, sends_txts: sends_txts, arguments: arguments).execute
+    Rename.new(sender: sender, relay: relay, arguments: arguments).execute
   end
 
   context 'from an admin' do
@@ -23,8 +23,8 @@ describe Rename do
     end
 
     it 'replies with the rename message' do
-      i18n.should_receive('t').with('txts.rename', relay_name: arguments).and_return('rename')
-      sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'rename')
+      I18n.should_receive('t').with('txts.rename', relay_name: arguments).and_return('rename')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'rename')
       execute
     end
   end
@@ -36,8 +36,8 @@ describe Rename do
     end
 
     it 'replies with the non-admin message' do
-      i18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-      sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
+      I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
       execute
     end
   end

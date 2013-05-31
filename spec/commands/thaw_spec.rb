@@ -6,7 +6,7 @@ describe Thaw do
   include_context 'command context'
 
   def execute
-    Thaw.new(sender: sender, relay: relay, i18n: i18n, sends_txts: sends_txts).execute
+    Thaw.new(sender: sender, relay: relay).execute
   end
 
   context 'from an admin' do
@@ -21,8 +21,8 @@ describe Thaw do
     end
 
     it 'replies with the thaw message' do
-      i18n.should_receive('t').with('txts.thaw').and_return('thaw')
-      sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'thaw')
+      I18n.should_receive('t').with('txts.thaw').and_return('thaw')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'thaw')
       execute
     end
   end
@@ -35,8 +35,8 @@ describe Thaw do
      end
 
      it 'replies with the non-admin message' do
-       i18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-       sends_txts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
+       I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
+       SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
        execute
      end
   end
