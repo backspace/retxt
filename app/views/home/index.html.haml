@@ -101,6 +101,14 @@
     .large-6.small-12.columns
       %h2 Delete
       =txt_pair('/delete', 'the relay was deleted', sender: 'admin', receiver: 'admin, from different #')
+  %section.row
+    .large-6.small-12.columns
+      %h2 Admin/unadmin
+      -response=t('txts.admin.admin', adminer_name: '@admin', adminee_name: '@francine')
+      =txt_pair('/admin @francine', response, sender: 'admin', receiver: 'admin')
+      =txt_pair('', response, receiver: 'francine')
+
+      =txt_pair('/unadmin @francine', t('txts.admin.unadmin', unadminer_name: '@admin', unadminee_name: '@francine'), sender: 'admin', receiver: 'admin')
 
 %section.row
   .large-6.small-12.columns
