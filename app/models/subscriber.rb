@@ -29,4 +29,14 @@ class Subscriber
   def sent
     Txt.where(from: number)
   end
+
+  def admin!
+    self.admin = true
+    save
+  end
+
+  def unadmin!
+    self.admin = false
+    save
+  end
 end

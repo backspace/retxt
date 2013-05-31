@@ -1,5 +1,7 @@
 require 'sends_txts'
 
+class Splitter; end;
+
 describe SendsTxts do
   let(:from) { "1234" }
   let(:to) { "5678" }
@@ -20,5 +22,38 @@ describe SendsTxts do
     messages.should_receive(:create).with(from: from, to: to, body: body)
 
     SendsTxts.send_txt(client: client, from: from, to: to, body: body)
+  end
+
+  it "truncates long txts" do
+    long_message = "0"*161
+    truncated_message = double('truncated')
+    long_message.should_receive(:truncate).with(160).and_return(truncated_message)
+    messages.should_receive(:create).with(from: from, to: to, body: truncated_message)
+
+    SendsTxts.send_txt(client: client, from: from, to: to, body: long_message)
+  end
+
+  context 'sending possibly-longer txts' do
+    let(:splitter) { double('splitter') }
+
+    before do
+      Splitter.stub(:new).and_return(splitter)
+    end
+
+    it "sends txts" do
+      SendsTxts.should_receive(:send_txt).with(from: from, to: to, body: body)
+      splitter.stub(:split).and_return([body])
+      SendsTxts.send_txts(from: from, to: to, body: body)
+    end
+
+    it "breaks up a long txt into many and sends them" do
+      first_txt, second_txt = double('first_txt'), double('second_txt')
+      splitter.stub(:split).and_return([first_txt, second_txt])
+
+      SendsTxts.should_receive(:send_txt).with(from: from, to: to, body: first_txt)
+      SendsTxts.should_receive(:send_txt).with(from: from, to: to, body: second_txt)
+
+      SendsTxts.send_txts(from: from, to: to, body: body)
+    end
   end
 end

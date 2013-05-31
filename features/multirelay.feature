@@ -7,7 +7,6 @@ Feature: Multi-relay
     Given I am subscribed to relay B
     And someone is subscribed to relay B as 'colleen'
 
-    And outgoing txts are monitored
 
     When I txt 'this message should not go to everyone' to relay A
     Then I should receive a confirmation txt

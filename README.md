@@ -11,16 +11,20 @@ Relay is a text message relay initially developed for emergency communication am
 
 Admin-only commands:
 
-* `freeze`
-* `thaw`
-* `open`
-* `close`
-* `who`
-* `clear`
-* `delete`
-* `mute`
-* `unmute`
+* `/freeze`
+* `/thaw`
+* `/open`
+* `/close`
+* `/who`
+* `/clear`
+* `/delete`
+* `/mute`
+* `/unmute`
 * `create`
+* `/clear`
+* `/delete`
+* `/admin`
+* `/unadmin`
 
 Messages beginning with `@` will be sent to the subscriber with that name.
 
@@ -32,6 +36,7 @@ The relay is driven by Twilio and deployed on Heroku. More to come on this.
 
 ## Version history
 
+* 0.6: Extracted commands from controller, added `/admin`/`/unadmin`
 * 0.5: Add multi-relay capability and many admin commands
 * 0.3: Store incoming messages, support direct messaging
 * 0.2.1: Added `freeze`/`thaw`

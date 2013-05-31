@@ -72,6 +72,8 @@ GEM
     execjs (1.4.0)
       multi_json (~> 1.0)
     ffi (1.6.0)
+    foreman (0.62.0)
+      thor (>= 0.13.6)
     gherkin (2.11.6)
       json (>= 1.7.6)
     haml (4.0.1)
@@ -86,6 +88,10 @@ GEM
     jwt (0.1.8)
       multi_json (>= 1.5)
     kgio (2.7.4)
+    localtunnel (0.3)
+      json (>= 1.2.4)
+      net-ssh (>= 2.0.22)
+      net-ssh-gateway (>= 1.0.1)
     mail (2.5.3)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -105,6 +111,9 @@ GEM
       mongoid (>= 2.0)
     moped (1.4.5)
     multi_json (1.7.2)
+    net-ssh (2.6.7)
+    net-ssh-gateway (1.2.0)
+      net-ssh (>= 2.6.5)
     newrelic_rpm (3.6.0.78)
     nokogiri (1.5.9)
     origin (1.0.11)
@@ -205,8 +214,10 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   devise
+  foreman
   haml
   jquery-rails
+  localtunnel
   mocha
   mongoid (~> 3.0.0)
   mongoid-app_settings

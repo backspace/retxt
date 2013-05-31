@@ -1,5 +1,5 @@
 def my_number
-  '2045551313'
+  @my_number ||= '2045551313'
 end
 
 def create_relay_with_subscriber(name, subscriber)
@@ -10,11 +10,16 @@ def create_relay_with_subscriber(name, subscriber)
   relay.subscriptions << Subscription.create(subscriber: subscriber, relay: relay)
 end
 
-Given(/^I am subscribed( to relay (\w*))?( as an admin)?( as '(\w*)')?$/) do |non_default_relay, relay_name, admin, name_given, name|
+Given(/^I am subscribed( to relay (\w*))?( as an admin)?( as '(\w*)')?( at '(\d*)')?$/) do |non_default_relay, relay_name, admin, name_given, name, number_given, number|
   subscriber = Subscriber.create(number: my_number)
 
   if name_given
     subscriber.update_attribute(:name, name)
+  end
+  
+  if number_given
+    subscriber.update_attribute(:number, number) 
+    @my_number = number
   end
 
   if non_default_relay
@@ -34,10 +39,14 @@ Given(/^two other people are subscribed$/) do
   Subscription.create(subscriber: Subscriber.create(number: '4385551313'), relay: relay)
 end
 
-Given(/^someone is subscribed( to relay (\w*))?( as '(\w*)')?$/) do |non_default_relay, relay_name, name_given, name|
+Given(/^someone is subscribed( to relay (\w*))?( as '(\w*)')?( at '(\d*)')?$/) do |non_default_relay, relay_name, name_given, name, number_given, number|
   subscriber = Subscriber.create(number: Time.now.to_f)
 
   subscriber.update_attribute(:name, name) if name_given
+
+  if number_given
+    subscriber.update_attribute(:number, number)
+  end
 
   if non_default_relay
     create_relay_with_subscriber(relay_name, subscriber)
@@ -51,16 +60,18 @@ Given(/^an admin is subscribed$/) do
   @admin = Subscriber.create(number: '6045551313')
   @admin.admin = true
   @admin.save
+
+  relay = Relay.first || Relay.create
+
+  Subscription.create(relay: relay, subscriber: @admin)
 end
 
-When(/^I visit the subscribers list$/) do
-  visit subscribers_path
-end
+Given(/^'(\w*)' is subscribed as an admin$/) do |name|
+  subscriber = Subscriber.create(number: Time.now.to_f, name: name)
+  subscriber.admin = true
+  subscriber.save
 
-Then(/^I should( not)? see myself$/) do |negation|
-  page.send(negation ? :should_not : :should, have_content(my_number))
-end
+  relay = Relay.first || Relay.create
 
-Then(/^I should have sent (\d+) messages?$/) do |message_count|
-  page.find("#subscriber_#{Subscriber.find_by(number: my_number).id} .sent").should have_content(message_count)
+  Subscription.create(relay: relay, subscriber: subscriber)
 end

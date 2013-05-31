@@ -6,11 +6,5 @@ class DeletesRelays
     client.account.incoming_phone_numbers.list(phone_number: relay.number).first.delete
 
     relay.destroy
-
-    client.account.sms.messages.create(
-      to: options[:subscriber].number,
-      from: options[:substitute_relay_number],
-      body: "the relay #{relay.name} was deleted"
-    )
   end
 end

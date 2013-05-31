@@ -4,7 +4,7 @@ Feature: Unsubscribe
     Given someone is subscribed to relay A as 'bob'
     And an admin is subscribed
     When 'bob' txts 'unsubscribe' to relay A
-    Then I should receive a goodbye txt
+    Then 'bob' should receive a txt including 'goodbye'
     And the admin should receive a txt saying 'bob' unsubscribed
 
     Given I am signed in as an admin

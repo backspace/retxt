@@ -9,6 +9,6 @@ Feature: Store messages
     Then I should see myself
     And I should have sent 1 message
 
-    When I txt 'another message'
+    When I txt 'name anewname'
     And I visit the subscribers list
     Then I should have sent 2 messages

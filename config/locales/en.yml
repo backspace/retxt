@@ -4,8 +4,13 @@
 en:
   hello: "Hello world"
 
+  subscribers:
+    zero: 0 subscribers
+    one: 1 subscriber
+    other: "%{count} subscribers"
+
   txts:
-    create: "created a new relay! called %{relay_name}"
+    relayed: "your message was sent to %{subscriber_count}"
     freeze: 'the relay is now frozen'
     frozen: 'the relay is frozen'
     thaw: 'the relay is thawed'
@@ -17,4 +22,32 @@ en:
     bounce_notification: "%{number} tried to subscribe: %{message}"
     open: 'subscriptions are open'
     rename: "renamed relay to %{relay_name}"
-    clear: "this relay has been cleared of all subscribers but you."
+
+    nonadmin: 'you are not an admin'
+    not_subscribed: 'you are not subscribed'
+    name: "your name is %{name}. change it with 'name (new name)'"
+    welcome: "welcome to the relay"
+    disclaimer: "note: this relay is in no way secure! your txts could be monitored, as could the relay itself. act accordingly!"
+    already_subscribed: "you are already subscribed"
+
+    goodbye: "goodbye"
+
+    help: "cmds: about, unsubscribe, name. start txt w/'@' & a name to direct txt. any other txt is sent to %{subscriber_count}"
+
+    unknown: "sorry, did not understand your command. messages beginning with a / are reserved for commands to the relay."
+
+    admin:
+      create: "%{admin_name} created a new relay! called %{relay_name}"
+      subscribed: "%{name} subscribed from %{number}"
+      unsubscribed: "%{name} unsubscribed :("
+      clear: "this relay has been cleared of all subscribers but you."
+      delete: "%{admin_name} is deleting this relay. this number will no longer respond."
+
+      admin: "%{adminer_name} made %{adminee_name} an admin"
+      unadmin: "%{unadminer_name} made %{unadminee_name} not an admin!"
+
+    direct:
+      sent: "your message was sent to %{target_name}"
+      outgoing: "%{sender} said to you: %{message}"
+      missing_target: "your message was not sent because %{target_name} could not be found"
+      anonymous: "you cannot send a message when you are anonymous. change your name with 'name yourname' to set your name"

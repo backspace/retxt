@@ -1,8 +1,5 @@
 .row
   .small-12.columns
-    %h1
-      =image_tag 'tower.png', size: '100x100'
-      Relay
     %p This is the homepage for a prototype emergency SMS relay system for southwest Montréal. It’s simple for now but can grow as we discover our needs.
     -if RelaySettings.display_number
       %p
@@ -14,11 +11,11 @@
 %section.row
   .large-6.small-12.columns
     %h2 Subscribing
-    =txt_pair('subscribe', txt_partial('welcome', name: 'anon', subscriber_count: @subscriber_count))
+    =txt_pair('subscribe', t('txts.welcome'))
     .row
       .small-12.columns
         %p Optionally, specify a name when subscribing.
-    =txt_pair('subscribe alice', txt_partial('welcome', name: 'alice', subscriber_count: @subscriber_count))
+    =txt_pair('subscribe alice', t('txts.welcome'))
   .large-6.small-12.columns
     %h2 Unsubscribing
     =txt_pair('unsubscribe', '(this message is intercepted by the text message gateway and out of our control. you need to send \'start\' to get back in communication with the relay.)')
@@ -26,7 +23,7 @@
 %section.row
   .large-6.small-12.columns
     %h2 Relay a message
-    =txt_pair('there\'s a tornado destroying super c!', txt_partial('relayed', destination_count: @subscriber_count), sender: 'alice')
+    =txt_pair('there\'s a tornado destroying super c!', t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
     %p Other subscribers will receive the message like this:
     -%w{francine pascal}.each do |name|
       =txt_pair('', "@alice sez: there's a tornado destroying super c!", receiver: name)
@@ -43,19 +40,19 @@
 %section.row
   .large-6.small-12.columns
     %h2 About
-    =txt_pair('about', txt_partial('commands_content', subscriber_count: @subscriber_count))
+    =txt_pair('about', t('txts.help'))
   .large-6.small-12.columns
     %h2 Names
-    =txt_pair('name', txt_partial('name', name: 'alice'))
-    =txt_pair('name bob', txt_partial('name', name: 'bob'))
+    =txt_pair('name', t('txts.name', name: 'anon'))
+    =txt_pair('name bob', t('txts.name', name: 'bob'))
 
 %section.row
   .large-6.small-12.columns
     %h2 Direct messaging
     -message = '@alice see you there!'
-    =txt_pair(message, txt_partial('direct_message_success', recipient_name: 'alice'), sender: 'bob')
+    =txt_pair(message, t('txts.direct.sent', target_name: '@alice'))
     %p @alice will receive the message like this:
-    =txt_pair('', txt_partial('direct_message_content', subscriber_name: 'bob', message: message), receiver: 'alice')
+    =txt_pair('', t('txts.direct.outgoing', sender: '@bob', message: message))
 
 -if current_user.try(:admin?)
   %section.row
@@ -64,7 +61,7 @@
   %section.row
     .large-6.small-12.columns
       %h2 Create a new relay
-      =txt_pair('create temp', t('txts.create', relay_name: 'temp'), sender: 'admin', receiver: 'admin, from new #')
+      =txt_pair('create temp', t('txts.admin.create', admin_name: '@admin', relay_name: 'temp'), sender: 'admin', receiver: 'admin, from new #')
     .large-6.small-12.columns
       %h2 Who
       -replies = who_messages(Subscriber.all)
@@ -82,7 +79,7 @@
       =txt_pair('/thaw', t('txts.thaw'), sender: 'admin')
     .large-6.small-12.columns
       %h2 Mute/unmute
-      =txt_pair('i keep spamming the list!', txt_partial('relayed', destination_count: 1337), sender: 'rogers')
+      =txt_pair('i keep spamming the list!', t('txts.relayed', subscriber_count: t('subscribers', count: 1337)), sender: 'rogers')
       =txt_pair('/mute @rogers', t('txts.mute', mutee_name: '@rogers'), sender: 'admin')
       =txt_pair('i want to spam again!', t('txts.muted_fail'), sender: 'rogers')
       =txt_pair('', t('txts.muted_report', mutee_name: '@rogers', muted_message: 'i want to spam again!'), receiver: 'admin')
@@ -100,10 +97,18 @@
   %section.row
     .large-6.small-12.columns
       %h2 Clear
-      =txt_pair('/clear', t('txts.clear'), sender: 'admin')
+      =txt_pair('/clear', t('txts.admin.clear'), sender: 'admin')
     .large-6.small-12.columns
       %h2 Delete
       =txt_pair('/delete', 'the relay was deleted', sender: 'admin', receiver: 'admin, from different #')
+  %section.row
+    .large-6.small-12.columns
+      %h2 Admin/unadmin
+      -response=t('txts.admin.admin', adminer_name: '@admin', adminee_name: '@francine')
+      =txt_pair('/admin @francine', response, sender: 'admin', receiver: 'admin')
+      =txt_pair('', response, receiver: 'francine')
+
+      =txt_pair('/unadmin @francine', t('txts.admin.unadmin', unadminer_name: '@admin', unadminee_name: '@francine'), sender: 'admin', receiver: 'admin')
 
 %section.row
   .large-6.small-12.columns
