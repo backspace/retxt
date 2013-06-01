@@ -30,5 +30,15 @@ describe ChangesNames do
         end
       end
     end
+
+    context 'when the subscriber tries to change to the same name' do
+      let(:new_name) { 'francine' }
+
+      it 'keeps the same name' do
+        ChangesNames.change_name(subscriber, new_name)
+        subscriber.reload
+        subscriber.name.should == new_name
+      end
+    end
   end
 end

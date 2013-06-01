@@ -1,6 +1,6 @@
 class ChangesNames
   def self.change_name(subscriber, new_name)
-    if subscriber.present? && new_name.present?
+    if subscriber.present? && new_name.present? && subscriber.name != new_name
       subscriber.update_attribute(:name, get_unique_name(new_name))
     end
   end

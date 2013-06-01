@@ -19,3 +19,8 @@ Feature: Names
 
     When I txt 'name test'
     Then I should receive a txt saying my name is 'test1'
+
+  Scenario: I try to change my name to the same name
+    Given I am subscribed as 'francine'
+    When I txt 'name francine'
+    Then I should receive a txt saying my name is 'francine'
