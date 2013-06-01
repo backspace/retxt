@@ -55,10 +55,6 @@ Then(/^I should not receive a txt including '(.*)'$/) do |content|
   response_should_not_include content
 end
 
-Then(/^I should receive a txt including '(.*)'$/) do |content|
-  response_should_include content
-end
-
 Then(/^'bob' should receive a txt including '(.*)'$/) do |content|
   response_should_include content, Subscriber.find_by(name: 'bob').number
 end
@@ -106,7 +102,7 @@ Then(/^(.*) should not receive a message$/) do |name|
 end
 
 Then(/^(\w*) should receive a txt including '([^']*)'$/) do |name, message|
-  subscriber = Subscriber.find_by(name: name)
+  subscriber = name == 'I' ? Subscriber.find_by(number: @my_number) : Subscriber.find_by(name: name)
 
   SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: message, from: Relay.first.number)
 end
