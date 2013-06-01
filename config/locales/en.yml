@@ -40,7 +40,7 @@ en:
       create: "%{admin_name} created a new relay! called %{relay_name}"
       subscribed: "%{name} subscribed from %{number}"
       unsubscribed: "%{name} unsubscribed :("
-      clear: "this relay has been cleared of all subscribers but you."
+      clear: "this relay has been cleared of all non-admin subscribers."
       delete: "%{admin_name} is deleting this relay. this number will no longer respond."
 
       admin: "%{adminer_name} made %{adminee_name} an admin"
