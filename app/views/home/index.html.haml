@@ -11,11 +11,11 @@
 %section.row
   .large-6.small-12.columns
     %h2 Subscribing
-    =txt_pair('subscribe', t('txts.welcome'))
+    =txt_pair('subscribe', t('txts.welcome', relay_name: 'the relay', subscriber_name: 'anon', subscriber_count: t('other', count: @subscriber_count)))
     .row
       .small-12.columns
         %p Optionally, specify a name when subscribing.
-    =txt_pair('subscribe alice', t('txts.welcome'))
+    =txt_pair('subscribe alice', t('txts.welcome', relay_name: 'the relay', subscriber_name: 'alice', subscriber_count: t('other', count: @subscriber_count)))
   .large-6.small-12.columns
     %h2 Unsubscribing
     =txt_pair('unsubscribe', '(this message is intercepted by the text message gateway and out of our control. you need to send \'start\' to get back in communication with the relay.)')
@@ -40,7 +40,7 @@
 %section.row
   .large-6.small-12.columns
     %h2 About
-    =txt_pair('about', t('txts.help'))
+    =txt_pair('about', t('txts.help', subscriber_count: t('other', count: @subscriber_count)))
   .large-6.small-12.columns
     %h2 Names
     =txt_pair('name', t('txts.name', name: 'anon'))
@@ -74,9 +74,9 @@
   %section.row
     .large-6.small-12.columns
       %h2 Freeze/thaw
-      =txt_pair('/freeze', t('txts.freeze'), sender: 'admin')
+      =txt_pair('/freeze', t('txts.freeze', admin_name: '@admin'), sender: 'admin')
       =txt_pair('everyone okay?', t('txts.frozen'), sender: 'francine')
-      =txt_pair('/thaw', t('txts.thaw'), sender: 'admin')
+      =txt_pair('/thaw', t('txts.thaw', admin_name: '@admin'), sender: 'admin')
     .large-6.small-12.columns
       %h2 Mute/unmute
       =txt_pair('i keep spamming the list!', t('txts.relayed', subscriber_count: t('subscribers', count: 1337)), sender: 'rogers')
@@ -100,7 +100,7 @@
       =txt_pair('/clear', t('txts.admin.clear'), sender: 'admin')
     .large-6.small-12.columns
       %h2 Delete
-      =txt_pair('/delete', 'the relay was deleted', sender: 'admin', receiver: 'admin, from different #')
+      =txt_pair('/delete', t('txts.admin.delete', admin_name: '@admin'), sender: 'admin')
   %section.row
     .large-6.small-12.columns
       %h2 Admin/unadmin
