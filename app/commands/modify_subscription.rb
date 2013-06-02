@@ -17,7 +17,7 @@ class ModifySubscription
 
         if subscription
           @modifier.call(subscription)
-          SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: @success_message)
+          TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: @success_message)
         else
           SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.unsubscribed_target', target: @arguments))
         end

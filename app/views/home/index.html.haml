@@ -80,10 +80,10 @@
     .large-6.small-12.columns
       %h2 Mute/unmute
       =txt_pair('i keep spamming the list!', t('txts.relayed', subscriber_count: t('subscribers', count: 1337)), sender: 'rogers')
-      =txt_pair('/mute @rogers', t('txts.mute', mutee_name: '@rogers'), sender: 'admin')
+      =txt_pair('/mute @rogers', t('txts.mute', mutee_name: '@rogers', admin_name: '@admin'), sender: 'admin')
       =txt_pair('i want to spam again!', t('txts.muted_fail'), sender: 'rogers')
       =txt_pair('', t('txts.muted_report', mutee_name: '@rogers', muted_message: 'i want to spam again!'), receiver: 'admin')
-      =txt_pair('/unmute @rogers', t('txts.unmute', unmutee_name: '@rogers'), sender: 'admin')
+      =txt_pair('/unmute @rogers', t('txts.unmute', unmutee_name: '@rogers', admin_name: '@admin'), sender: 'admin')
   %section.row
     .large-6.small-12.columns
       %h2 Close/open

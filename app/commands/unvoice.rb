@@ -7,7 +7,7 @@ class Unvoice
   end
 
   def execute
-    ModifySubscription.new(sender: @sender, relay: @relay, arguments: @arguments, success_message: I18n.t('txts.unvoice', unvoicee_name: @arguments), modifier: modifier).execute
+    ModifySubscription.new(sender: @sender, relay: @relay, arguments: @arguments, success_message: I18n.t('txts.unvoice', unvoicee_name: @arguments, admin_name: @sender.addressable_name), modifier: modifier).execute
   end
 
   private

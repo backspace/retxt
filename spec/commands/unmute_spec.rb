@@ -13,7 +13,7 @@ describe Unmute do
   end
 
   it 'delegates to ModifySubscription' do
-    I18n.should_receive('t').with('txts.unmute', unmutee_name: arguments).and_return('unmute')
+    I18n.should_receive('t').with('txts.unmute', unmutee_name: arguments, admin_name: sender.addressable_name).and_return('unmute')
     modify_subscription = double('modify subscription')
 
     modifier = double('modifier')

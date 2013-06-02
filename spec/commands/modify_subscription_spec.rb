@@ -44,9 +44,9 @@ describe ModifySubscription do
           execute
         end
 
-        it 'replies with the success message' do
+        it 'notifies all admins of the change' do
           modifier.stub(:call)
-          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: success_message)
+          TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: success_message)
           execute
         end
       end

@@ -7,7 +7,7 @@ class Mute
   end
 
   def execute
-    ModifySubscription.new(sender: @sender, relay: @relay, arguments: @arguments, success_message: I18n.t('txts.mute', mutee_name: @arguments), modifier: modifier).execute
+    ModifySubscription.new(sender: @sender, relay: @relay, arguments: @arguments, success_message: I18n.t('txts.mute', mutee_name: @arguments, admin_name: @sender.addressable_name), modifier: modifier).execute
   end
 
   private

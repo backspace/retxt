@@ -13,7 +13,7 @@ describe Mute do
   end
 
   it 'delegates to ModifySubscription' do
-    I18n.should_receive('t').with('txts.mute', mutee_name: arguments).and_return('mute')
+    I18n.should_receive('t').with('txts.mute', mutee_name: arguments, admin_name: sender.addressable_name).and_return('mute')
     modify_subscription = double('modify subscription')
 
     modifier = double('modifier')

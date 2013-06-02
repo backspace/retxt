@@ -21,12 +21,14 @@ Feature: Moderation
   Scenario: Admin gives voice
     Given I am subscribed as an admin as 'alice'
     And someone is subscribed as 'colleen'
+    And 'dreya' is subscribed as an admin
 
     When I txt '/moderate'
     Then I should receive a moderated txt
 
     When I txt '/voice @colleen'
-    Then I should receive a txt including '@colleen is voiced'
+    Then 'alice' should receive a txt including '@alice voiced @colleen'
+    And 'dreya' should receive a txt including '@alice voiced @colleen'
 
     Given I am signed in as an admin
     When I visit the subscribers list
@@ -50,18 +52,19 @@ Feature: Moderation
     Then I should not see that the relay is moderated
 
   Scenario: Admin removes voices
-    Given I am subscribed as an admin
+    Given I am subscribed as an admin as 'alice'
     And someone is subscribed as 'bob'
+    And 'colleen' is subscribed as an admin
 
     When I txt '/voice @bob'
-    Then I should receive a txt including '@bob is voiced'
 
     Given I am signed in as an admin
     When I visit the subscribers list
     Then I should see that 'bob' is voiced
 
     When I txt '/unvoice @bob'
-    Then I should receive a txt including '@bob is unvoiced'
+    Then I should receive a txt including '@alice unvoiced @bob'
+    And 'colleen' should receive a txt including '@alice unvoiced @bob'
 
     When I visit the subscribers list
     Then I should not see that 'bob' is voiced

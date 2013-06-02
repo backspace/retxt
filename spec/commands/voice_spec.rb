@@ -13,7 +13,7 @@ describe Voice do
   end
 
   it 'delegates to ModifySubscription' do
-    I18n.should_receive('t').with('txts.voice', voicee_name: arguments).and_return('voice')
+    I18n.should_receive('t').with('txts.voice', voicee_name: arguments, admin_name: sender.addressable_name).and_return('voice')
     modify_subscription = double('modify subscription')
 
     modifier = double('modifier')
