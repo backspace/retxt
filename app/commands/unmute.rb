@@ -4,27 +4,16 @@ class Unmute
     @relay = options[:relay]
 
     @arguments = options[:arguments]
-    @finds_subscribers = options[:finds_subscribers] || FindsSubscribers
   end
 
   def execute
-    if @sender.admin
-      unmutee = @finds_subscribers.find(@arguments)
+    ModifySubscription.new(sender: @sender, relay: @relay, arguments: @arguments, success_message: I18n.t('txts.unmute', unmutee_name: @arguments), modifier: modifier).execute
+  end
 
-      if unmutee
-        subscription = @relay.subscription_for(unmutee)
-
-        if subscription
-          subscription.unmute!
-          SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.unmute', unmutee_name: @arguments))
-        else
-          SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.unsubscribed_target', target: @arguments))
-        end
-      else
-        SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.missing_target', target: @arguments))
-      end
-    else
-      SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.nonadmin'))
+  private
+  def modifier
+    lambda do |subscription|
+      subscription.unmute!
     end
   end
 end
