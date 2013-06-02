@@ -109,6 +109,15 @@
       =txt_pair('', response, receiver: 'francine')
 
       =txt_pair('/unadmin @francine', t('txts.admin.unadmin', unadminer_name: '@admin', unadminee_name: '@francine'), sender: 'admin', receiver: 'admin')
+    .large-6.small-12.columns
+      %h2 Moderation and voice
+      =txt_pair('/moderate', t('txts.admin.moderate', admin_name: '@admin'), sender: 'admin')
+      =txt_pair('come to my party!', t('txts.moderated_fail'), sender: '+15145551212')
+      =txt_pair('', t('txts.moderated_report', subscriber_name: 'anon#+15145551212', moderated_message: 'come to my party!'), receiver: 'admin')
+      =txt_pair('/voice @alice', t('txts.voice', admin_name: '@admin', voicee_name: '@alice'), sender: 'admin')
+      =txt_pair('we need support!', t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
+      =txt_pair('/unvoice @bob', t('txts.unvoice', admin_name: '@admin', unvoicee_name: '@bob'), sender: 'admin')
+      =txt_pair('/unmoderate', t('txts.admin.unmoderate', admin_name: '@admin'), sender: 'admin')
 
 %section.row
   .large-6.small-12.columns
