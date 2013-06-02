@@ -9,6 +9,7 @@ class Relay
 
   field :frozen, type: Boolean, default: false
   field :closed, type: Boolean, default: false
+  field :moderated, type: Boolean, default: false
 
   has_many :subscriptions, dependent: :delete
 
@@ -38,6 +39,14 @@ class Relay
 
   def open!
     update_attribute(:closed, false)
+  end
+
+  def moderate!
+    update_attribute(:moderated, true)
+  end
+
+  def unmoderate!
+    update_attribute(:moderated, false)
   end
 
   def rename!(name)

@@ -8,6 +8,7 @@ require_relative '../../app/commands/delete'
 require_relative '../../app/commands/direct_message'
 require_relative '../../app/commands/freeze'
 require_relative '../../app/commands/help'
+require_relative '../../app/commands/moderate'
 require_relative '../../app/commands/mute'
 require_relative '../../app/commands/open'
 require_relative '../../app/commands/relay_command'
@@ -16,8 +17,11 @@ require_relative '../../app/commands/subscribe'
 require_relative '../../app/commands/thaw'
 require_relative '../../app/commands/unadmin'
 require_relative '../../app/commands/unknown'
+require_relative '../../app/commands/unmoderate'
 require_relative '../../app/commands/unmute'
 require_relative '../../app/commands/unsubscribe'
+require_relative '../../app/commands/unvoice'
+require_relative '../../app/commands/voice'
 require_relative '../../app/commands/who'
 
 describe Executor do
@@ -93,6 +97,40 @@ describe Executor do
         unsubscribe = double('unsubscribe')
         Unsubscribe.should_receive(:new).with(sender: subscriber, relay: relay).and_return(unsubscribe)
         unsubscribe.should_receive(:execute)
+
+        send_message(message)
+      end
+    end
+  end
+
+  context "when the command is 'moderate'" do
+    let(:number) { "5551313" }
+    let(:message) { '/moderate' }
+
+    context "and the sender is subscribed" do
+      let!(:subscriber) { Subscriber.create!(number: number) }
+
+      it "should execute Moderate" do
+        moderate = double('moderate')
+        Moderate.should_receive(:new).with(sender: subscriber, relay: relay).and_return(moderate)
+        moderate.should_receive(:execute)
+
+        send_message(message)
+      end
+    end
+  end
+
+  context "when the command is 'unmoderate'" do
+    let(:number) { "5551313" }
+    let(:message) { '/unmoderate' }
+
+    context "and the sender is subscribed" do
+      let!(:subscriber) { Subscriber.create!(number: number) }
+
+      it "should execute Unmoderate" do
+        unmoderate = double('unmoderate')
+        Unmoderate.should_receive(:new).with(sender: subscriber, relay: relay).and_return(unmoderate)
+        unmoderate.should_receive(:execute)
 
         send_message(message)
       end
@@ -197,6 +235,36 @@ describe Executor do
       unmute = double('unmute')
       Unmute.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(unmute)
       unmute.should_receive(:execute)
+
+      send_message(message)
+    end
+  end
+
+  context "when the command is '/voice @bob'" do
+    let(:number) { "5551313" }
+    let(:target) { "@bob" }
+    let(:message) { "/voice #{target}" }
+    let!(:subscriber) { Subscriber.create!(number: number) }
+
+    it "should execute Voice" do
+      voice = double('voice')
+      Voice.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(voice)
+      voice.should_receive(:execute)
+
+      send_message(message)
+    end
+  end
+
+  context "when the command is '/unvoice @bob'" do
+    let(:number) { "5551313" }
+    let(:target) { "@bob" }
+    let(:message) { "/unvoice #{target}" }
+    let!(:subscriber) { Subscriber.create!(number: number) }
+
+    it "should execute Unvoice" do
+      unvoice = double('unvoice')
+      Unvoice.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(unvoice)
+      unvoice.should_receive(:execute)
 
       send_message(message)
     end

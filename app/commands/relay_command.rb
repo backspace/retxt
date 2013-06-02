@@ -10,6 +10,10 @@ class RelayCommand
     if @relay.subscribed?(@sender)
       if @relay.frozen
         SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.frozen'))
+      elsif @relay.moderated && !@sender.admin && !@relay.subscription_for(@sender).voiced
+        SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.moderated_fail'))
+
+        TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: I18n.t('txts.moderated_report', subscriber_name: @sender.addressable_name, moderated_message: @content))
       else
         if @relay.subscription_for(@sender).muted
           SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.muted_fail'))

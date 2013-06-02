@@ -12,11 +12,12 @@ When(/^I txt '(.*?)'( to relay (.*))?$/) do |content, non_default_relay, relay_n
 end
 
 When(/^'(\w*)' txts '([^']*)'( to relay A)?$/) do |name, content, relay_given|
+  @txt_content = content
   relay = relay_given ? Relay.find_by(name: 'A') : Relay.first
   post '/txts/incoming', Body: content, From: Subscriber.find_by(name: name).number, To: relay.number
 end
 
-Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|non-admin) txt( from (\d+))?$/) do |message_type, non_default_source, source|
+Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|non-admin|moderated|unmoderated) txt( from (\d+))?$/) do |message_type, non_default_source, source|
   if message_type == 'help'
 
     message = I18n.t('txts.help', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
@@ -34,6 +35,10 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
     message = I18n.t('txts.admin.create', relay_name: 'B', admin_name: 'anon')
   elsif message_type == 'non-admin'
     message = I18n.t('txts.nonadmin')
+  elsif message_type == 'moderated'
+    message = I18n.t('txts.admin.moderate')
+  elsif message_type == 'unmoderated'
+    message = I18n.t('txts.admin.unmoderate')
   end
 
   if non_default_source
@@ -55,8 +60,8 @@ Then(/^I should not receive a txt including '(.*)'$/) do |content|
   response_should_not_include content
 end
 
-Then(/^'bob' should receive a txt including '(.*)'$/) do |content|
-  response_should_include content, Subscriber.find_by(name: 'bob').number
+Then(/^'(\w*)' should receive a txt including '(.*)'$/) do |name, content|
+  response_should_include content, Subscriber.find_by(name: name).number
 end
 
 Then(/^I should receive a txt including$/) do |content|
@@ -64,10 +69,12 @@ Then(/^I should receive a txt including$/) do |content|
 end
 
 
-Then(/^subscribers other than me should( not)? receive that message( signed by '(.*?)')?$/) do |negation, signature_exists, signature|
+Then(/^subscribers other than (\w*) should( not)? receive that message( signed by '(.*?)')?$/) do |name, negation, signature_exists, signature|
   txt = "#{signature == 'anon' ? '' : '@'}#{signature} sez: #{@txt_content}"
 
-  subscribers_other_than_me.each do |subscriber|
+  subject = name == 'me' ? Subscriber.find_by(number: my_number) : Subscriber.find_by(name: name)
+
+  subscribers_other_than(subject).each do |subscriber|
     if negation
       SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number).never
     else
@@ -107,8 +114,8 @@ Then(/^(\w*) should receive a txt including '([^']*)'$/) do |name, message|
   SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: message, from: Relay.first.number)
 end
 
-def subscribers_other_than_me
-  Subscriber.all - [Subscriber.where(number: my_number).first]
+def subscribers_other_than(subscriber)
+  Subscriber.all - [subscriber]
 end
 
 def response_should_include(content, recipient_number = my_number, sender_number = nil)

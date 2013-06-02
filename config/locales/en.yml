@@ -19,10 +19,14 @@ en:
     freeze: 'the relay is now frozen'
     frozen: 'the relay is frozen'
     thaw: 'the relay is thawed'
+    moderated_fail: "did not forward your message because the relay is moderated"
+    moderated_report: "%{subscriber_name} tried to say: %{moderated_message}"
     mute: "%{mutee_name} is muted"
     muted_fail: "did not forward your message because you have been muted by an admin"
     muted_report: "%{mutee_name} tried to say: %{muted_message}"
     unmute: "%{unmutee_name} is unmuted"
+    voice: "%{voicee_name} is voiced"
+    unvoice: "%{unvoicee_name} is unvoiced"
     close: 'subscriptions are closed'
     bounce_notification: "%{number} tried to subscribe: %{message}"
     open: 'subscriptions are open'
@@ -50,6 +54,9 @@ en:
 
       admin: "%{adminer_name} made %{adminee_name} an admin"
       unadmin: "%{unadminer_name} made %{unadminee_name} not an admin!"
+
+      moderate: "this relay is now moderated. only admins and subscribers with 'voice' can relay messages. to give someone voice: /voice @name"
+      unmoderate: "this relay is now unmoderated. all subscribers who are not muted can relay messages."
 
     direct:
       sent: "your message was sent to %{target_name}"

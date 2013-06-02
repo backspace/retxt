@@ -30,14 +30,14 @@ Then(/^I should( not)? see that '(\w*)' is subscribed to relay (\w*)$/) do |nega
   page.send(matcher, have_selector(".relay_#{relay.id}.subscriber_#{subscriber.id}"))
 end
 
-Then(/^I should( not)? see that '(\w*)' is muted$/) do |negation, subscriber_name|
+Then(/^I should( not)? see that '(\w*)' is (\w*)$/) do |negation, subscriber_name, state|
   subscriber = Subscriber.find_by(name: subscriber_name)
 
   if negation
-    page.should_not have_css(".subscriber_#{subscriber.id}.muted")
+    page.should_not have_css(".subscriber_#{subscriber.id}.#{state}")
   else
-    page.should have_css(".subscriber_#{subscriber.id}.muted")
-    page.find(".subscriber_#{subscriber.id}").should have_content("muted")
+    page.should have_css(".subscriber_#{subscriber.id}.#{state}")
+    page.find(".subscriber_#{subscriber.id}").should have_content(state)
   end
 end
 

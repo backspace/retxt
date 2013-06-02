@@ -7,13 +7,15 @@
         %th admin?
         %th sent
         -@relays.each do |relay|
-          %th[relay]{class: "#{relay.frozen ? "frozen" : ''} #{relay.closed ? 'closed' : ''}"}
+          %th[relay]{class: "#{relay.frozen ? "frozen" : ''} #{relay.closed ? 'closed' : ''} #{relay.moderated ? 'moderated' : ''}"}
             .name=relay.name
             .number=relay.number
             -if relay.frozen
               (frozen)
             -if relay.closed
               (closed)
+            -if relay.moderated
+              (moderated)
     %tbody
       -@subscribers.each do |subscriber|
         %tr[subscriber]{class: subscriber.admin ? "admin" : ""}
@@ -25,9 +27,12 @@
             -if relay.subscribed?(subscriber)
               -frozen = relay.frozen
               -muted = relay.subscription_for(subscriber).muted
-              %td{class: "relay_#{relay.id} subscriber_#{subscriber.id} #{muted ? 'muted' : ''} #{frozen ? 'frozen' : ''}"}
+              -voiced = relay.subscription_for(subscriber).voiced
+              %td{class: "relay_#{relay.id} subscriber_#{subscriber.id} #{muted ? 'muted' : ''} #{frozen ? 'frozen' : ''} #{voiced ? 'voiced' : ''}"}
                 =check
                 -if muted
                   (muted)
+                -if voiced
+                  (voiced)
             -else
               %td
