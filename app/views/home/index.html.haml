@@ -87,10 +87,10 @@
   %section.row
     .large-6.small-12.columns
       %h2 Close/open
-      =txt_pair('/close', t('txts.close'), sender: 'admin')
+      =txt_pair('/close', t('txts.admin.close', admin_name: '@admin'), sender: 'admin')
       =txt_pair('subscribe nefarious', t('txts.close'), sender: '+15145551212')
       =txt_pair('', t('txts.bounce_notification', number: '+15145551212', message: 'subscribe nefarious'), receiver: 'admin')
-      =txt_pair('/open', t('txts.open'), sender: 'admin')
+      =txt_pair('/open', t('txts.admin.open', admin_name: '@admin'), sender: 'admin')
     .large-6.small-12.columns
       %h2 Rename
       =txt_pair('/rename awesome', t('txts.rename', relay_name: 'awesome'), sender: 'admin')

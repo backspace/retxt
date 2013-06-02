@@ -5,6 +5,6 @@ class Thaw
   end
 
   def execute
-    ModifyRelay.new(sender: @sender, relay: @relay, modifier: :thaw!, success_message: I18n.t('txts.thaw')).execute
+    ModifyRelay.new(sender: @sender, relay: @relay, modifier: :thaw!, success_message: I18n.t('txts.thaw', admin_name: @sender.addressable_name)).execute
   end
 end

@@ -11,7 +11,7 @@ describe Unmoderate do
   end
 
   it 'delegates to ModifyRelay' do
-    I18n.should_receive('t').with('txts.admin.unmoderate').and_return('unmoderate')
+    I18n.should_receive('t').with('txts.admin.unmoderate', admin_name: sender.addressable_name).and_return('unmoderate')
     modifier = double('modifier')
     ModifyRelay.should_receive(:new).with(sender: sender, relay: relay, modifier: :unmoderate!, success_message: 'unmoderate').and_return(modifier)
 

@@ -11,7 +11,7 @@ describe Freeze do
   end
 
   it 'delegates to ModifyRelay' do
-    I18n.should_receive('t').with('txts.freeze').and_return('freeze')
+    I18n.should_receive('t').with('txts.freeze', admin_name: sender.addressable_name).and_return('freeze')
     modifier = double('modifier')
     ModifyRelay.should_receive(:new).with(sender: sender, relay: relay, modifier: :freeze!, success_message: 'freeze').and_return(modifier)
 

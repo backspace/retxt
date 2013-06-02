@@ -18,6 +18,8 @@ When(/^'(\w*)' txts '([^']*)'( to relay A)?$/) do |name, content, relay_given|
 end
 
 Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|non-admin|moderated|unmoderated) txt( from (\d+))?$/) do |message_type, non_default_source, source|
+  my_addressable_name = Subscriber.find_by(number: my_number).addressable_name
+
   if message_type == 'help'
 
     message = I18n.t('txts.help', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
@@ -36,9 +38,9 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
   elsif message_type == 'non-admin'
     message = I18n.t('txts.nonadmin')
   elsif message_type == 'moderated'
-    message = I18n.t('txts.admin.moderate')
+    message = I18n.t('txts.admin.moderate', admin_name: my_addressable_name)
   elsif message_type == 'unmoderated'
-    message = I18n.t('txts.admin.unmoderate')
+    message = I18n.t('txts.admin.unmoderate', admin_name: my_addressable_name)
   end
 
   if non_default_source
@@ -53,7 +55,7 @@ Then(/^I should receive a message that I am not subscribed$/) do
 end
 
 Then(/^I should receive a message that the relay is frozen$/) do
-  response_should_include I18n.t('txts.freeze')
+  response_should_include I18n.t('txts.frozen')
 end
 
 Then(/^I should not receive a txt including '(.*)'$/) do |content|

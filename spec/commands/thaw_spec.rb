@@ -10,7 +10,7 @@ describe Thaw do
   end
 
   it 'delegates to ModifyRelay' do
-    I18n.should_receive('t').with('txts.thaw').and_return('thaw')
+    I18n.should_receive('t').with('txts.thaw', admin_name: sender.addressable_name).and_return('thaw')
     modifier = double('modifier')
     ModifyRelay.should_receive(:new).with(sender: sender, relay: relay, modifier: :thaw!, success_message: 'thaw').and_return(modifier)
 

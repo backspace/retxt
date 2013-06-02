@@ -24,7 +24,7 @@ describe ModifyRelay do
     end
 
     it 'replies with the success message' do
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: success_message)
+      TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: success_message)
       execute
     end
   end

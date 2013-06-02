@@ -16,9 +16,9 @@ en:
 
   txts:
     relayed: "your message was sent to %{subscriber_count}"
-    freeze: 'the relay is now frozen'
+    freeze: "%{admin_name} froze the relay"
     frozen: 'the relay is frozen'
-    thaw: 'the relay is thawed'
+    thaw: "%{admin_name} thawed the relay"
     moderated_fail: "did not forward your message because the relay is moderated"
     moderated_report: "%{subscriber_name} tried to say: %{moderated_message}"
     mute: "%{mutee_name} is muted"
@@ -27,9 +27,8 @@ en:
     unmute: "%{unmutee_name} is unmuted"
     voice: "%{voicee_name} is voiced"
     unvoice: "%{unvoicee_name} is unvoiced"
-    close: 'subscriptions are closed'
+    close: "subscriptions are closed"
     bounce_notification: "%{number} tried to subscribe: %{message}"
-    open: 'subscriptions are open'
     rename: "renamed relay to %{relay_name}"
 
     nonadmin: 'you are not an admin'
@@ -55,8 +54,11 @@ en:
       admin: "%{adminer_name} made %{adminee_name} an admin"
       unadmin: "%{unadminer_name} made %{unadminee_name} not an admin!"
 
-      moderate: "this relay is now moderated. only admins and subscribers with 'voice' can relay messages. to give someone voice: /voice @name"
-      unmoderate: "this relay is now unmoderated. all subscribers who are not muted can relay messages."
+      moderate: "%{admin_name} set the relay to be moderated. only admins and subscribers with 'voice' can relay messages. to give voice: /voice @name"
+      unmoderate: "%{admin_name} set this relay to be unmoderated. all subscribers who are not muted can relay messages."
+
+      close: "%{admin_name} closed subscriptions"
+      open: "%{admin_name} opened subscriptions"
 
     direct:
       sent: "your message was sent to %{target_name}"
