@@ -60,7 +60,7 @@ describe RelayCommand do
         I18n.should_receive('t').with('txts.moderated_fail').and_return('moderated fail')
         SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'moderated fail')
 
-        I18n.should_receive('t').with('txts.moderated_report', subscriber_name: sender.addressable_name, moderated_message: content).and_return('moderated report')
+        I18n.should_receive('t').with('txts.moderated_report', subscriber_name: sender.absolute_name, moderated_message: content).and_return('moderated report')
         TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'moderated report')
 
         execute

@@ -2,7 +2,7 @@ Feature: Moderation
 
   Scenario: Admin moderates list
     Given I am subscribed as an admin as 'alice'
-    And someone is subscribed as 'bob'
+    And someone is subscribed as 'bob' at '1234'
 
     When I txt '/moderate'
     Then I should receive a moderated txt
@@ -16,7 +16,7 @@ Feature: Moderation
 
     When 'bob' txts 'me too'
     Then 'bob' should receive a txt including 'did not forward your message because the relay is moderated'
-    And 'alice' should receive a txt including '@bob tried to say: me too'
+    And 'alice' should receive a txt including '@bob#1234 tried to say: me too'
 
   Scenario: Admin gives voice
     Given I am subscribed as an admin as 'alice'

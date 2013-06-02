@@ -20,6 +20,10 @@ class Subscriber
     name.present? ? "@#{name}" : 'anon'
   end
 
+  def absolute_name
+    "#{addressable_name}##{number}"
+  end
+
   def anonymous?
     !name.present?
   end
