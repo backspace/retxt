@@ -9,6 +9,11 @@ en:
     one: 1 subscriber
     other: "%{count} subscribers"
 
+  other:
+    zero: 0 others
+    one: 1 other
+    other: "%{count} others"
+
   txts:
     relayed: "your message was sent to %{subscriber_count}"
     freeze: 'the relay is now frozen'
@@ -26,7 +31,7 @@ en:
     nonadmin: 'you are not an admin'
     not_subscribed: 'you are not subscribed'
     name: "your name is %{name}. change it with 'name (new name)'"
-    welcome: "welcome to the relay"
+    welcome: "welcome to %{relay_name}. yr name: %{subscriber_name}. cmds: about, unsubscribe, name. start txt w/@ & name to direct txt. any other txt is sent to %{subscriber_count}"
     disclaimer: "note: this relay is in no way secure! your txts could be monitored, as could the relay itself. act accordingly!"
     already_subscribed: "you are already subscribed"
 
