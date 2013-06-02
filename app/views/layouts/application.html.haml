@@ -28,6 +28,8 @@
         -if current_user.admin
           =link_to "Subscribers", subscribers_url
         =link_to "Sign out", destroy_user_session_path, method: :delete
+      -else
+        =link_to "Admin sign in", new_user_session_path
       %p.notice=notice
       %p.alert=alert
 
