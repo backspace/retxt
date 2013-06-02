@@ -1,3 +1,8 @@
 body.subscribers
   .muted, .frozen, .closed
     opacity: 0.5
+
+  .moderated.subscription
+    opacity: 0.5
+    &.admin, &.voiced
+      opacity: 1
