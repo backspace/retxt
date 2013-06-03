@@ -26,4 +26,13 @@ describe FindsSubscribers do
       FindsSubscribers.find("5551313").should eq(subscriber)
     end
   end
+
+  context 'with a +-numbered anon' do
+    let(:number) { '+1234' }
+    let!(:subscriber) { Subscriber.create(number: number) }
+
+    it "finds the subscriber by number" do
+      FindsSubscribers.find(number).should eq(subscriber)
+    end
+  end
 end
