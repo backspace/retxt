@@ -1,5 +1,7 @@
 class FindsSubscribers
   def self.find(identifier)
+    identifier.strip!
+
     if identifier =~ /^\d+$/
       Subscriber.where(number: Regexp.new(identifier)).first
     elsif identifier[0] == "+" && identifier[1..-1] =~ /^\d+$/

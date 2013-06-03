@@ -12,6 +12,10 @@ describe FindsSubscribers do
     it "finds the subscriber with an addressable name" do
       FindsSubscribers.find("@alice").should eq(subscriber)
     end
+
+    it "finds the subscriber regardless of whitespace" do
+      FindsSubscribers.find("  @alice  ").should eq(subscriber)
+    end
   end
 
   context 'with an anon subscriber' do
