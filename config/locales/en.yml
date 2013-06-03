@@ -44,6 +44,8 @@ en:
 
     unknown: "sorry, did not understand your command. messages beginning with a / are reserved for commands to the relay."
 
+    missing_target: "your command failed because %{target} could not be found"
+
     admin:
       create: "%{admin_name} created a new relay! called %{relay_name}"
       subscribed: "%{name} subscribed from %{number}"
