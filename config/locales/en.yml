@@ -16,6 +16,7 @@ en:
 
   txts:
     relayed: "your message was sent to %{subscriber_count}"
+    relay_identifier: "the relayed message beginning \"%{beginning}...\" came from %{absolute_name}"
     freeze: "%{admin_name} froze the relay"
     frozen: 'the relay is frozen'
     thaw: "%{admin_name} thawed the relay"

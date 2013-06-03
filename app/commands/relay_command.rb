@@ -29,6 +29,10 @@ class RelayCommand
           end
 
           SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: @relay.subscribers.length - 1)))
+
+          if @sender.anonymous?
+            TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: I18n.t('txts.relay_identifier', absolute_name: @sender.absolute_name, beginning: @content[0..10]))
+          end
         end
       end
     else

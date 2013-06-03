@@ -38,6 +38,27 @@ describe RelayCommand do
       execute
     end
 
+    context 'and anonymous' do
+      before do
+        sender.stub(:anonymous?).and_return(true)
+      end
+
+      it 'relays the message, notifies the sender, and identifies the anon to admins' do
+        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: other_subscriber.number, body: formatted_txt)
+
+        I18n.should_receive('t').with('subscribers', count: subscribers.length - 1).and_return("1 subscriber")
+        I18n.should_receive('t').with('txts.relayed', subscriber_count: "1 subscriber").and_return('relayed')
+
+        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'relayed')
+
+        I18n.should_receive('t').with('txts.relay_identifier', absolute_name: sender.absolute_name, beginning: content[0..10]).and_return('identifier')
+
+        TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'identifier')
+
+        execute
+      end
+    end
+
     context 'to a relay that is frozen' do
       before do
         relay.stub(:frozen).and_return(true)

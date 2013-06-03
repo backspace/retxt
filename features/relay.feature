@@ -1,13 +1,15 @@
 Feature: Relay
 
   Scenario: Relay a txt to subscribers
-    Given I am subscribed
+    Given I am subscribed at '1234'
     And two other people are subscribed
+    And 'alice' is subscribed as an admin
 
     When I txt 'a tornado is destroying super c'
 
     Then subscribers other than me should receive that message signed by 'anon'
     And I should receive a confirmation txt
+    And 'alice' should receive a txt including 'the relayed message beginning "a tornado i..." came from anon#1234'
 
   Scenario: Relay a signed txt
     Given I am subscribed as 'fork'
