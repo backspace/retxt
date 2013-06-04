@@ -20,7 +20,7 @@ en:
     freeze: "%{admin_name} froze the relay"
     frozen: 'the relay is frozen'
     thaw: "%{admin_name} thawed the relay"
-    moderated_fail: "did not forward your message because the relay is moderated"
+    moderated_fail: "forwarded your message to admins because the relay is moderated"
     moderated_report: "%{subscriber_name} tried to say: %{moderated_message}"
     mute: "%{admin_name} muted %{mutee_name}"
     muted_fail: "did not forward your message because you have been muted by an admin"

@@ -15,7 +15,7 @@ Feature: Moderation
     Then subscribers other than me should receive that message signed by 'alice'
 
     When 'bob' txts 'me too'
-    Then 'bob' should receive a txt including 'did not forward your message because the relay is moderated'
+    Then 'bob' should receive a txt including 'forwarded your message to admins because the relay is moderated'
     And 'alice' should receive a txt including '@bob#1234 tried to say: me too'
 
   Scenario: Admin gives voice
