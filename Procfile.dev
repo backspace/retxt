@@ -1,2 +1,2 @@
-tunnel: bundle exec rake update_twilio
+tunnel: ngrok --log stdout start relay
 web: bundle exec rails s
