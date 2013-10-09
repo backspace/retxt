@@ -52,7 +52,7 @@
     -message = '@alice see you there!'
     =txt_pair(message, t('txts.direct.sent', target_name: '@alice'))
     %p @alice will receive the message like this:
-    =txt_pair('', t('txts.direct.outgoing', sender: '@bob', message: message))
+    =txt_pair('', t('txts.direct.outgoing', prefix: '', sender: '@bob', message: message))
 
 -if current_user.try(:admin?)
   %section.row
@@ -118,6 +118,18 @@
       =txt_pair('we need support!', t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
       =txt_pair('/unvoice @bob', t('txts.unvoice', admin_name: '@admin', unvoicee_name: '@bob'), sender: 'admin')
       =txt_pair('/unmoderate', t('txts.admin.unmoderate', admin_name: '@admin'), sender: 'admin')
+  %section.row
+    .large-6.small-12.columns
+      %h2 Timestamps
+      -timestamp = '%l:%M'
+      =txt_pair("/timestamp #{timestamp}", t('txts.admin.timestamp', admin_name: 'admin', timestamp: timestamp), sender: 'admin')
+      %p For details on how to format the timestamp, visit #{link_to "strftime.org", "http://strftime.org/"}. The example timestamp is (hours in 12-hour format):(minutes).
+      -relay_message = 'come to berri square! the rev!'
+      -message = '@alice on my way'
+      =txt_pair(relay_message, t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
+      =txt_pair('', "#{Time.now.strftime(timestamp).strip} @alice sez: #{relay_message}", receiver: "bob")
+      =txt_pair(message, t('txts.direct.sent', target_name: '@alice'), sender: 'bob')
+      =txt_pair('', t('txts.direct.outgoing', prefix: "#{Time.now.strftime(timestamp).strip} ", sender: '@bob', message: message), receiver: 'alice')
 
 %section.row
   .large-6.small-12.columns

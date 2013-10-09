@@ -6,10 +6,11 @@ class RelayedTxtFormatter; end
 describe RelayCommand do
 
   include_context 'command context'
+  let(:txt) { stub(:txt, body: content) }
   let(:content) { 'preformatted text' }
 
   def execute
-    RelayCommand.new(sender: sender, relay: relay, content: content).execute
+    RelayCommand.new(sender: sender, relay: relay, txt: txt).execute
   end
 
   context 'from a sender who is subscribed' do

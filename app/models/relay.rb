@@ -10,6 +10,7 @@ class Relay
   field :frozen, type: Boolean, default: false
   field :closed, type: Boolean, default: false
   field :moderated, type: Boolean, default: false
+  field :timestamp, type: String
 
   has_many :subscriptions, dependent: :delete
 
@@ -51,6 +52,10 @@ class Relay
 
   def rename!(name)
     update_attribute(:name, name)
+  end
+
+  def timestamp!(timestamp)
+    update_attribute(:timestamp, timestamp)
   end
 
   def subscribers

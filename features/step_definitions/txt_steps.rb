@@ -1,7 +1,11 @@
 World(Rack::Test::Methods)
 
-When(/^I txt '(.*?)'( to relay (.*))?$/) do |content, non_default_relay, relay_name|
+When(/^I txt '(.*?)'( to relay (.*))?( at (.*))?$/) do |content, non_default_relay, relay_name, time_present, time|
   @txt_content = content
+
+  if time_present
+    Timecop.freeze Time.zone.parse(time)
+  end
 
   if non_default_relay
     @recent_relay = Relay.find_by(name: relay_name)
@@ -17,7 +21,7 @@ When(/^'(\w*)' txts '([^']*)'( to relay A)?$/) do |name, content, relay_given|
   post '/txts/incoming', Body: content, From: Subscriber.find_by(name: name).number, To: relay.number
 end
 
-Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|non-admin|moderated|unmoderated) txt( from (\d+))?$/) do |message_type, non_default_source, source|
+Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|non-admin|moderated|unmoderated|timestamp) txt( from (\d+))?$/) do |message_type, non_default_source, source|
   my_addressable_name = Subscriber.find_by(number: my_number).addressable_name
 
   if message_type == 'help'
@@ -41,6 +45,10 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
     message = I18n.t('txts.admin.moderate', admin_name: my_addressable_name)
   elsif message_type == 'unmoderated'
     message = I18n.t('txts.admin.unmoderate', admin_name: my_addressable_name)
+  elsif message_type == 'timestamp'
+    content_words = @txt_content.split(" ")
+    timestamp = content_words.length > 1 ? content_words.last : ""
+    message = I18n.t('txts.admin.timestamp', admin_name: my_addressable_name, timestamp: timestamp)
   end
 
   if non_default_source

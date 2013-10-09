@@ -15,6 +15,7 @@ require_relative '../../app/commands/relay_command'
 require_relative '../../app/commands/rename'
 require_relative '../../app/commands/subscribe'
 require_relative '../../app/commands/thaw'
+require_relative '../../app/commands/timestamp'
 require_relative '../../app/commands/unadmin'
 require_relative '../../app/commands/unknown'
 require_relative '../../app/commands/unmoderate'
@@ -343,6 +344,36 @@ describe Executor do
     end
   end
 
+  context "when the command is '/timestamp'" do
+    let(:number) { '5551313' }
+    let!(:subscriber) { Subscriber.create!(number: number) }
+
+    context "with no parameters" do
+      let(:message) { "/timestamp" }
+
+      it "should execute Timestamp with no arguments" do
+        timestamp = double('timestamp')
+        Timestamp.should_receive(:new).with(sender: subscriber, relay: relay, arguments: "").and_return(timestamp)
+        timestamp.should_receive :execute
+
+        send_message(message)
+      end
+    end
+
+    context "with a timestamp argument" do
+      let(:argument) { 'strftime' }
+      let(:message) { "/timestamp #{argument}" }
+
+      it "should execute Timestamp with the format string" do
+        timestamp = double('timestamp')
+        Timestamp.should_receive(:new).with(sender: subscriber, relay: relay, arguments: argument).and_return(timestamp)
+        timestamp.should_receive :execute
+
+        send_message(message)
+      end
+    end
+  end
+
   context "when the command is '/delete'" do
     let(:number) { "5551313" }
     let!(:subscriber) { Subscriber.create!(number: number) }
@@ -380,7 +411,7 @@ describe Executor do
 
     it "should execute DirectMessage" do
       direct = double('direct')
-      DirectMessage.should_receive(:new).with(relay: relay, sender: subscriber, content: message).and_return(direct)
+      DirectMessage.should_receive(:new).with(relay: relay, sender: subscriber, txt: txt).and_return(direct)
       direct.should_receive(:execute)
 
       send_message(message)
@@ -394,7 +425,7 @@ describe Executor do
 
     it "should execute Relay" do
       relay_command = double('relay command')
-      RelayCommand.should_receive(:new).with(sender: subscriber, relay: relay, content: message).and_return(relay_command)
+      RelayCommand.should_receive(:new).with(sender: subscriber, relay: relay, txt: txt).and_return(relay_command)
       relay_command.should_receive(:execute)
 
       send_message(message)

@@ -62,9 +62,10 @@ en:
 
       close: "%{admin_name} closed subscriptions"
       open: "%{admin_name} opened subscriptions"
+      timestamp: "%{admin_name} set the timestamp to %{timestamp}"
 
     direct:
       sent: "your message was sent to %{target_name}"
-      outgoing: "%{sender} said to you: %{message}"
+      outgoing: "%{prefix}%{sender} said to you: %{message}"
       missing_target: "your message was not sent because %{target_name} could not be found"
       anonymous: "you cannot send a message when you are anonymous. change your name with 'name yourname' to set your name"

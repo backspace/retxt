@@ -3,7 +3,8 @@ class DirectMessage
     @sender = options[:sender]
     @relay = options[:relay]
 
-    @content = options[:content]
+    @txt = options[:txt]
+    @content = @txt.body
   end
 
   def execute
@@ -14,7 +15,7 @@ class DirectMessage
         target_subscriber = FindsSubscribers.find(target)
 
         if target_subscriber
-          SendsTxts.send_txt(from: @relay.number, to: target_subscriber.number, body: I18n.t('txts.direct.outgoing', sender: @sender.addressable_name, message: @content))
+          SendsTxts.send_txt(from: @relay.number, to: target_subscriber.number, body: I18n.t('txts.direct.outgoing', prefix: TimestampFormatter.new(relay: @relay, txt: @txt).format, sender: @sender.addressable_name, message: @content))
 
           SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.direct.sent', target_name: target))
         else

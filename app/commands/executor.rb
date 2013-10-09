@@ -67,12 +67,14 @@ class Executor
       Clear.new(sender: subscriber, relay: target_relay).execute
     elsif command == '/delete'
       Delete.new(sender: subscriber, relay: target_relay).execute
+    elsif command == '/timestamp'
+      Timestamp.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
     elsif command.start_with? '/'
       Unknown.new(sender: subscriber, relay: target_relay).execute
     elsif command.start_with? '@'
-      DirectMessage.new(sender: subscriber, relay: target_relay, content: @txt.body).execute
+      DirectMessage.new(sender: subscriber, relay: target_relay, txt: @txt).execute
     else
-      RelayCommand.new(sender: subscriber, relay: target_relay, content: @txt.body).execute
+      RelayCommand.new(sender: subscriber, relay: target_relay, txt: @txt).execute
     end
   end
 end

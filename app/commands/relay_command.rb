@@ -3,7 +3,8 @@ class RelayCommand
     @sender = options[:sender]
     @relay = options[:relay]
 
-    @content = options[:content]
+    @txt = options[:txt]
+    @content = @txt.body
   end
 
   def execute
@@ -22,7 +23,7 @@ class RelayCommand
             SendsTxts.send_txt(from: @relay.number, to: admin.number, body: I18n.t('txts.muted_report', mutee_name: @sender.addressable_name, muted_message: @content))
           end
         else
-          to_relay = RelayedTxtFormatter.new(sender: @sender, txt: @content).format
+          to_relay = RelayedTxtFormatter.new(relay: @relay, sender: @sender, txt: @txt).format
 
           (@relay.subscribers - [@sender]).each do |subscriber|
             SendsTxts.send_txt(from: @relay.number, to: subscriber.number, body: to_relay)
