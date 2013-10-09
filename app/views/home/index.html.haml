@@ -127,9 +127,9 @@
       -relay_message = 'come to berri square! the rev!'
       -message = '@alice on my way'
       =txt_pair(relay_message, t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
-      =txt_pair('', "#{Time.now.strftime(timestamp).strip} @alice sez: #{relay_message}", receiver: "bob")
+      =txt_pair('', "#{Time.zone.now.strftime(timestamp).strip} @alice sez: #{relay_message}", receiver: "bob")
       =txt_pair(message, t('txts.direct.sent', target_name: '@alice'), sender: 'bob')
-      =txt_pair('', t('txts.direct.outgoing', prefix: "#{Time.now.strftime(timestamp).strip} ", sender: '@bob', message: message), receiver: 'alice')
+      =txt_pair('', t('txts.direct.outgoing', prefix: "#{Time.zone.now.strftime(timestamp).strip} ", sender: '@bob', message: message), receiver: 'alice')
 
 %section.row
   .large-6.small-12.columns
