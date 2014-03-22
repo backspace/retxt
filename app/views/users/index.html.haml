@@ -1,0 +1,8 @@
+.row
+  %table
+    %thead
+      %tr
+        %th email
+    -@users.each do |user|
+      %tr[user]
+        %td=user.email
