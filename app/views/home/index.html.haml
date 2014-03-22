@@ -54,82 +54,82 @@
     %p @alice will receive the message like this:
     =txt_pair('', t('txts.direct.outgoing', prefix: '', sender: '@bob', message: message))
 
--if current_user.try(:admin?)
-  %section.row
-    .small-12.columns
-      %p The following commands are admin-only.
-  %section.row
-    .large-6.small-12.columns
-      %h2 Create a new relay
-      =txt_pair('create temp', t('txts.admin.create', admin_name: '@admin', relay_name: 'temp'), sender: 'admin', receiver: 'admin, from new #')
-    .large-6.small-12.columns
-      %h2 Who
-      -replies = who_messages(Subscriber.all)
-      =txt_pair('/who', replies.first, sender: 'admin')
-      -if replies.length > 1
-        =txt_pair('', replies[1])
-      -if replies.length > 2
-        =txt_pair('', '…')
-      %p The * indicates an admin.
-  %section.row
-    .large-6.small-12.columns
-      %h2 Freeze/thaw
-      =txt_pair('/freeze', t('txts.freeze', admin_name: '@admin'), sender: 'admin')
-      =txt_pair('everyone okay?', t('txts.frozen'), sender: 'francine')
-      =txt_pair('/thaw', t('txts.thaw', admin_name: '@admin'), sender: 'admin')
-    .large-6.small-12.columns
-      %h2 Mute/unmute
-      =txt_pair('i keep spamming the list!', t('txts.relayed', subscriber_count: t('subscribers', count: 1337)), sender: 'rogers')
-      =txt_pair('/mute @rogers', t('txts.mute', mutee_name: '@rogers', admin_name: '@admin'), sender: 'admin')
-      =txt_pair('i want to spam again!', t('txts.muted_fail'), sender: 'rogers')
-      =txt_pair('', t('txts.muted_report', mutee_name: '@rogers', muted_message: 'i want to spam again!'), receiver: 'admin')
-      =txt_pair('/unmute @rogers', t('txts.unmute', unmutee_name: '@rogers', admin_name: '@admin'), sender: 'admin')
-  %section.row
-    .large-6.small-12.columns
-      %h2 Close/open
-      =txt_pair('/close', t('txts.admin.close', admin_name: '@admin'), sender: 'admin')
-      =txt_pair('subscribe nefarious', t('txts.close'), sender: '+15145551212')
-      =txt_pair('', t('txts.bounce_notification', number: '+15145551212', message: 'subscribe nefarious'), receiver: 'admin')
-      =txt_pair('/open', t('txts.admin.open', admin_name: '@admin'), sender: 'admin')
-    .large-6.small-12.columns
-      %h2 Rename
-      =txt_pair('/rename awesome', t('txts.rename', relay_name: 'awesome'), sender: 'admin')
-  %section.row
-    .large-6.small-12.columns
-      %h2 Clear
-      =txt_pair('/clear', t('txts.admin.clear'), sender: 'admin')
-    .large-6.small-12.columns
-      %h2 Delete
-      =txt_pair('/delete', t('txts.admin.delete', admin_name: '@admin'), sender: 'admin')
-  %section.row
-    .large-6.small-12.columns
-      %h2 Admin/unadmin
-      -response=t('txts.admin.admin', adminer_name: '@admin', adminee_name: '@francine')
-      =txt_pair('/admin @francine', response, sender: 'admin', receiver: 'admin')
-      =txt_pair('', response, receiver: 'francine')
 
-      =txt_pair('/unadmin @francine', t('txts.admin.unadmin', unadminer_name: '@admin', unadminee_name: '@francine'), sender: 'admin', receiver: 'admin')
-    .large-6.small-12.columns
-      %h2 Moderation and voice
-      =txt_pair('/moderate', t('txts.admin.moderate', admin_name: '@admin'), sender: 'admin')
-      =txt_pair('come to my party!', t('txts.moderated_fail'), sender: '+15145551212')
-      =txt_pair('', t('txts.moderated_report', subscriber_name: 'anon#+15145551212', moderated_message: 'come to my party!'), receiver: 'admin')
-      =txt_pair('/voice @alice', t('txts.voice', admin_name: '@admin', voicee_name: '@alice'), sender: 'admin')
-      =txt_pair('we need support!', t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
-      =txt_pair('/unvoice @bob', t('txts.unvoice', admin_name: '@admin', unvoicee_name: '@bob'), sender: 'admin')
-      =txt_pair('/unmoderate', t('txts.admin.unmoderate', admin_name: '@admin'), sender: 'admin')
-  %section.row
-    .large-6.small-12.columns
-      %h2 Timestamps
-      -timestamp = '%l:%M'
-      =txt_pair("/timestamp #{timestamp}", t('txts.admin.timestamp', admin_name: 'admin', timestamp: timestamp), sender: 'admin')
-      %p For details on how to format the timestamp, visit #{link_to "strftime.org", "http://strftime.org/"}. The example timestamp is (hours in 12-hour format):(minutes).
-      -relay_message = 'come to berri square! the rev!'
-      -message = '@alice on my way'
-      =txt_pair(relay_message, t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
-      =txt_pair('', "#{Time.zone.now.strftime(timestamp).strip} @alice sez: #{relay_message}", receiver: "bob")
-      =txt_pair(message, t('txts.direct.sent', target_name: '@alice'), sender: 'bob')
-      =txt_pair('', t('txts.direct.outgoing', prefix: "#{Time.zone.now.strftime(timestamp).strip} ", sender: '@bob', message: message), receiver: 'alice')
+%section.row
+  .small-12.columns
+    %p The following commands are admin-only.
+%section.row
+  .large-6.small-12.columns
+    %h2 Create a new relay
+    =txt_pair('create temp', t('txts.admin.create', admin_name: '@admin', relay_name: 'temp'), sender: 'admin', receiver: 'admin, from new #')
+  .large-6.small-12.columns
+    %h2 Who
+    -replies = who_messages(Subscriber.all)
+    =txt_pair('/who', replies.first, sender: 'admin')
+    -if replies.length > 1
+      =txt_pair('', replies[1])
+    -if replies.length > 2
+      =txt_pair('', '…')
+    %p The * indicates an admin.
+%section.row
+  .large-6.small-12.columns
+    %h2 Freeze/thaw
+    =txt_pair('/freeze', t('txts.freeze', admin_name: '@admin'), sender: 'admin')
+    =txt_pair('everyone okay?', t('txts.frozen'), sender: 'francine')
+    =txt_pair('/thaw', t('txts.thaw', admin_name: '@admin'), sender: 'admin')
+  .large-6.small-12.columns
+    %h2 Mute/unmute
+    =txt_pair('i keep spamming the list!', t('txts.relayed', subscriber_count: t('subscribers', count: 1337)), sender: 'rogers')
+    =txt_pair('/mute @rogers', t('txts.mute', mutee_name: '@rogers', admin_name: '@admin'), sender: 'admin')
+    =txt_pair('i want to spam again!', t('txts.muted_fail'), sender: 'rogers')
+    =txt_pair('', t('txts.muted_report', mutee_name: '@rogers', muted_message: 'i want to spam again!'), receiver: 'admin')
+    =txt_pair('/unmute @rogers', t('txts.unmute', unmutee_name: '@rogers', admin_name: '@admin'), sender: 'admin')
+%section.row
+  .large-6.small-12.columns
+    %h2 Close/open
+    =txt_pair('/close', t('txts.admin.close', admin_name: '@admin'), sender: 'admin')
+    =txt_pair('subscribe nefarious', t('txts.close'), sender: '+15145551212')
+    =txt_pair('', t('txts.bounce_notification', number: '+15145551212', message: 'subscribe nefarious'), receiver: 'admin')
+    =txt_pair('/open', t('txts.admin.open', admin_name: '@admin'), sender: 'admin')
+  .large-6.small-12.columns
+    %h2 Rename
+    =txt_pair('/rename awesome', t('txts.rename', relay_name: 'awesome'), sender: 'admin')
+%section.row
+  .large-6.small-12.columns
+    %h2 Clear
+    =txt_pair('/clear', t('txts.admin.clear'), sender: 'admin')
+  .large-6.small-12.columns
+    %h2 Delete
+    =txt_pair('/delete', t('txts.admin.delete', admin_name: '@admin'), sender: 'admin')
+%section.row
+  .large-6.small-12.columns
+    %h2 Admin/unadmin
+    -response=t('txts.admin.admin', adminer_name: '@admin', adminee_name: '@francine')
+    =txt_pair('/admin @francine', response, sender: 'admin', receiver: 'admin')
+    =txt_pair('', response, receiver: 'francine')
+
+    =txt_pair('/unadmin @francine', t('txts.admin.unadmin', unadminer_name: '@admin', unadminee_name: '@francine'), sender: 'admin', receiver: 'admin')
+  .large-6.small-12.columns
+    %h2 Moderation and voice
+    =txt_pair('/moderate', t('txts.admin.moderate', admin_name: '@admin'), sender: 'admin')
+    =txt_pair('come to my party!', t('txts.moderated_fail'), sender: '+15145551212')
+    =txt_pair('', t('txts.moderated_report', subscriber_name: 'anon#+15145551212', moderated_message: 'come to my party!'), receiver: 'admin')
+    =txt_pair('/voice @alice', t('txts.voice', admin_name: '@admin', voicee_name: '@alice'), sender: 'admin')
+    =txt_pair('we need support!', t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
+    =txt_pair('/unvoice @bob', t('txts.unvoice', admin_name: '@admin', unvoicee_name: '@bob'), sender: 'admin')
+    =txt_pair('/unmoderate', t('txts.admin.unmoderate', admin_name: '@admin'), sender: 'admin')
+%section.row
+  .large-6.small-12.columns
+    %h2 Timestamps
+    -timestamp = '%l:%M'
+    =txt_pair("/timestamp #{timestamp}", t('txts.admin.timestamp', admin_name: 'admin', timestamp: timestamp), sender: 'admin')
+    %p For details on how to format the timestamp, visit #{link_to "strftime.org", "http://strftime.org/"}. The example timestamp is (hours in 12-hour format):(minutes).
+    -relay_message = 'come to berri square! the rev!'
+    -message = '@alice on my way'
+    =txt_pair(relay_message, t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
+    =txt_pair('', "#{Time.zone.now.strftime(timestamp).strip} @alice sez: #{relay_message}", receiver: "bob")
+    =txt_pair(message, t('txts.direct.sent', target_name: '@alice'), sender: 'bob')
+    =txt_pair('', t('txts.direct.outgoing', prefix: "#{Time.zone.now.strftime(timestamp).strip} ", sender: '@bob', message: message), receiver: 'alice')
 
 %section.row
   .large-6.small-12.columns
