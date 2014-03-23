@@ -3,4 +3,11 @@ class UsersController < ApplicationController
 
   def index
   end
+
+  def update
+    @user.admin = params[:admin]
+    @user.save
+
+    render nothing: true
+  end
 end

@@ -3,6 +3,8 @@
     %thead
       %tr
         %th email
+        %th admin?
     -@users.each do |user|
       %tr[user]
         %td=user.email
+        %td=check_box_tag 'admin', true, user.admin, class: 'admin'
