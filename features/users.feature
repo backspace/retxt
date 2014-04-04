@@ -15,4 +15,4 @@ Feature: Users
 
     When I make 'user@example.com' an admin
     And I visit the users list
-    Then I should see that 'user@example.com' is an admin
+    Then I should see that 'user@example.com' is a site admin

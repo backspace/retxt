@@ -1,0 +1,2 @@
+class InvalidNumberException < Exception
+end

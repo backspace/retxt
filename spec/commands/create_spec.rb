@@ -2,7 +2,7 @@ require_relative '../../app/commands/create'
 require 'command_context'
 require 'buys_numbers'
 require 'txts_relay_admins'
-
+require 'extracts_area_codes'
 
 
 describe Create do
@@ -11,6 +11,7 @@ describe Create do
   let(:arguments) { 'newname' }
   let(:application_url) { 'application url' }
 
+  let(:new_relay_area_code) { '212' }
   let(:new_relay_number) { '1221' }
 
   def execute
@@ -22,8 +23,9 @@ describe Create do
       sender_is_admin
     end
 
-    it 'buys a number, creates a relay, and notifies admins' do
-      BuysNumbers.should_receive(:buy_number).with('514', application_url).and_return(new_relay_number)
+    it 'buys a number from the relay area code, creates a relay, and notifies admins' do
+      ExtractsAreaCodes.should_receive(:new).with(relay.number).and_return(double(:extractor, extract_area_code: new_relay_area_code))
+      BuysNumbers.should_receive(:buy_number).with(new_relay_area_code, application_url).and_return(new_relay_number)
 
       relay_repository = double('relay repository')
       stub_const('Relay', relay_repository)

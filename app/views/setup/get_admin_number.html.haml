@@ -1,0 +1,7 @@
+%section.row
+  .small-12.columns
+    %h2 Setup
+    %p Please enter your phone number. It must be in the form +1XXXXXXXXXX.
+    =form_for @subscriber, url: wizard_path, method: :put do |f|
+      =f.text_field :number
+      =f.submit 'Save'

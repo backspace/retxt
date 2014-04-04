@@ -7,5 +7,7 @@ Sssr::Application.routes.draw do
     post 'incoming', on: :collection
   end
 
+  resources :setup
+
   root to: "home#index"
 end
