@@ -18,6 +18,7 @@ group :test do
   gem 'mocha', require: false
   gem 'bourne'
   gem 'cucumber-rails', require: false
+  gem 'poltergeist'
   gem 'database_cleaner'
   gem 'timecop'
 end

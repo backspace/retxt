@@ -69,8 +69,11 @@ GEM
       warden (~> 1.2.1)
     diff-lcs (1.2.2)
     erubis (2.7.0)
+    eventmachine (1.0.3)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    faye-websocket (0.4.7)
+      eventmachine (>= 0.12.0)
     ffi (1.9.3)
     foreman (0.62.0)
       thor (>= 0.13.6)
@@ -79,6 +82,7 @@ GEM
     haml (4.0.1)
       tilt
     hike (1.2.1)
+    http_parser.rb (0.5.3)
     i18n (0.6.1)
     journey (1.0.4)
     jquery-rails (2.2.1)
@@ -118,6 +122,10 @@ GEM
     nokogiri (1.5.9)
     origin (1.0.11)
     orm_adapter (0.4.0)
+    poltergeist (1.1.2)
+      capybara (~> 2.0.1)
+      faye-websocket (~> 0.4.4)
+      http_parser.rb (~> 0.5.3)
     polyglot (0.3.3)
     pry (0.9.12)
       coderay (~> 1.0.5)
@@ -223,6 +231,7 @@ DEPENDENCIES
   mongoid (~> 3.0.0)
   mongoid-app_settings
   newrelic_rpm
+  poltergeist
   pry
   pry-nav
   rails (= 3.2.13)
