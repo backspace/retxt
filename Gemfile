@@ -10,6 +10,7 @@ gem 'mongoid-app_settings'
 
 gem 'devise'
 gem 'cancan'
+gem 'wicked'
 
 gem 'twilio-ruby'
 

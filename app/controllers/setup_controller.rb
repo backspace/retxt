@@ -1,0 +1,29 @@
+class SetupController < ApplicationController
+  include Wicked::Wizard
+
+  steps :get_admin_number, :buy_relay_number
+
+  def show
+    case step
+    when :get_admin_number
+      current_user.update_attribute(:admin, true)
+      @subscriber = Subscriber.new
+    when :buy_relay_number
+      Create.new(sender: Subscriber.first, application_url: incoming_txts_url, arguments: "B").execute
+      @relay = Relay.first
+    end
+
+    render_wizard
+  end
+
+  def update
+    case step
+    when :get_admin_number
+      @subscriber = Subscriber.new(params[:subscriber])
+      @subscriber.admin = true
+      @subscriber.save
+    end
+
+    render_wizard @subscriber
+  end
+end
