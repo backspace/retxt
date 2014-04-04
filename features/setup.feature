@@ -15,7 +15,7 @@ Feature: Setup wizard
     And I should see that relay 123 has been created
 
     When I visit the users list
-    Then I should see that 'admin@example.com' is an admin
+    Then I should see that 'admin@example.com' is a site admin
 
     When I visit the subscribers list
     Then I should see myself

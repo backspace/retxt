@@ -16,7 +16,7 @@ Then(/^I should see that '(.*)' is registered$/) do |address|
   page.should have_css("#user_#{user.id}")
 end
 
-Then(/^I should see that '(.*)' is an admin$/) do |address|
+Then(/^I should see that '(.*)' is a site admin$/) do |address|
   user = User.find_by(email: address)
 
   page.find("#user_#{user.id} .admin").should be_checked
