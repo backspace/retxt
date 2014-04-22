@@ -65,7 +65,7 @@
     =txt_pair('create temp', t('txts.admin.create', admin_name: '@admin', relay_name: 'temp'), sender: 'admin', receiver: 'admin, from new #')
   .large-6.small-12.columns
     %h3 Who
-    -replies = who_messages(Subscriber.all)
+    -replies = who_messages([Subscriber.new(name: "alex", number: '+12045551313'), Subscriber.new(name: 'brenda', number: '+15145551414'), Subscriber.new(name: 'chris', number: '+14165551515'), Subscriber.new(name: 'donna', number: '+16045551616', admin: true)])
     =txt_pair('/who', replies.first, sender: 'admin')
     -if replies.length > 1
       =txt_pair('', replies[1])
