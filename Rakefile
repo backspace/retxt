@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Sssr::Application.load_tasks
+ReTxt::Application.load_tasks

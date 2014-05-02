@@ -1,4 +1,4 @@
-Sssr::Application.routes.draw do
+ReTxt::Application.routes.draw do
   devise_for :users
 
   resources :subscribers
