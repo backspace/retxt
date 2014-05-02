@@ -1,3 +1,17 @@
+GIT
+  remote: git://github.com/simi/mongoid-paranoia.git
+  revision: 4d9faf35b336e25619629b9e6514ff61bee169d6
+  specs:
+    mongoid-paranoia (0.1)
+      mongoid (> 3)
+
+GIT
+  remote: git://github.com/simi/mongoid-versioning.git
+  revision: a1aa92a4c7b721b004d559ae1112e7b4a6124d94
+  specs:
+    mongoid-versioning (0.0.1)
+      mongoid (> 3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -232,6 +246,8 @@ DEPENDENCIES
   mocha
   mongoid (~> 4.0.0.beta1)
   mongoid-app_settings
+  mongoid-paranoia!
+  mongoid-versioning!
   newrelic_rpm
   poltergeist
   pry
