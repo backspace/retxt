@@ -32,7 +32,7 @@ Other messages are forwarded to all subscribers if you are subscribed.
 
 ## Deployment
 
-The application is currently dependent on Twilio, though the service is sufficiently decoupled that changing that is possible if there’s interest. To deploy to Heroku, you need your Twilio accound SID and auth token.
+The application is currently dependent on Twilio, though the service is sufficiently decoupled that changing that is possible if there’s interest. To deploy to Heroku, you need your Twilio account SID and auth token.
 
     heroku create your-relay-name
     heroku addons:add mongolab
