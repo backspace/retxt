@@ -54,6 +54,7 @@ You will receive a message from the new relay. Read up at https://your-relay-nam
 
 ## Version history
 
+* 0.8.1: Ruby 2.1, Heroku/Twilio deployment information, Travis
 * 0.8: Updated to Rails 4.1, open sourced
 * 0.6: Extracted commands from controller, added `/admin`/`/unadmin`
 * 0.5: Add multi-relay capability and many admin commands
