@@ -68,4 +68,6 @@ ReTxt::Application.configure do
   config.logger.level = Logger::INFO
 
   config.force_ssl = true
+
+  config.eager_load = true
 end
