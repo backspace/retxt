@@ -9,35 +9,13 @@ describe Thaw do
     Thaw.new(sender: sender, relay: relay).execute
   end
 
-  context 'from an admin' do
+  it 'delegates to ModifyRelay' do
+    I18n.should_receive('t').with('txts.thaw', admin_name: sender.addressable_name).and_return('thaw')
+    modifier = double('modifier')
+    ModifyRelay.should_receive(:new).with(sender: sender, relay: relay, modifier: :thaw!, success_message: 'thaw').and_return(modifier)
 
-    before do
-      sender_is_admin
-    end
+    modifier.should_receive(:execute)
 
-    it 'thaws the relay' do
-      relay.should_receive(:thaw!)
-      execute
-    end
-
-    it 'replies with the thaw message' do
-      I18n.should_receive('t').with('txts.thaw').and_return('thaw')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'thaw')
-      execute
-    end
-  end
-
-  context 'from a non-admin' do
-
-     it 'does not thaw the relay' do
-       relay.should_not_receive(:thaw!)
-       execute
-     end
-
-     it 'replies with the non-admin message' do
-       I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-       SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
-       execute
-     end
+    execute
   end
 end

@@ -1,6 +1,6 @@
-# Relay
+# retxt
 
-Relay is a text message relay initially developed for emergency communication among the queer/trans/punk/whatever-folk of southwest Montréal.
+retxt is a text message relay initially developed for emergency communication among the queer/trans/punk/whatever-folk of southwest Montréal.
 
 ## Commands
 
@@ -20,7 +20,7 @@ Admin-only commands:
 * `/delete`
 * `/mute`
 * `/unmute`
-* `create`
+* `/create`
 * `/clear`
 * `/delete`
 * `/admin`
@@ -36,6 +36,7 @@ The relay is driven by Twilio and deployed on Heroku. More to come on this.
 
 ## Version history
 
+* 0.8: Updated to Rails 4.1, open sourced
 * 0.6: Extracted commands from controller, added `/admin`/`/unadmin`
 * 0.5: Add multi-relay capability and many admin commands
 * 0.3: Store incoming messages, support direct messaging

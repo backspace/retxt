@@ -5,6 +5,6 @@ class Close
   end
 
   def execute
-    ModifyRelay.new(sender: @sender, relay: @relay, i18n: I18n, sends_txts: @sends_txts, modifier: :close!, success_message: I18n.t('txts.close')).execute
+    ModifyRelay.new(sender: @sender, relay: @relay, modifier: :close!, success_message: I18n.t('txts.admin.close', admin_name: @sender.addressable_name)).execute
   end
 end

@@ -8,16 +8,21 @@ require_relative '../../app/commands/delete'
 require_relative '../../app/commands/direct_message'
 require_relative '../../app/commands/freeze'
 require_relative '../../app/commands/help'
+require_relative '../../app/commands/moderate'
 require_relative '../../app/commands/mute'
 require_relative '../../app/commands/open'
 require_relative '../../app/commands/relay_command'
 require_relative '../../app/commands/rename'
 require_relative '../../app/commands/subscribe'
 require_relative '../../app/commands/thaw'
+require_relative '../../app/commands/timestamp'
 require_relative '../../app/commands/unadmin'
 require_relative '../../app/commands/unknown'
+require_relative '../../app/commands/unmoderate'
 require_relative '../../app/commands/unmute'
 require_relative '../../app/commands/unsubscribe'
+require_relative '../../app/commands/unvoice'
+require_relative '../../app/commands/voice'
 require_relative '../../app/commands/who'
 
 describe Executor do
@@ -26,7 +31,7 @@ describe Executor do
     stub_const('Subscriber', double.as_null_object)
   end
 
-  let(:txt) { stub(:txt, from: subscriber.number, to: relay.number, body: message) }
+  let(:txt) { double(:txt, from: subscriber.number, to: relay.number, body: message) }
 
   let(:relay_number) { '123455' }
   let!(:relay) { Relay.create(number: relay_number) }
@@ -99,6 +104,40 @@ describe Executor do
     end
   end
 
+  context "when the command is 'moderate'" do
+    let(:number) { "5551313" }
+    let(:message) { '/moderate' }
+
+    context "and the sender is subscribed" do
+      let!(:subscriber) { Subscriber.create!(number: number) }
+
+      it "should execute Moderate" do
+        moderate = double('moderate')
+        Moderate.should_receive(:new).with(sender: subscriber, relay: relay).and_return(moderate)
+        moderate.should_receive(:execute)
+
+        send_message(message)
+      end
+    end
+  end
+
+  context "when the command is 'unmoderate'" do
+    let(:number) { "5551313" }
+    let(:message) { '/unmoderate' }
+
+    context "and the sender is subscribed" do
+      let!(:subscriber) { Subscriber.create!(number: number) }
+
+      it "should execute Unmoderate" do
+        unmoderate = double('unmoderate')
+        Unmoderate.should_receive(:new).with(sender: subscriber, relay: relay).and_return(unmoderate)
+        unmoderate.should_receive(:execute)
+
+        send_message(message)
+      end
+    end
+  end
+
   context "when the command is 'freeze'" do
     let(:number) { "5551313" }
     let(:message) { '/freeze' }
@@ -160,7 +199,7 @@ describe Executor do
 
   context "when the command is 'create relay'" do
     let(:number) { "5551313" }
-    let(:message) { "create relay" }
+    let(:message) { "/create relay" }
     let!(:subscriber) { Subscriber.create!(number: number) }
 
     it "should execute Create" do
@@ -197,6 +236,36 @@ describe Executor do
       unmute = double('unmute')
       Unmute.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(unmute)
       unmute.should_receive(:execute)
+
+      send_message(message)
+    end
+  end
+
+  context "when the command is '/voice @bob'" do
+    let(:number) { "5551313" }
+    let(:target) { "@bob" }
+    let(:message) { "/voice #{target}" }
+    let!(:subscriber) { Subscriber.create!(number: number) }
+
+    it "should execute Voice" do
+      voice = double('voice')
+      Voice.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(voice)
+      voice.should_receive(:execute)
+
+      send_message(message)
+    end
+  end
+
+  context "when the command is '/unvoice @bob'" do
+    let(:number) { "5551313" }
+    let(:target) { "@bob" }
+    let(:message) { "/unvoice #{target}" }
+    let!(:subscriber) { Subscriber.create!(number: number) }
+
+    it "should execute Unvoice" do
+      unvoice = double('unvoice')
+      Unvoice.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(unvoice)
+      unvoice.should_receive(:execute)
 
       send_message(message)
     end
@@ -275,6 +344,36 @@ describe Executor do
     end
   end
 
+  context "when the command is '/timestamp'" do
+    let(:number) { '5551313' }
+    let!(:subscriber) { Subscriber.create!(number: number) }
+
+    context "with no parameters" do
+      let(:message) { "/timestamp" }
+
+      it "should execute Timestamp with no arguments" do
+        timestamp = double('timestamp')
+        Timestamp.should_receive(:new).with(sender: subscriber, relay: relay, arguments: "").and_return(timestamp)
+        timestamp.should_receive :execute
+
+        send_message(message)
+      end
+    end
+
+    context "with a timestamp argument" do
+      let(:argument) { 'strftime' }
+      let(:message) { "/timestamp #{argument}" }
+
+      it "should execute Timestamp with the format string" do
+        timestamp = double('timestamp')
+        Timestamp.should_receive(:new).with(sender: subscriber, relay: relay, arguments: argument).and_return(timestamp)
+        timestamp.should_receive :execute
+
+        send_message(message)
+      end
+    end
+  end
+
   context "when the command is '/delete'" do
     let(:number) { "5551313" }
     let!(:subscriber) { Subscriber.create!(number: number) }
@@ -312,7 +411,7 @@ describe Executor do
 
     it "should execute DirectMessage" do
       direct = double('direct')
-      DirectMessage.should_receive(:new).with(relay: relay, sender: subscriber, content: message).and_return(direct)
+      DirectMessage.should_receive(:new).with(relay: relay, sender: subscriber, txt: txt).and_return(direct)
       direct.should_receive(:execute)
 
       send_message(message)
@@ -326,7 +425,7 @@ describe Executor do
 
     it "should execute Relay" do
       relay_command = double('relay command')
-      RelayCommand.should_receive(:new).with(sender: subscriber, relay: relay, content: message).and_return(relay_command)
+      RelayCommand.should_receive(:new).with(sender: subscriber, relay: relay, txt: txt).and_return(relay_command)
       relay_command.should_receive(:execute)
 
       send_message(message)

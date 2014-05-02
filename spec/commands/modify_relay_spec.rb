@@ -7,9 +7,10 @@ describe ModifyRelay do
 
   let(:success_message) { 'success!' }
   let(:modifier) { :modify! }
+  let(:arguments) { nil }
 
   def execute
-    ModifyRelay.new(sender: sender, relay: relay, modifier: modifier, success_message: success_message).execute
+    ModifyRelay.new(sender: sender, relay: relay, modifier: modifier, arguments: arguments, success_message: success_message).execute
   end
 
   context 'from an admin' do
@@ -24,8 +25,17 @@ describe ModifyRelay do
     end
 
     it 'replies with the success message' do
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: success_message)
+      TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: success_message)
       execute
+    end
+
+    context 'with arguments' do
+      let(:arguments) { 'an argument' }
+
+      it 'modifies the relay with the arguments' do
+        relay.should_receive(modifier).with(arguments)
+        execute
+      end
     end
   end
 

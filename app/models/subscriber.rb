@@ -8,7 +8,6 @@ class Subscriber
   field :name, type: String
 
   field :admin, type: Boolean
-  attr_protected :admin
 
   has_many :subscriptions
 
@@ -20,11 +19,15 @@ class Subscriber
     name.present? ? "@#{name}" : 'anon'
   end
 
+  def absolute_name
+    "#{addressable_name}##{number}"
+  end
+
   def anonymous?
     !name.present?
   end
 
-  scope :admins, where(admin: true)
+  scope :admins, -> { where(admin: true) }
 
   def sent
     Txt.where(from: number)

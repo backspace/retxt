@@ -2,14 +2,17 @@ source 'https://rubygems.org'
 
 ruby '1.9.3'
 
-gem 'rails', '3.2.13'
+gem 'rails', '~> 4.1'
 gem 'unicorn'
 
-gem 'mongoid', '~> 3.0.0'
+gem 'mongoid', '~> 4.0.0.beta1'
+gem 'mongoid-paranoia', github: 'simi/mongoid-paranoia'
+gem 'mongoid-versioning', github: 'simi/mongoid-versioning'
 gem 'mongoid-app_settings'
 
 gem 'devise'
 gem 'cancan'
+gem 'wicked'
 
 gem 'twilio-ruby'
 
@@ -18,7 +21,9 @@ group :test do
   gem 'mocha', require: false
   gem 'bourne'
   gem 'cucumber-rails', require: false
+  gem 'poltergeist'
   gem 'database_cleaner'
+  gem 'timecop'
 end
 
 group :development, :test do
@@ -29,14 +34,12 @@ group :development, :test do
   gem 'foreman'
 end
 
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+gem 'sass-rails',   '~> 4'
+gem 'coffee-rails', '~> 4'
 
-  gem 'uglifier', '>= 1.0.3'
+gem 'uglifier', '>= 1.3'
 
-  gem 'zurb-foundation', '~> 4.0.0'
-end
+gem 'zurb-foundation', '~> 4.0.0'
 
 gem 'jquery-rails'
 gem 'haml'

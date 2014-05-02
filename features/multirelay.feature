@@ -17,7 +17,7 @@ Feature: Multi-relay
     Given the number buyer will buy number 123
     And I am subscribed as an admin
     And someone is subscribed to relay A as 'bob'
-    And I txt 'create B'
+    And I txt '/create B'
 
     Then I should receive a created txt from 123
 

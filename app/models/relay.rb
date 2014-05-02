@@ -9,6 +9,8 @@ class Relay
 
   field :frozen, type: Boolean, default: false
   field :closed, type: Boolean, default: false
+  field :moderated, type: Boolean, default: false
+  field :timestamp, type: String
 
   has_many :subscriptions, dependent: :delete
 
@@ -40,8 +42,20 @@ class Relay
     update_attribute(:closed, false)
   end
 
+  def moderate!
+    update_attribute(:moderated, true)
+  end
+
+  def unmoderate!
+    update_attribute(:moderated, false)
+  end
+
   def rename!(name)
     update_attribute(:name, name)
+  end
+
+  def timestamp!(timestamp)
+    update_attribute(:timestamp, timestamp)
   end
 
   def subscribers
@@ -54,5 +68,9 @@ class Relay
 
   def non_admins
     subscribers.reject(&:admin)
+  end
+
+  def subscription_count
+    subscriptions.count
   end
 end

@@ -23,5 +23,4 @@ class User
 
 
   field :admin, type: Boolean
-  attr_protected :admin
 end

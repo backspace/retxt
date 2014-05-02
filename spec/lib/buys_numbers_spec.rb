@@ -9,8 +9,8 @@ describe BuysNumbers do
 
   let(:incoming_phone_numbers) { double('incoming') }
 
-  let(:chosen_phone_number) { stub(phone_number: '5551313') }
-  let(:other_phone_number) { stub(phone_number: '5551212') }
+  let(:chosen_phone_number) { double(phone_number: '5551313') }
+  let(:other_phone_number) { double(phone_number: '5551212') }
 
   before do
     client.stub(:account).and_return(account)

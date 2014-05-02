@@ -25,7 +25,10 @@ class Subscribe
 
         ChangesNames.change_name(subscriber, @arguments) if @arguments
 
-        SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.welcome', relay_name: @relay.name, subscriber_name: subscriber.name_or_anon))
+        other_subscribers = @relay.subscription_count - 1
+        other_subscribers_text = I18n.t('other', count: other_subscribers)
+
+        SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.welcome', relay_name: @relay.name, subscriber_name: subscriber.name_or_anon, subscriber_count: other_subscribers_text))
         SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.disclaimer'))
 
         TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: I18n.t('txts.admin.subscribed', name: subscriber.name_or_anon, number: @sender.number))

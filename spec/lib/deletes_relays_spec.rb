@@ -3,12 +3,12 @@ require 'deletes_relays'
 describe DeletesRelays do
   let(:relay_number) { "5551313" }
   let(:relay_name) { "dying" }
-  let(:relay) { stub(:relay, number: relay_number, name: relay_name).as_null_object }
+  let(:relay) { double(:relay, number: relay_number, name: relay_name).as_null_object }
 
   let(:substitute_relay_number) { "1234" }
 
   let(:subscriber_number) { "5551212" }
-  let(:subscriber) { stub(:subscriber, number: subscriber_number) }
+  let(:subscriber) { double(:subscriber, number: subscriber_number) }
 
   let(:client) { double('client') }
   let(:account) { double('account') }

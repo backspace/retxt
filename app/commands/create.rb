@@ -10,7 +10,8 @@ class Create
 
   def execute
     if @sender.admin
-      new_relay_number = BuysNumbers.buy_number('514', @application_url)
+      new_relay_area_code = ExtractsAreaCodes.new(@relay.number).extract_area_code
+      new_relay_number = BuysNumbers.buy_number(new_relay_area_code, @application_url)
       relay = Relay.create(name: @arguments, number: new_relay_number)
       Subscription.create(relay: relay, subscriber: @sender)
 

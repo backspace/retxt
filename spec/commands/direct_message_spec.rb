@@ -1,14 +1,16 @@
 require_relative '../../app/commands/direct_message'
 require 'command_context'
 require 'finds_subscribers'
+require 'timestamp_formatter'
 
 describe DirectMessage do
   include_context 'command context'
 
+  let(:txt) { double(:txt, body: content) }
   let(:content) { '@user hello' }
 
   def execute
-    DirectMessage.new(sender: sender, relay: relay, content: content).execute
+    DirectMessage.new(sender: sender, relay: relay, txt: txt).execute
   end
 
   context 'when the sender exists' do
@@ -24,12 +26,15 @@ describe DirectMessage do
 
       context 'and the target exists' do
         let(:target) { double('target', number: '5555') }
+        let(:timestamp) { double(:formatter, format: 'timestamp ') }
+
         before do
           FindsSubscribers.stub(:find).with('@user').and_return(target)
+          TimestampFormatter.should_receive(:new).with(relay: relay, txt: txt).and_return(timestamp)
         end
 
         it 'sends the message and replies' do
-          I18n.stub(:t).with('txts.direct.outgoing', sender: sender.addressable_name, message: content).and_return('outgoing')
+          I18n.stub(:t).with('txts.direct.outgoing', prefix: timestamp.format, sender: sender.addressable_name, message: content).and_return('outgoing')
           SendsTxts.should_receive(:send_txt).with(from: relay.number, to: target.number, body: 'outgoing')
 
           I18n.stub(:t).with('txts.direct.sent', target_name: '@user').and_return('sent')

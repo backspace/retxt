@@ -29,7 +29,10 @@ describe Subscribe do
       subscriberRepository.should_receive(:create).with(number: sender.number).and_return(subscriber)
       subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: subscriber)
 
-      I18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: 'anon').and_return('welcome')
+      relay.should_receive(:subscription_count).and_return(5)
+      I18n.should_receive('t').with('other', count: 4).and_return('4 others')
+
+      I18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: 'anon', subscriber_count: '4 others').and_return('welcome')
       SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'welcome')
 
       I18n.should_receive('t').with('txts.disclaimer').and_return('disclaimer')
@@ -53,7 +56,10 @@ describe Subscribe do
         ChangesNames.should_receive(:change_name).with(subscriber, arguments)
         subscriber.stub(:name_or_anon).and_return(arguments)
 
-        I18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: arguments).and_return('welcome')
+        relay.should_receive(:subscription_count).and_return(5)
+        I18n.should_receive('t').with('other', count: 4).and_return('4 others')
+
+        I18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: arguments, subscriber_count: '4 others').and_return('welcome')
         SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'welcome')
 
         I18n.should_receive('t').with('txts.disclaimer').and_return('disclaimer')
@@ -92,7 +98,10 @@ describe Subscribe do
       it 'creates a subscription and notifies admins' do
         subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: sender)
 
-        I18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: 'anon').and_return('welcome')
+        relay.should_receive(:subscription_count).and_return(5)
+        I18n.should_receive('t').with('other', count: 4).and_return('4 others')
+
+        I18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: 'anon', subscriber_count: '4 others').and_return('welcome')
         SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'welcome')
 
         I18n.should_receive('t').with('txts.disclaimer').and_return('disclaimer')

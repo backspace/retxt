@@ -33,8 +33,12 @@ class Executor
       Subscribe.new(relay: target_relay, sender: subscriber, arguments: after_command).execute
     elsif command == 'unsubscribe'
       Unsubscribe.new(relay: target_relay, sender: subscriber).execute
-    elsif command == 'create'
+    elsif command == '/create'
       Create.new(relay: target_relay, sender: subscriber, application_url: @context[:application_url], arguments: after_command).execute
+    elsif command == '/moderate'
+      Moderate.new(relay: target_relay, sender: subscriber).execute
+    elsif command == '/unmoderate'
+      Unmoderate.new(relay: target_relay, sender: subscriber).execute
     elsif command == '/freeze'
       Freeze.new(sender: subscriber, relay: target_relay).execute
     elsif command == '/thaw' || command == '/unthaw'
@@ -45,6 +49,10 @@ class Executor
       Mute.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
     elsif command == '/unmute'
       Unmute.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
+    elsif command == '/voice'
+      Voice.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
+    elsif command == '/unvoice'
+      Unvoice.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
     elsif command == '/admin'
       Admin.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
     elsif command == '/unadmin'
@@ -59,12 +67,14 @@ class Executor
       Clear.new(sender: subscriber, relay: target_relay).execute
     elsif command == '/delete'
       Delete.new(sender: subscriber, relay: target_relay).execute
+    elsif command == '/timestamp'
+      Timestamp.new(sender: subscriber, relay: target_relay, arguments: after_command).execute
     elsif command.start_with? '/'
       Unknown.new(sender: subscriber, relay: target_relay).execute
     elsif command.start_with? '@'
-      DirectMessage.new(sender: subscriber, relay: target_relay, content: @txt.body).execute
+      DirectMessage.new(sender: subscriber, relay: target_relay, txt: @txt).execute
     else
-      RelayCommand.new(sender: subscriber, relay: target_relay, content: @txt.body).execute
+      RelayCommand.new(sender: subscriber, relay: target_relay, txt: @txt).execute
     end
   end
 end
