@@ -36,6 +36,7 @@ The relay is driven by Twilio and deployed on Heroku. More to come on this.
 
 ## Version history
 
+* 0.8: Updated to Rails 4.1, open sourced
 * 0.6: Extracted commands from controller, added `/admin`/`/unadmin`
 * 0.5: Add multi-relay capability and many admin commands
 * 0.3: Store incoming messages, support direct messaging
