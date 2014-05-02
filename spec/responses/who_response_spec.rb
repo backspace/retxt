@@ -6,27 +6,16 @@ describe WhoResponse do
   let(:muted) { double('muted', admin: false, number: '3', addressable_name: 'muted') }
   let(:voiced) { double('voiced', admin: false, number: '4', addressable_name: 'voiced') }
 
-  let(:subscribers) { [admin, anon, muted, voiced] }
-  let(:relay) { double('relay', subscribers: subscribers) }
+  let(:admin_subscription) { double('admin_subscription', subscriber: admin, created_at: 1, muted: false, voiced: false) }
+  let(:muted_subscription) { double('muted_subscription', subscriber: muted, created_at: 2, muted: true, voiced: false) }
+  let(:anon_subscription) { double('anon_subscription', subscriber: anon, created_at: 3, muted: false, voiced: false) }
+  let(:voiced_subscription) { double('voiced_subscription', subscriber: voiced, created_at: 4, muted: false, voiced: true) }
 
-  before do
-    regular_subscription = double('subscription', muted: false, voiced: false)
-
-    relay.stub(:subscription_for).with(admin).and_return(regular_subscription)
-    relay.stub(:subscription_for).with(anon).and_return(regular_subscription)
-
-    muted_subscription = double('muted subscription', muted: true, voiced: false)
-    relay.stub(:subscription_for).with(muted).and_return(muted_subscription)
-
-    voiced_subscription = double('voiced subscription', muted:false, voiced: true)
-    relay.stub(:subscription_for).with(voiced).and_return(voiced_subscription)
-  end
+  let(:subscriptions) { [anon_subscription, admin_subscription, muted_subscription, voiced_subscription] }
+  let(:relay) { double('relay', subscriptions: subscriptions) }
 
   it 'generates a who response' do
     response = WhoResponse.generate(relay: relay)
-    response.should include("anon 1\n")
-    response.should include('@admin* 2')
-    response.should include("muted (muted) 3")
-    response.should include("voiced (voiced) 4")
+    response.should include("@admin* 2\nmuted (muted) 3\nanon 1\nvoiced (voiced) 4")
   end
 end
