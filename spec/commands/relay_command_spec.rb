@@ -6,7 +6,7 @@ class RelayedTxtFormatter; end
 describe RelayCommand do
 
   include_context 'command context'
-  let(:txt) { stub(:txt, body: content) }
+  let(:txt) { double(:txt, body: content) }
   let(:content) { 'preformatted text' }
 
   def execute

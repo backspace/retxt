@@ -31,7 +31,7 @@ describe Executor do
     stub_const('Subscriber', double.as_null_object)
   end
 
-  let(:txt) { stub(:txt, from: subscriber.number, to: relay.number, body: message) }
+  let(:txt) { double(:txt, from: subscriber.number, to: relay.number, body: message) }
 
   let(:relay_number) { '123455' }
   let!(:relay) { Relay.create(number: relay_number) }
