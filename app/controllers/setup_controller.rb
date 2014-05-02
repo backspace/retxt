@@ -19,11 +19,16 @@ class SetupController < ApplicationController
   def update
     case step
     when :get_admin_number
-      @subscriber = Subscriber.new(params[:subscriber])
+      @subscriber = Subscriber.new(subscriber_params)
       @subscriber.admin = true
       @subscriber.save
     end
 
     render_wizard @subscriber
+  end
+
+  private
+  def subscriber_params
+    params.require(:subscriber).permit(:number)
   end
 end
