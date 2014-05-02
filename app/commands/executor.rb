@@ -33,7 +33,7 @@ class Executor
       Subscribe.new(relay: target_relay, sender: subscriber, arguments: after_command).execute
     elsif command == 'unsubscribe'
       Unsubscribe.new(relay: target_relay, sender: subscriber).execute
-    elsif command == 'create'
+    elsif command == '/create'
       Create.new(relay: target_relay, sender: subscriber, application_url: @context[:application_url], arguments: after_command).execute
     elsif command == '/moderate'
       Moderate.new(relay: target_relay, sender: subscriber).execute

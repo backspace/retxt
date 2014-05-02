@@ -199,7 +199,7 @@ describe Executor do
 
   context "when the command is 'create relay'" do
     let(:number) { "5551313" }
-    let(:message) { "create relay" }
+    let(:message) { "/create relay" }
     let!(:subscriber) { Subscriber.create!(number: number) }
 
     it "should execute Create" do

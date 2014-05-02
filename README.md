@@ -20,7 +20,7 @@ Admin-only commands:
 * `/delete`
 * `/mute`
 * `/unmute`
-* `create`
+* `/create`
 * `/clear`
 * `/delete`
 * `/admin`

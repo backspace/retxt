@@ -61,7 +61,7 @@
 %section.row
   .large-6.small-12.columns
     %h3 Create a new relay
-    =txt_pair('create temp', t('txts.admin.create', admin_name: '@admin', relay_name: 'temp'), sender: 'admin', receiver: 'admin, from new #')
+    =txt_pair('/create temp', t('txts.admin.create', admin_name: '@admin', relay_name: 'temp'), sender: 'admin', receiver: 'admin, from new #')
   .large-6.small-12.columns
     %h3 Who
     -admin_person = Subscriber.new(name: 'donna', number: '+16045551616', admin: true)
