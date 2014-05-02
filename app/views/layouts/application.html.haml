@@ -23,7 +23,7 @@
     .small-12.columns
       =image_tag 'tower.png', size: '100x100'
       %h1
-        =link_to "Relay", '/'
+        =link_to "retxt", '/'
       -if user_signed_in?
         -if current_user.admin
           =link_to "Subscribers", subscribers_url
