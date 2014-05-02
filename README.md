@@ -1,5 +1,7 @@
 # retxt
 
+[![Build Status](https://travis-ci.org/backspace/retxt.svg?branch=master)](https://travis-ci.org/backspace/retxt)
+
 retxt is a text message relay initially developed for emergency communication among the queer/trans/punk/whatever-folk of southwest Montréal.
 
 ## Commands
