@@ -1,6 +1,6 @@
 .row
   .small-12.columns
-    %p This is the homepage for a prototype emergency SMS relay system for southwest Montréal. It’s simple for now but can grow as we discover our needs.
+    %p This is the homepage for a text message relay system. Subscribers can send a message to one number and it will be forwarded to everyone else subscribed.
     -if RelaySettings.display_number
       %p
         -if @relay.present?
