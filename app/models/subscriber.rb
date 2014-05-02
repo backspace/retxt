@@ -8,7 +8,6 @@ class Subscriber
   field :name, type: String
 
   field :admin, type: Boolean
-  attr_protected :admin
 
   has_many :subscriptions
 
