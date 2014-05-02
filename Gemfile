@@ -45,4 +45,5 @@ gem 'jquery-rails'
 gem 'haml'
 
 
+gem 'rails_12factor'
 gem 'newrelic_rpm'
