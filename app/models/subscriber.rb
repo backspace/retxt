@@ -27,7 +27,7 @@ class Subscriber
     !name.present?
   end
 
-  scope :admins, where(admin: true)
+  scope :admins, -> { where(admin: true) }
 
   def sent
     Txt.where(from: number)
