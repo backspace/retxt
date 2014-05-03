@@ -54,7 +54,7 @@ class Relay
     update_attribute(:name, name)
   end
 
-  def timestamp!(timestamp)
+  def timestamp!(timestamp = nil)
     update_attribute(:timestamp, timestamp)
   end
 

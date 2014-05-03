@@ -6,4 +6,17 @@ class Txt
   field :to, type: String
   field :body, type: String
   field :service_id, type: String
+  field :originating_txt_id, type: String
+
+  def receiver
+    Subscriber.find_by(number: to)
+  end
+
+  def sender
+    Subscriber.find_by(number: from)
+  end
+
+  def results
+    Txt.where(originating_txt_id: id)
+  end
 end

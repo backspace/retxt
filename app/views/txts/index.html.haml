@@ -1,0 +1,15 @@
+%section.row
+  .large-12.columns
+    %h2 History for #{@subscriber.name}
+    -@txts.each do |txt|
+      .row.txtpair
+        .incoming.txt.small-5.columns{data: {subscriber_id: txt.sender.id}}
+          %pre=txt.body
+          .subscriber=txt.sender.name_or_anon
+      -txt.results.each do |result|
+        .row.txtpair
+          .small-5.column &nbsp;
+          .small-1.columns &rarr;
+          .outgoing.txt.small-5.columns{data: {subscriber_id: result.receiver.id}}
+            %pre=result.body
+            .subscriber=result.receiver.name_or_anon
