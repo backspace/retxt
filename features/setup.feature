@@ -1,4 +1,3 @@
-@javascript
 Feature: Setup wizard
 
   Scenario: Set up fresh application
