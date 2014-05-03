@@ -1,10 +1,10 @@
 class ModifyRelay
-  def initialize(options)
-    @sender = options[:sender]
-    @relay = options[:relay]
+  def initialize(command_context, options)
+    @sender = command_context.sender
+    @relay = command_context.relay
 
     @modifier = options[:modifier]
-    @arguments = options[:arguments]
+    @arguments = command_context.arguments
     @success_message = options[:success_message]
   end
 

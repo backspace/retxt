@@ -9,7 +9,7 @@ describe Unmute do
   let(:arguments) { '@user' }
 
   def execute
-    Unmute.new(sender: sender, relay: relay, arguments: arguments).execute
+    Unmute.new(command_context).execute
   end
 
   it 'delegates to ModifySubscription' do
@@ -20,7 +20,7 @@ describe Unmute do
 
     Unmute.any_instance.stub(:modifier).and_return(modifier)
 
-    ModifySubscription.should_receive(:new).with(sender: sender, relay: relay, arguments: arguments, modifier: modifier, success_message: 'unmute').and_return(modify_subscription)
+    ModifySubscription.should_receive(:new).with(command_context, modifier: modifier, success_message: 'unmute').and_return(modify_subscription)
     modify_subscription.should_receive(:execute)
 
     execute

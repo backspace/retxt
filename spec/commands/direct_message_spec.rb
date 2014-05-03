@@ -10,7 +10,7 @@ describe DirectMessage do
   let(:content) { '@user hello' }
 
   def execute
-    DirectMessage.new(sender: sender, relay: relay, txt: txt).execute
+    DirectMessage.new(command_context).execute
   end
 
   context 'when the sender exists' do

@@ -9,13 +9,12 @@ describe Create do
   include_context 'command context'
 
   let(:arguments) { 'newname' }
-  let(:application_url) { 'application url' }
 
   let(:new_relay_area_code) { '212' }
   let(:new_relay_number) { '1221' }
 
   def execute
-    Create.new(sender: sender, relay: relay, arguments: arguments, application_url: application_url).execute
+    Create.new(command_context).execute
   end
 
   context 'from an admin' do
@@ -25,7 +24,7 @@ describe Create do
 
     it 'buys a number from the relay area code, creates a relay, and notifies admins' do
       ExtractsAreaCodes.should_receive(:new).with(relay.number).and_return(double(:extractor, extract_area_code: new_relay_area_code))
-      BuysNumbers.should_receive(:buy_number).with(new_relay_area_code, application_url).and_return(new_relay_number)
+      BuysNumbers.should_receive(:buy_number).with(new_relay_area_code, command_context.application_url).and_return(new_relay_number)
 
       relay_repository = double('relay repository')
       stub_const('Relay', relay_repository)

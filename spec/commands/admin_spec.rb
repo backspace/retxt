@@ -14,7 +14,7 @@ describe Admin do
   end
 
   def execute
-    Admin.new(sender: sender, relay: relay, arguments: arguments, finds_subscribers: finds_subscribers).execute
+    Admin.new(command_context).execute
   end
 
   context 'the sender is an admin' do

@@ -1,11 +1,11 @@
 class Create
-  def initialize(options)
-    @sender = options[:sender]
-    @relay = options[:relay]
+  def initialize(command_context)
+    @sender = command_context.sender
+    @relay = command_context.relay
 
-    @application_url = options[:application_url]
+    @application_url = command_context.application_url
 
-    @arguments = options[:arguments]
+    @arguments = command_context.arguments
   end
 
   def execute

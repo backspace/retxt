@@ -6,7 +6,7 @@ describe Name do
   let(:arguments) { 'newname' }
 
   def execute
-    Name.new(sender: sender, relay: relay, arguments: arguments).execute
+    Name.new(command_context).execute
   end
 
   context 'when the sender is subscribed' do

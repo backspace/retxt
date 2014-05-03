@@ -7,7 +7,7 @@ describe Delete do
   include_context 'command context'
 
   def execute
-    Delete.new(sender: sender, relay: relay).execute
+    Delete.new(command_context).execute
   end
 
   context 'from an admin' do

@@ -6,7 +6,7 @@ describe Clear do
   include_context 'command context'
 
   def execute
-    Clear.new(sender: sender, relay: relay).execute
+    Clear.new(command_context).execute
   end
 
   context 'from an admin' do

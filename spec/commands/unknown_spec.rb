@@ -5,7 +5,7 @@ describe Unknown do
   include_context 'command context'
 
   def execute
-    Unknown.new(sender: sender, relay: relay).execute
+    Unknown.new(command_context).execute
   end
 
   it 'replies with the rename message' do

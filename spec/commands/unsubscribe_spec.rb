@@ -8,7 +8,7 @@ describe Unsubscribe do
   let(:subscriptionRepository) { double('subscription repository') }
 
   def execute
-    Unsubscribe.new(sender: sender, relay: relay).execute
+    Unsubscribe.new(command_context).execute
   end
 
   context 'when the sender is subscribed' do

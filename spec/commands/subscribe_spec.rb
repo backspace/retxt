@@ -15,7 +15,7 @@ describe Subscribe do
   end
 
   def execute
-    Subscribe.new(sender: sender, relay: relay, arguments: arguments, subscriberRepository: subscriberRepository, subscriptionRepository: subscriptionRepository).execute
+    Subscribe.new(command_context, subscriberRepository: subscriberRepository, subscriptionRepository: subscriptionRepository).execute
   end
 
   context 'when the sender is not subscribed' do

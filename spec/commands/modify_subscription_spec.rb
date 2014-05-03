@@ -17,7 +17,7 @@ describe ModifySubscription do
   end
 
   def execute
-    ModifySubscription.new(sender: sender, relay: relay, arguments: arguments, success_message: success_message, modifier: modifier).execute
+    ModifySubscription.new(command_context, modifier: modifier, success_message: success_message).execute
   end
 
   context 'from an admin' do

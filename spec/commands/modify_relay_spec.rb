@@ -10,7 +10,7 @@ describe ModifyRelay do
   let(:arguments) { nil }
 
   def execute
-    ModifyRelay.new(sender: sender, relay: relay, modifier: modifier, arguments: arguments, success_message: success_message).execute
+    ModifyRelay.new(command_context, modifier: modifier, success_message: success_message).execute
   end
 
   context 'from an admin' do

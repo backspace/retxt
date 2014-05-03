@@ -1,8 +1,8 @@
 class ModifySubscription
-  def initialize(options)
-    @sender = options[:sender]
-    @relay = options[:relay]
-    @arguments = options[:arguments]
+  def initialize(command_context, options = {})
+    @sender = command_context.sender
+    @relay = command_context.relay
+    @arguments = command_context.arguments
 
     @modifier = options[:modifier]
     @success_message = options[:success_message]

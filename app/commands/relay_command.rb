@@ -1,9 +1,9 @@
 class RelayCommand
-  def initialize(options)
-    @sender = options[:sender]
-    @relay = options[:relay]
+  def initialize(command_context)
+    @sender = command_context.sender
+    @relay = command_context.relay
 
-    @txt = options[:txt]
+    @txt = command_context.txt
     @content = @txt.body
   end
 

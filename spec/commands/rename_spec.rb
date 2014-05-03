@@ -8,7 +8,7 @@ describe Rename do
   let(:arguments) { 'newname' }
 
   def execute
-    Rename.new(sender: sender, relay: relay, arguments: arguments).execute
+    Rename.new(command_context).execute
   end
 
   context 'from an admin' do

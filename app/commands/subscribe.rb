@@ -1,10 +1,10 @@
 class Subscribe
-  def initialize(options)
-    @sender = options[:sender]
-    @relay = options[:relay]
+  def initialize(command_context, options = {})
+    @sender = command_context.sender
+    @relay = command_context.relay
     @subscriberRepository = options[:subscriberRepository] || Subscriber
     @subscriptionRepository = options[:subscriptionRepository] || Subscription
-    @arguments = options[:arguments]
+    @arguments = command_context.arguments
   end
 
   def execute

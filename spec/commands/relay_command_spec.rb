@@ -10,7 +10,7 @@ describe RelayCommand do
   let(:content) { 'preformatted text' }
 
   def execute
-    RelayCommand.new(sender: sender, relay: relay, txt: txt).execute
+    RelayCommand.new(command_context).execute
   end
 
   context 'from a sender who is subscribed' do

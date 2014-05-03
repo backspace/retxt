@@ -1,9 +1,9 @@
 class Name
-  def initialize(options)
-    @sender = options[:sender]
-    @relay = options[:relay]
+  def initialize(command_context)
+    @sender = command_context.sender
+    @relay = command_context.relay
 
-    @new_name = options[:arguments]
+    @new_name = command_context.arguments
   end
 
   def execute

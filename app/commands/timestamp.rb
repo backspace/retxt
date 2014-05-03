@@ -1,11 +1,11 @@
 class Timestamp
-  def initialize(options)
-    @sender = options[:sender]
-    @relay = options[:relay]
-    @arguments = options[:arguments]
+  def initialize(command_context)
+    @command_context = command_context
+    @sender = command_context.sender
+    @arguments = command_context.arguments
   end
 
   def execute
-    ModifyRelay.new(sender: @sender, relay: @relay, modifier: :timestamp!, arguments: @arguments, success_message: I18n.t('txts.admin.timestamp', admin_name: @sender.addressable_name, timestamp: @arguments)).execute
+    ModifyRelay.new(@command_context, modifier: :timestamp!, success_message: I18n.t('txts.admin.timestamp', admin_name: @sender.addressable_name, timestamp: @arguments)).execute
   end
 end

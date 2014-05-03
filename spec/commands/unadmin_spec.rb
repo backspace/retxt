@@ -14,7 +14,7 @@ describe Unadmin do
   end
 
   def execute
-    Unadmin.new(sender: sender, relay: relay, arguments: arguments, finds_subscribers: finds_subscribers).execute
+    Unadmin.new(command_context).execute
   end
 
   context 'the sender is an admin' do

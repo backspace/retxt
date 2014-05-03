@@ -1,9 +1,9 @@
 class Unadmin
-  def initialize(options)
-    @sender = options[:sender]
-    @relay = options[:relay]
+  def initialize(command_context)
+    @sender = command_context.sender
+    @relay = command_context.relay
 
-    @arguments = options[:arguments]
+    @arguments = command_context.arguments
   end
 
   def execute

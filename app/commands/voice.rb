@@ -1,13 +1,14 @@
 class Voice
-  def initialize(options)
-    @sender = options[:sender]
-    @relay = options[:relay]
+  def initialize(command_context)
+    @command_context = command_context
+    @sender = command_context.sender
+    @relay = command_context.relay
 
-    @arguments = options[:arguments]
+    @arguments = command_context.arguments
   end
 
   def execute
-    ModifySubscription.new(sender: @sender, relay: @relay, arguments: @arguments, success_message: I18n.t('txts.voice', voicee_name: @arguments, admin_name: @sender.addressable_name), modifier: modifier).execute
+    ModifySubscription.new(@command_context, success_message: I18n.t('txts.voice', voicee_name: @arguments, admin_name: @sender.addressable_name), modifier: modifier).execute
   end
 
   private

@@ -5,7 +5,7 @@ describe Help do
   include_context 'command context'
 
   def execute
-    Help.new(sender: sender, relay: relay).execute
+    Help.new(command_context).execute
   end
 
   it 'replies with the help message' do

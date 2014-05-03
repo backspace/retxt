@@ -1,7 +1,7 @@
 class Unsubscribe
-  def initialize(options)
-    @sender = options[:sender]
-    @relay = options[:relay]
+  def initialize(command_context)
+    @sender = command_context.sender
+    @relay = command_context.relay
   end
 
   def execute

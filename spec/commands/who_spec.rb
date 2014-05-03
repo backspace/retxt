@@ -8,7 +8,7 @@ describe Who do
   let(:who_txt_content) { ['a who!', 'another who'] }
 
   def execute
-    Who.new(sender: sender, relay: relay, who_txt: who_txt).execute
+    Who.new(command_context, who_txt: who_txt).execute
   end
 
   context 'from an admin' do

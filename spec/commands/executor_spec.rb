@@ -1,5 +1,7 @@
 require_relative '../../app/commands/executor'
 
+require_relative '../../app/models/command_context'
+
 require_relative '../../app/commands/admin'
 require_relative '../../app/commands/clear'
 require_relative '../../app/commands/close'
@@ -36,6 +38,9 @@ describe Executor do
   let(:relay_number) { '123455' }
   let!(:relay) { Relay.create(number: relay_number) }
 
+  let(:arguments) { message.index(" ") ? message[message.index(" ") + 1..-1] : nil }
+  let(:command_context) { CommandContext.new(sender: subscriber, relay: relay, originating_txt: txt, arguments: arguments) }
+
   def send_message(message)
     Subscriber.stub(:find_or_create_by).with(number: subscriber.number).and_return(subscriber)
     Relay.stub(:find_or_create_by).with(number: relay.number).and_return(relay)
@@ -51,7 +56,7 @@ describe Executor do
 
       it "should execute Help" do
         help = double('help')
-        Help.should_receive(:new).with(sender: subscriber, relay: relay).and_return(help)
+        Help.should_receive(:new).with(command_context).and_return(help)
         help.should_receive(:execute)
 
         send_message(message)
@@ -68,7 +73,7 @@ describe Executor do
 
       it "should execute Subscribe" do
         subscribe = double('subscribe')
-        Subscribe.should_receive(:new).with(sender: subscriber, relay: relay, arguments: 'test').and_return(subscribe)
+        Subscribe.should_receive(:new).with(command_context).and_return(subscribe)
         subscribe.should_receive(:execute)
 
         send_message(message)
@@ -79,7 +84,7 @@ describe Executor do
       let(:subscriber) { Subscriber.create!(number: number) }
       it "should execute Subscribe" do
         subscribe = double('subscribe')
-        Subscribe.should_receive(:new).with(sender: subscriber, relay: relay, arguments: 'test').and_return(subscribe)
+        Subscribe.should_receive(:new).with(command_context).and_return(subscribe)
         subscribe.should_receive(:execute)
 
         send_message(message)
@@ -96,7 +101,7 @@ describe Executor do
 
       it "should execute Unsubscribe" do
         unsubscribe = double('unsubscribe')
-        Unsubscribe.should_receive(:new).with(sender: subscriber, relay: relay).and_return(unsubscribe)
+        Unsubscribe.should_receive(:new).with(command_context).and_return(unsubscribe)
         unsubscribe.should_receive(:execute)
 
         send_message(message)
@@ -113,7 +118,7 @@ describe Executor do
 
       it "should execute Moderate" do
         moderate = double('moderate')
-        Moderate.should_receive(:new).with(sender: subscriber, relay: relay).and_return(moderate)
+        Moderate.should_receive(:new).with(command_context).and_return(moderate)
         moderate.should_receive(:execute)
 
         send_message(message)
@@ -130,7 +135,7 @@ describe Executor do
 
       it "should execute Unmoderate" do
         unmoderate = double('unmoderate')
-        Unmoderate.should_receive(:new).with(sender: subscriber, relay: relay).and_return(unmoderate)
+        Unmoderate.should_receive(:new).with(command_context).and_return(unmoderate)
         unmoderate.should_receive(:execute)
 
         send_message(message)
@@ -147,7 +152,7 @@ describe Executor do
 
       it "should execute Freeze" do
         freeze = double('freeze')
-        Freeze.should_receive(:new).with(sender: subscriber, relay: relay).and_return(freeze)
+        Freeze.should_receive(:new).with(command_context).and_return(freeze)
         freeze.should_receive(:execute)
 
         send_message(message)
@@ -162,7 +167,7 @@ describe Executor do
 
     it "should execute Clear" do
       clear = double('clear')
-      Clear.should_receive(:new).with(sender: subscriber, relay: relay).and_return(clear)
+      Clear.should_receive(:new).with(command_context).and_return(clear)
       clear.should_receive(:execute)
 
       send_message(message)
@@ -176,7 +181,7 @@ describe Executor do
 
     it "should execute Thaw" do
       thaw = double('thaw')
-      Thaw.should_receive(:new).with(sender: subscriber, relay: relay).and_return(thaw)
+      Thaw.should_receive(:new).with(command_context).and_return(thaw)
       thaw.should_receive(:execute)
 
       send_message(message)
@@ -190,7 +195,7 @@ describe Executor do
 
     it "should execute Who" do
       who = double('thaw')
-      Who.should_receive(:new).with(sender: subscriber, relay: relay).and_return(who)
+      Who.should_receive(:new).with(command_context).and_return(who)
       who.should_receive(:execute)
 
       send_message(message)
@@ -204,7 +209,7 @@ describe Executor do
 
     it "should execute Create" do
       create = double('create')
-      Create.should_receive(:new).with(sender: subscriber, relay: relay, application_url: nil, arguments: 'relay').and_return(create)
+      Create.should_receive(:new).with(command_context).and_return(create)
       create.should_receive(:execute)
 
       send_message(message)
@@ -219,7 +224,7 @@ describe Executor do
 
     it "should execute Mute" do
       mute = double('mute')
-      Mute.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(mute)
+      Mute.should_receive(:new).with(command_context).and_return(mute)
       mute.should_receive(:execute)
 
       send_message(message)
@@ -234,7 +239,7 @@ describe Executor do
 
     it "should execute Unmute" do
       unmute = double('unmute')
-      Unmute.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(unmute)
+      Unmute.should_receive(:new).with(command_context).and_return(unmute)
       unmute.should_receive(:execute)
 
       send_message(message)
@@ -249,7 +254,7 @@ describe Executor do
 
     it "should execute Voice" do
       voice = double('voice')
-      Voice.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(voice)
+      Voice.should_receive(:new).with(command_context).and_return(voice)
       voice.should_receive(:execute)
 
       send_message(message)
@@ -264,7 +269,7 @@ describe Executor do
 
     it "should execute Unvoice" do
       unvoice = double('unvoice')
-      Unvoice.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(unvoice)
+      Unvoice.should_receive(:new).with(command_context).and_return(unvoice)
       unvoice.should_receive(:execute)
 
       send_message(message)
@@ -279,7 +284,7 @@ describe Executor do
 
     it "should execute Admin" do
       admin = double('admin')
-      Admin.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(admin)
+      Admin.should_receive(:new).with(command_context).and_return(admin)
       admin.should_receive(:execute)
 
       send_message(message)
@@ -294,7 +299,7 @@ describe Executor do
 
     it "should execute Unadmin" do
       unadmin = double('unadmin')
-      Unadmin.should_receive(:new).with(sender: subscriber, relay: relay, arguments: target).and_return(unadmin)
+      Unadmin.should_receive(:new).with(command_context).and_return(unadmin)
       unadmin.should_receive(:execute)
 
       send_message(message)
@@ -308,7 +313,7 @@ describe Executor do
 
     it "should execute Close" do
       close = double('close')
-      Close.should_receive(:new).with(sender: subscriber, relay: relay).and_return(close)
+      Close.should_receive(:new).with(command_context).and_return(close)
       close.should_receive(:execute)
 
       send_message(message)
@@ -322,7 +327,7 @@ describe Executor do
 
     it "should execute open" do
       open = double('open')
-      Open.should_receive(:new).with(sender: subscriber, relay: relay).and_return(open)
+      Open.should_receive(:new).with(command_context).and_return(open)
       open.should_receive(:execute)
 
       send_message(message)
@@ -337,7 +342,7 @@ describe Executor do
 
     it "should execute Rename" do
       rename = double('rename')
-      Rename.should_receive(:new).with(sender: subscriber, relay: relay, arguments: new_relay_name).and_return(rename)
+      Rename.should_receive(:new).with(command_context).and_return(rename)
       rename.should_receive(:execute)
 
       send_message(message)
@@ -353,7 +358,7 @@ describe Executor do
 
       it "should execute Timestamp with no arguments" do
         timestamp = double('timestamp')
-        Timestamp.should_receive(:new).with(sender: subscriber, relay: relay, arguments: "").and_return(timestamp)
+        Timestamp.should_receive(:new).with(command_context).and_return(timestamp)
         timestamp.should_receive :execute
 
         send_message(message)
@@ -366,7 +371,7 @@ describe Executor do
 
       it "should execute Timestamp with the format string" do
         timestamp = double('timestamp')
-        Timestamp.should_receive(:new).with(sender: subscriber, relay: relay, arguments: argument).and_return(timestamp)
+        Timestamp.should_receive(:new).with(command_context).and_return(timestamp)
         timestamp.should_receive :execute
 
         send_message(message)
@@ -382,7 +387,7 @@ describe Executor do
 
     it "should execute delete" do
       delete = double('delete')
-      Delete.should_receive(:new).with(relay: relay, sender: subscriber).and_return(delete)
+      Delete.should_receive(:new).with(command_context).and_return(delete)
       delete.should_receive(:execute)
 
       send_message(message)
@@ -396,7 +401,7 @@ describe Executor do
 
     it "should execute Unknown" do
       unknown = double('unknown')
-      Unknown.should_receive(:new).with(relay: relay, sender: subscriber).and_return(unknown)
+      Unknown.should_receive(:new).with(command_context).and_return(unknown)
       unknown.should_receive(:execute)
 
       send_message(message)
@@ -411,7 +416,7 @@ describe Executor do
 
     it "should execute DirectMessage" do
       direct = double('direct')
-      DirectMessage.should_receive(:new).with(relay: relay, sender: subscriber, txt: txt).and_return(direct)
+      DirectMessage.should_receive(:new).with(command_context).and_return(direct)
       direct.should_receive(:execute)
 
       send_message(message)
@@ -425,7 +430,7 @@ describe Executor do
 
     it "should execute Relay" do
       relay_command = double('relay command')
-      RelayCommand.should_receive(:new).with(sender: subscriber, relay: relay, txt: txt).and_return(relay_command)
+      RelayCommand.should_receive(:new).with(command_context).and_return(relay_command)
       relay_command.should_receive(:execute)
 
       send_message(message)
