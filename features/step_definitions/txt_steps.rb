@@ -138,5 +138,5 @@ def response_should_not_include(content)
 end
 
 def recent_txt_id
-  Txt.last ? Txt.last.id.to_s : ''
+  Txt.where(originating_txt_id: nil).last ? Txt.where(originating_txt_id: nil).last.id.to_s : ''
 end

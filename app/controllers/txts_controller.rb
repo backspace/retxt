@@ -6,6 +6,11 @@ class TxtsController < ApplicationController
 
   helper_method :target_relay
 
+  def index
+    @subscriber = Subscriber.find(params[:subscriber_id])
+    @txts = Txt.where(from: @subscriber.number)
+  end
+
   def incoming
     Executor.new(@txt, application_context).execute
     render nothing: true
