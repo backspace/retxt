@@ -5,6 +5,7 @@ describe TxtsRelayAdmins do
   let(:relay) { double('relay', number: '1234') }
   let(:admin) { double('admin', number: '2345') }
   let(:admins) { [admin] }
+  let(:oid) { 'abc' }
 
   let(:body) { 'the txt' }
 
@@ -13,7 +14,7 @@ describe TxtsRelayAdmins do
   end
 
   it 'sends a txt to every admin' do
-    SendsTxts.should_receive(:send_txt).with(from: relay.number, to: admin.number, body: body)
-    TxtsRelayAdmins.txt_relay_admins(relay: relay, body: body)
+    SendsTxts.should_receive(:send_txt).with(from: relay.number, to: admin.number, body: body, originating_txt_id: oid)
+    TxtsRelayAdmins.txt_relay_admins(relay: relay, body: body, originating_txt_id: oid)
   end
 end
