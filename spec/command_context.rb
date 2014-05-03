@@ -8,6 +8,9 @@ shared_context 'command context' do
   let(:sends_txts) { double('sends_txts').as_null_object }
   let(:txts_relay_admins) { double('txts_relay_admins').as_null_object }
   let(:sender) { double('sender', admin: false, number: '5551313', addressable_name: '@sender', absolute_name: '@sender#5551313', anonymous?: false) }
+  let(:txt) { double('txt', id: 'abc') }
+
+  let(:command_context) { double('command_context', sender: sender, relay: relay, arguments: defined?(arguments) ? arguments : '', txt: txt, originating_txt_id: txt.id, application_url: 'url') }
 
   before do
     stub_const('I18n', i18n)

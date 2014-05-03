@@ -7,7 +7,7 @@ describe Delete do
   include_context 'command context'
 
   def execute
-    Delete.new(sender: sender, relay: relay).execute
+    Delete.new(command_context).execute
   end
 
   context 'from an admin' do
@@ -33,7 +33,7 @@ describe Delete do
 
     it 'replies with the non-admin message' do
       I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin', originating_txt_id: command_context.originating_txt_id)
       execute
     end
   end

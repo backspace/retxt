@@ -10,7 +10,7 @@ describe ModifyRelay do
   let(:arguments) { nil }
 
   def execute
-    ModifyRelay.new(sender: sender, relay: relay, modifier: modifier, arguments: arguments, success_message: success_message).execute
+    ModifyRelay.new(command_context, modifier: modifier, success_message: success_message).execute
   end
 
   context 'from an admin' do
@@ -25,7 +25,7 @@ describe ModifyRelay do
     end
 
     it 'replies with the success message' do
-      TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: success_message)
+      TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: success_message, originating_txt_id: command_context.originating_txt_id)
       execute
     end
 
@@ -48,7 +48,7 @@ describe ModifyRelay do
 
     it 'replies with the non-admin message' do
       I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin', originating_txt_id: command_context.originating_txt_id)
       execute
     end
   end

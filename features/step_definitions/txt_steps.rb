@@ -86,9 +86,9 @@ Then(/^subscribers other than (\w*) should( not)? receive that message( signed b
 
   subscribers_other_than(subject).each do |subscriber|
     if negation
-      SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number).never
+      SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number, originating_txt_id: recent_txt_id).never
     else
-      SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number)
+      SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number, originating_txt_id: recent_txt_id)
     end
   end
 end
@@ -110,7 +110,7 @@ Then(/^(.*) should( not)? receive '(.*)'$/) do |name, negation, message|
 end
 
 Then(/^bob should receive '@alice sez: this message should not go to everyone' from relay A$/) do
-  SendsTxts.should have_received(:send_txt).with(from: Relay.find_by(name: "A").number, to: Subscriber.find_by(name: "bob").number, body: "@alice sez: this message should not go to everyone")
+  SendsTxts.should have_received(:send_txt).with(from: Relay.find_by(name: "A").number, to: Subscriber.find_by(name: "bob").number, body: "@alice sez: this message should not go to everyone", originating_txt_id: recent_txt_id)
 end
 
 Then(/^(.*) should not receive a message$/) do |name|
@@ -121,7 +121,7 @@ end
 Then(/^(\w*) should receive a txt including '([^']*)'$/) do |name, message|
   subscriber = name == 'I' ? Subscriber.find_by(number: @my_number) : Subscriber.find_by(name: name)
 
-  SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: message, from: Relay.first.number)
+  SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: message, from: Relay.first.number, originating_txt_id: recent_txt_id)
 end
 
 def subscribers_other_than(subscriber)
@@ -130,9 +130,13 @@ end
 
 def response_should_include(content, recipient_number = my_number, sender_number = nil)
   relay = @recent_relay || Relay.first
-  SendsTxts.should have_received(:send_txt).with(from: relay.number || sender_number, to: recipient_number, body: content)
+  SendsTxts.should have_received(:send_txt).with(from: relay.number || sender_number, to: recipient_number, body: content, originating_txt_id: recent_txt_id)
 end
 
 def response_should_not_include(content)
   Nokogiri::XML(last_response.body).xpath("//Sms[not(@to)]").text.should_not include(content)
+end
+
+def recent_txt_id
+  Txt.where(originating_txt_id: nil).last ? Txt.where(originating_txt_id: nil).last.id.to_s : ''
 end

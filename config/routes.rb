@@ -1,8 +1,12 @@
 ReTxt::Application.routes.draw do
   devise_for :users
 
-  resources :subscribers
+  resources :subscribers do
+    resources :txts
+  end
+
   resources :users
+
   resources :txts do
     post 'incoming', on: :collection
   end

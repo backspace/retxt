@@ -6,7 +6,7 @@ describe Name do
   let(:arguments) { 'newname' }
 
   def execute
-    Name.new(sender: sender, relay: relay, arguments: arguments).execute
+    Name.new(command_context).execute
   end
 
   context 'when the sender is subscribed' do
@@ -18,7 +18,7 @@ describe Name do
       ChangesNames.should_receive(:change_name).with(sender, arguments)
       sender.should_receive(:name_or_anon).and_return(arguments)
       I18n.should_receive('t').with('txts.name', name: arguments).and_return('name')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'name')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'name', originating_txt_id: command_context.originating_txt_id)
 
       execute
     end

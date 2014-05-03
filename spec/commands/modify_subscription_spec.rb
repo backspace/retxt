@@ -17,7 +17,7 @@ describe ModifySubscription do
   end
 
   def execute
-    ModifySubscription.new(sender: sender, relay: relay, arguments: arguments, success_message: success_message, modifier: modifier).execute
+    ModifySubscription.new(command_context, modifier: modifier, success_message: success_message).execute
   end
 
   context 'from an admin' do
@@ -46,7 +46,7 @@ describe ModifySubscription do
 
         it 'notifies all admins of the change' do
           modifier.stub(:call)
-          TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: success_message)
+          TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: success_message, originating_txt_id: command_context.originating_txt_id)
           execute
         end
       end
@@ -57,7 +57,7 @@ describe ModifySubscription do
 
       it 'replies with the unsubscribed target message' do
         I18n.should_receive('t').with('txts.unsubscribed_target', target: arguments).and_return('unsubscribed')
-        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'unsubscribed')
+        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'unsubscribed', originating_txt_id: command_context.originating_txt_id)
         execute
       end
     end
@@ -68,14 +68,14 @@ describe ModifySubscription do
 
     it 'replies with the missing target message' do
       I18n.should_receive('t').with('txts.missing_target', target: arguments).and_return('missing')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'missing')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'missing', originating_txt_id: command_context.originating_txt_id)
       execute
     end
   end
 
   it 'replies with the non-admin message' do
     I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-    SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
+    SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin', originating_txt_id: command_context.originating_txt_id)
     execute
   end
 end

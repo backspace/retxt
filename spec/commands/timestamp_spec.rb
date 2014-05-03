@@ -8,7 +8,7 @@ describe Timestamp do
   let(:arguments) { 'strftime' }
 
   def execute
-    Timestamp.new(sender: sender, relay: relay, arguments: arguments).execute
+    Timestamp.new(command_context).execute
   end
 
   it 'delegates to ModifyRelay' do
@@ -19,7 +19,7 @@ describe Timestamp do
 
     Timestamp.any_instance.stub(:modifier).and_return(modifier)
 
-    ModifyRelay.should_receive(:new).with(sender: sender, relay: relay, arguments: arguments, modifier: modifier, success_message: 'timestamp').and_return(modify_relay)
+    ModifyRelay.should_receive(:new).with(command_context, modifier: modifier, success_message: 'timestamp').and_return(modify_relay)
     modify_relay.should_receive(:execute)
 
     execute

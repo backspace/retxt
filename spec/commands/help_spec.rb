@@ -5,7 +5,7 @@ describe Help do
   include_context 'command context'
 
   def execute
-    Help.new(sender: sender, relay: relay).execute
+    Help.new(command_context).execute
   end
 
   it 'replies with the help message' do
@@ -14,7 +14,7 @@ describe Help do
     I18n.stub(:t).with('subscribers', count: 2).and_return('2 subscribers')
 
     I18n.stub(:t).with('txts.help', subscriber_count: '2 subscribers').and_return('help')
-    SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'help')
+    SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'help', originating_txt_id: command_context.originating_txt_id)
 
     execute
   end

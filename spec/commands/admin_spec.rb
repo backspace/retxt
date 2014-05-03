@@ -14,7 +14,7 @@ describe Admin do
   end
 
   def execute
-    Admin.new(sender: sender, relay: relay, arguments: arguments, finds_subscribers: finds_subscribers).execute
+    Admin.new(command_context).execute
   end
 
   context 'the sender is an admin' do
@@ -37,7 +37,7 @@ describe Admin do
       it 'tells all admins' do
         I18n.stub('t').with('txts.admin.admin', adminer_name: sender.addressable_name, adminee_name: adminee.addressable_name).and_return('admined')
 
-        TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'admined')
+        TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'admined', originating_txt_id: command_context.originating_txt_id)
 
         execute
       end
@@ -49,7 +49,7 @@ describe Admin do
 
     it 'repiles with the missing target message' do
       I18n.should_receive('t').with('txts.missing_target', target: arguments).and_return('missing')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'missing')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'missing', originating_txt_id: command_context.originating_txt_id)
       execute
     end
   end
@@ -57,7 +57,7 @@ describe Admin do
   context 'from a non-admin' do
     it 'replies with the non-admin message' do
       I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin', originating_txt_id: command_context.originating_txt_id)
       execute
     end
   end
