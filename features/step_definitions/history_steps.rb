@@ -1,5 +1,6 @@
 When(/^I view the message history for alice$/) do
-  visit subscriber_txts_path(Subscriber.find_by(name: 'alice'))
+  visit subscribers_path
+  click_link 'alice'
 end
 
 Then(/^I should see that alice sent '(.*)'$/) do |content|

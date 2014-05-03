@@ -20,7 +20,7 @@
       -@subscribers.each do |subscriber|
         %tr[subscriber]{class: subscriber.admin ? "admin" : ""}
           %td=subscriber.number
-          %td=subscriber.name_or_anon
+          %td=link_to(subscriber.name_or_anon, subscriber_txts_path(subscriber))
           %td=subscriber.admin? ? check : cross
           %td.sent=subscriber.sent.count
           -@relays.each do |relay|
