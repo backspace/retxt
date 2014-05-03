@@ -1,2 +1,2 @@
-tunnel: ngrok --log stdout start relay
+tunnel: ngrok --log stdout -subdomain $RETXT_SUBDOMAIN -authtoken $NGROK_AUTH_TOKEN 3000
 web: bundle exec rails s

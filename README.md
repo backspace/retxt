@@ -54,6 +54,36 @@ Once the push is complete, visit https://your-relay-name.herokuapp.com/ to compl
 
 You will receive a message from the new relay. Read up at https://your-relay-name.herokuapp.com/ to learn the supported commands.
 
+## Development
+
+retxt runs on Ruby 2.1 and MongoDB, so install those. After that:
+
+    git clone git://github.com/backspace/retxt.git
+    cd retxt
+
+Install the gem dependencies:
+
+    bundle
+
+To run a relay in development, Twilio must be able to connect to your machine. retxt uses Foreman to start a tunnel via ngrok to allow the connection. Sign up for an [account at ngrok.com](https://ngrok.com/user/signup) to get an [auth token](https://ngrok.com/dashboard).
+
+Create a file within the project directory called `.env` to store these environment variables:
+
+    RETXT_SUBDOMAIN=
+    NGROK_AUTH_TOKEN=
+    TWILIO_ACCOUNT_SID=
+    TWILIO_AUTH_TOKEN=
+
+`$RETXT_SUBDOMAIN` is a unique name that will be supplied to Twilio to find your application.
+
+Open the tunnel and run the server:
+
+    foreman start -f Procfile.dev
+
+Once you see the `web` output from Foreman showing that `WEBrick` is ready, access the setup interface at http://$RETXT_SUBDOMAIN.ngrok.com/. You will create an account and specify your phone number and the application will create a relay. It costs $1!
+
+From then on, you need only run the latter `foreman` command to work in development.
+
 ## Version history
 
 * 0.8.1: Ruby 2.1, Heroku/Twilio deployment information, Travis
