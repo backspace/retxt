@@ -86,6 +86,7 @@ From then on, you need only run the latter `foreman` command to work in developm
 
 ## Version history
 
+* 0.8.5: Added view on message history
 * 0.8.2: Added development information
 * 0.8.1: Ruby 2.1, Heroku/Twilio deployment information, Travis
 * 0.8: Updated to Rails 4.1, open sourced
