@@ -14,12 +14,23 @@ When(/^I create an account$/) do
   click_button 'Sign up'
 end
 
-Then(/^I should be required to enter my phone number$/) do
-  expect(page).to have_text('your phone number')
+Then(/^I should be required to enter my name and phone number$/) do
+  expect(page).to have_text('your name and phone number')
 end
 
-When(/^I enter my phone number$/) do
+When(/^I enter my name and phone number$/) do
+  fill_in 'subscriber[name]', with: 'alice'
   fill_in 'subscriber[number]', with: my_number
+  click_button 'Save'
+end
+
+Then(/^I should be required to name the relay$/) do
+  expect(page).to have_text('name for the relay')
+end
+
+When(/^I name the relay$/) do
+  fill_in 'relay[name]', with: 'arelay'
+
   click_button 'Save'
 end
 

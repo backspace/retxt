@@ -38,7 +38,7 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
   elsif message_type == 'goodbye'
     message = 'goodbye'
   elsif message_type == 'created'
-    message = I18n.t('txts.admin.create', relay_name: 'B', admin_name: 'anon')
+    message = I18n.t('txts.admin.create', relay_name: Relay.last.name, admin_name: Subscriber.first.addressable_name)
   elsif message_type == 'non-admin'
     message = I18n.t('txts.nonadmin')
   elsif message_type == 'moderated'

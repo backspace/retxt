@@ -7,9 +7,12 @@ Feature: Setup wizard
     Then I should be required to create an account
 
     When I create an account
-    Then I should be required to enter my phone number
+    Then I should be required to enter my name and phone number
 
-    When I enter my phone number
+    When I enter my name and phone number
+    Then I should be required to name the relay
+
+    When I name the relay
     Then I should receive a created txt from 123
     And I should see that relay 123 has been created
 
