@@ -17,6 +17,10 @@ class CommandContext
     originating_txt
   end
 
+  def originating_txt_id
+    originating_txt.id.to_s
+  end
+
   def ==(o)
     o.class == self.class && o.state == state
   end

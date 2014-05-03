@@ -24,7 +24,7 @@ describe Rename do
 
     it 'replies with the rename message' do
       I18n.should_receive('t').with('txts.rename', relay_name: arguments).and_return('rename')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'rename')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'rename', originating_txt_id: command_context.originating_txt_id)
       execute
     end
   end
@@ -37,7 +37,7 @@ describe Rename do
 
     it 'replies with the non-admin message' do
       I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin')
+      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin', originating_txt_id: command_context.originating_txt_id)
       execute
     end
   end

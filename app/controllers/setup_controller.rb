@@ -9,7 +9,7 @@ class SetupController < ApplicationController
       current_user.update_attribute(:admin, true)
       @subscriber = Subscriber.new
     when :buy_relay_number
-      Create.new(CommandContext.new(relay: Relay.new(number: Subscriber.first.number), sender: Subscriber.first, application_url: incoming_txts_url, arguments: "B")).execute
+      Create.new(CommandContext.new(relay: Relay.new(number: Subscriber.first.number), sender: Subscriber.first, application_url: incoming_txts_url, arguments: "B", originating_txt: OpenStruct.new(id: nil))).execute
       @relay = Relay.first
     end
 

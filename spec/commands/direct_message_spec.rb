@@ -6,7 +6,7 @@ require 'timestamp_formatter'
 describe DirectMessage do
   include_context 'command context'
 
-  let(:txt) { double(:txt, body: content) }
+  let(:txt) { double(:txt, body: content, id: 'def') }
   let(:content) { '@user hello' }
 
   def execute
@@ -35,10 +35,10 @@ describe DirectMessage do
 
         it 'sends the message and replies' do
           I18n.stub(:t).with('txts.direct.outgoing', prefix: timestamp.format, sender: sender.addressable_name, message: content).and_return('outgoing')
-          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: target.number, body: 'outgoing')
+          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: target.number, body: 'outgoing', originating_txt_id: command_context.originating_txt_id)
 
           I18n.stub(:t).with('txts.direct.sent', target_name: '@user').and_return('sent')
-          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'sent')
+          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'sent', originating_txt_id: command_context.originating_txt_id)
 
           execute
         end
@@ -51,7 +51,7 @@ describe DirectMessage do
 
         it 'sends the failed message' do
           I18n.stub(:t).with('txts.direct.missing_target', target_name: '@user').and_return('failed')
-          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'failed')
+          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'failed', originating_txt_id: command_context.originating_txt_id)
 
           execute
         end
@@ -65,7 +65,7 @@ describe DirectMessage do
 
       it 'forbids the message' do
         I18n.stub(:t).with('txts.direct.anonymous').and_return('forbidden')
-        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'forbidden')
+        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'forbidden', originating_txt_id: command_context.originating_txt_id)
 
         execute
       end
