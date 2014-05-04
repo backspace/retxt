@@ -16,7 +16,7 @@ Given(/^I am subscribed( to relay (\w*))?( as an admin)?( as '(\w*)')?( at '(\d*
   if name_given
     subscriber.update_attribute(:name, name)
   end
-  
+
   if number_given
     subscriber.update_attribute(:number, number) 
     @my_number = number
