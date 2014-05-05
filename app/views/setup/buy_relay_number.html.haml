@@ -1,3 +1,5 @@
-%h2=t '.heading'
-%p=t '.phone_number', phone_number: @relay.number
-%p=t '.documentation_html', link: link_to(t('.documentation_link_text'), root_path)
+%section.row
+  .small-12.columns
+    %h2=t '.heading'
+    %p=t '.phone_number', phone_number: @relay.number
+    %p=t '.documentation_html', link: link_to(t('.documentation_link_text'), root_path)
