@@ -3,20 +3,20 @@
     %table
       %thead
         %tr
-          %th #
-          %th name
-          %th admin?
-          %th sent
+          %th=t '.number'
+          %th=t '.name'
+          %th=t '.admin'
+          %th=t '.sent'
           -@relays.each do |relay|
             %th[relay]{class: "#{relay.frozen ? "frozen" : ''} #{relay.closed ? 'closed' : ''} #{relay.moderated ? 'moderated' : ''}"}
               .name=relay.name
               .number=relay.number
               -if relay.frozen
-                (frozen)
+                (#{t '.frozen'})
               -if relay.closed
-                (closed)
+                (#{t '.closed'})
               -if relay.moderated
-                (moderated)
+                (#{t '.moderated'})
       %tbody
         -@subscribers.each do |subscriber|
           %tr[subscriber]{class: subscriber.admin ? "admin" : ""}
@@ -33,8 +33,8 @@
                 %td{class: "relay_#{relay.id} subscription subscriber_#{subscriber.id} #{moderated ? 'moderated' : ''} #{subscriber.admin? ? 'admin' : ''} #{muted ? 'muted' : ''} #{frozen ? 'frozen' : ''} #{voiced ? 'voiced' : ''}"}
                   =check
                   -if muted
-                    (muted)
+                    (#{t '.muted'})
                   -if voiced
-                    (voiced)
+                    (#(t '.voiced'})
               -else
                 %td

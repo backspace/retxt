@@ -1,0 +1,5 @@
+en:
+  users:
+    index:
+      email: email
+      admin: admin?

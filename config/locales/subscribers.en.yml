@@ -3,6 +3,20 @@ en:
     zero: 0 subscribers
     one: 1 subscriber
     other: "%{count} subscribers"
+
+    index:
+      number: '#'
+      name: name
+      admin: admin?
+      sent: sent
+
+      frozen: frozen
+      closed: closed
+      moderated: moderated
+
+      muted: muted
+      voiced: voiced
+
   other:
     zero: 0 others
     one: 1 other
