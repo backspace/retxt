@@ -1,7 +1,7 @@
 %section.row
   .small-12.columns
-    %h2 Setup
-    %p Choose a name for the relay.
+    %h2=t 'setup.heading'
+    %p=t '.choose_a_name'
     =form_for @relay, url: wizard_path, method: :put do |f|
       =f.text_field :name
-      =f.submit 'Save'
+      =f.submit t('setup.save_button')
