@@ -1,0 +1,15 @@
+en:
+  setup:
+    heading: Setup
+    save_button: 'Save'
+    get_admin_number:
+      enter_name_and_number: Please enter your name and phone number. The number must be in the form +1XXXXXXXXXX.
+      name: Name
+      number: Number
+    name_relay:
+      choose_a_name: Choose a name for the relay.
+    buy_relay_number:
+      heading: Success!
+      phone_number: "A new relay has been set up at the phone number %{phone_number}. You should have received a text message from it."
+      documentation_html: "To see the features of the relay, visit the %{link}."
+      documentation_link_text: "documentation"

@@ -1,0 +1,9 @@
+en:
+  subscribers:
+    zero: 0 subscribers
+    one: 1 subscriber
+    other: "%{count} subscribers"
+  other:
+    zero: 0 others
+    one: 1 other
+    other: "%{count} others"
