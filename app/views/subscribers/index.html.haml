@@ -1,39 +1,40 @@
-.row
-  %table
-    %thead
-      %tr
-        %th #
-        %th name
-        %th admin?
-        %th sent
-        -@relays.each do |relay|
-          %th[relay]{class: "#{relay.frozen ? "frozen" : ''} #{relay.closed ? 'closed' : ''} #{relay.moderated ? 'moderated' : ''}"}
-            .name=relay.name
-            .number=relay.number
-            -if relay.frozen
-              (frozen)
-            -if relay.closed
-              (closed)
-            -if relay.moderated
-              (moderated)
-    %tbody
-      -@subscribers.each do |subscriber|
-        %tr[subscriber]{class: subscriber.admin ? "admin" : ""}
-          %td=subscriber.number
-          %td=link_to(subscriber.name_or_anon, subscriber_txts_path(subscriber))
-          %td=subscriber.admin? ? check : cross
-          %td.sent=subscriber.sent.count
+%section.row
+  .small-12.columns
+    %table
+      %thead
+        %tr
+          %th #
+          %th name
+          %th admin?
+          %th sent
           -@relays.each do |relay|
-            -if relay.subscribed?(subscriber)
-              -frozen = relay.frozen
-              -moderated = relay.moderated
-              -muted = relay.subscription_for(subscriber).muted
-              -voiced = relay.subscription_for(subscriber).voiced
-              %td{class: "relay_#{relay.id} subscription subscriber_#{subscriber.id} #{moderated ? 'moderated' : ''} #{subscriber.admin? ? 'admin' : ''} #{muted ? 'muted' : ''} #{frozen ? 'frozen' : ''} #{voiced ? 'voiced' : ''}"}
-                =check
-                -if muted
-                  (muted)
-                -if voiced
-                  (voiced)
-            -else
-              %td
+            %th[relay]{class: "#{relay.frozen ? "frozen" : ''} #{relay.closed ? 'closed' : ''} #{relay.moderated ? 'moderated' : ''}"}
+              .name=relay.name
+              .number=relay.number
+              -if relay.frozen
+                (frozen)
+              -if relay.closed
+                (closed)
+              -if relay.moderated
+                (moderated)
+      %tbody
+        -@subscribers.each do |subscriber|
+          %tr[subscriber]{class: subscriber.admin ? "admin" : ""}
+            %td=subscriber.number
+            %td=link_to(subscriber.name_or_anon, subscriber_txts_path(subscriber))
+            %td=subscriber.admin? ? check : cross
+            %td.sent=subscriber.sent.count
+            -@relays.each do |relay|
+              -if relay.subscribed?(subscriber)
+                -frozen = relay.frozen
+                -moderated = relay.moderated
+                -muted = relay.subscription_for(subscriber).muted
+                -voiced = relay.subscription_for(subscriber).voiced
+                %td{class: "relay_#{relay.id} subscription subscriber_#{subscriber.id} #{moderated ? 'moderated' : ''} #{subscriber.admin? ? 'admin' : ''} #{muted ? 'muted' : ''} #{frozen ? 'frozen' : ''} #{voiced ? 'voiced' : ''}"}
+                  =check
+                  -if muted
+                    (muted)
+                  -if voiced
+                    (voiced)
+              -else
+                %td
