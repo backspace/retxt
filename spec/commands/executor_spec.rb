@@ -1,6 +1,7 @@
 require_relative '../../app/commands/executor'
 
 require_relative '../../app/models/command_context'
+require_relative '../../lib/parses_commands'
 
 require_relative '../../app/commands/admin'
 require_relative '../../app/commands/clear'
