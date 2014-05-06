@@ -1,151 +1,153 @@
 .row
   .small-12.columns
-    %p This is the homepage for a text message relay system. Subscribers can send a message to one number and it will be forwarded to everyone else subscribed.
+    %p=t '.summary'
     -if RelaySettings.display_number
       %p
         -if @relay.present?
           =@relay.number
-          is the number all the commands below should be sent to. This could change in the future.
+          =t '.display_number.number_explanation'
         -else
-          There appears to be no phone number associated with the relay?!
+          =t '.display_number.no_number'
 %section.row
   .large-6.small-12.columns
-    %h2 Subscribing
-    =txt_pair('subscribe', t('txts.welcome', relay_name: 'the relay', subscriber_name: 'anon', subscriber_count: t('other', count: @subscriber_count)))
+    %h2=t '.subscribing.heading'
+    =txt_pair(t('commands.subscribe'), t('txts.welcome', relay_name: t('.subscribing.relay_name'), subscriber_name: t('subscribers.anon'), subscriber_count: t('other', count: @subscriber_count)))
     .row
       .small-12.columns
-        %p Optionally, specify a name when subscribing.
-    =txt_pair('subscribe alice', t('txts.welcome', relay_name: 'the relay', subscriber_name: 'alice', subscriber_count: t('other', count: @subscriber_count)))
+        %p=t('.subscribing.giving_a_name')
+    =txt_pair("#{t 'commands.subscribe'} #{t '.subscribing.subscriber'}", t('txts.welcome', relay_name: t('.subscribing.relay_name'), subscriber_name: t('.subscribing.subscriber'), subscriber_count: t('other', count: @subscriber_count)))
   .large-6.small-12.columns
-    %h2 Unsubscribing
-    =txt_pair('unsubscribe', '(this message is intercepted by the text message gateway and out of our control. you need to send \'start\' to get back in communication with the relay.)')
+    %h2=t '.unsubscribing.heading'
+    =txt_pair(t('commands.unsubscribe'), t('.unsubscribing.response'))
 
 %section.row
   .large-6.small-12.columns
-    %h2 Relay a message
-    =txt_pair('there\'s a tornado destroying super c!', t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
-    %p Other subscribers will receive the message like this:
-    -%w{francine pascal}.each do |name|
-      =txt_pair('', "@alice sez: there's a tornado destroying super c!", receiver: name)
+    %h2=t '.relaying.heading'
+    =txt_pair(t('.relaying.message'), t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: t('.relaying.sender'))
+    %p=t '.relaying.recipient_explanation'
+    -[t('.relaying.other_receiver_1'), t('.relaying.other_receiver_2')].each do |name|
+      =txt_pair('', RelayedTxtFormatter.new(relay: Relay.new, sender: Subscriber.new(name: t('.relaying.sender')), txt: Txt.new(body: t('.relaying.message'))).format, sender: t('.relaying.sender'), message: t('.relaying.message'), receiver: name)
   .large-6.small-12.columns
-    %h2 Etiquette
+    %h2=t '.etiquette.heading'
     %p
       %ul
-        %li Don’t send fake emergency messages! Creating a panic isn’t fun times.
-        %li Be mindful that other subscribers will be receiving your messages.
-        %li Plus, each incoming and outgoing message costs $0.075.
-        %li Therefore, don’t spam!
+        %li=t '.etiquette.no_fake_emergencies'
+        %li=t '.etiquette.others_will_receive'
+        %li=t '.etiquette.will_cost_money'
+        %li=t '.etiquette.no_spam'
 
 %section.row
   .large-6.small-12.columns
-    %h2 About
-    =txt_pair('about', t('txts.help', subscriber_count: t('other', count: @subscriber_count)))
+    %h2=t '.about.heading'
+    =txt_pair(t('commands.about'), t('txts.help', subscriber_count: t('other', count: @subscriber_count)))
   .large-6.small-12.columns
-    %h2 Names
-    =txt_pair('name', t('txts.name', name: 'anon'))
-    =txt_pair('name bob', t('txts.name', name: 'bob'))
+    %h2=t '.names.heading'
+    =txt_pair(t('commands.name'), t('txts.name', name: t('subscribers.anon')))
+    =txt_pair("#{t('commands.name')} #{t('.names.new_name')}", t('txts.name', name: t('.names.new_name')))
 
 %section.row
   .large-6.small-12.columns
-    %h2 Direct messaging
-    -message = '@alice see you there!'
-    =txt_pair(message, t('txts.direct.sent', target_name: '@alice'))
-    %p @alice will receive the message like this:
-    =txt_pair('', t('txts.direct.outgoing', prefix: '', sender: '@bob', message: message))
+    %h2=t '.direct_messaging.heading'
+    -message = t('.direct_messaging.message', target_name: t('.direct_messaging.target_name'))
+    =txt_pair(message, t('txts.direct.sent', target_name: "@#{t('.direct_messaging.target_name')}"))
+    %p=t '.direct_messaging.explanation', target_name: t('.direct_messaging.target_name')
+    =txt_pair('', t('txts.direct.outgoing', prefix: '', sender: "@#{t('.direct_messaging.sender')}", message: message))
 
 
 %section.row
   .small-12.columns
-    %h2 Admin-only commands
-    %p The following commands are admin-only.
+    %h2=t '.admin.heading'
+    %p=t '.admin.explanation'
 %section.row
   .large-6.small-12.columns
-    %h3 Create a new relay
-    =txt_pair('/create temp', t('txts.admin.create', admin_name: '@admin', relay_name: 'temp'), sender: 'admin', receiver: 'admin, from new #')
+    %h3=t '.creating.heading'
+    =txt_pair("/#{t('commands.create')} #{t('.creating.relay_name')}", t('txts.admin.create', admin_name: "@#{t('.admin_name')}", relay_name: t('.creating.relay_name'), sender: t('.admin_name'), receiver: t('.creating.admin_from_new_number', admin_name: t('.admin_name'))))
   .large-6.small-12.columns
-    %h3 Who
-    -admin_person = Subscriber.new(name: 'donna', number: '+16045551616', admin: true)
-    -admin_person.admin = true
-    -replies = who_messages([Subscriber.new(name: "alex", number: '+12045551313'), Subscriber.new(name: 'brenda', number: '+15145551414'), Subscriber.new(name: 'chris', number: '+14165551515'), admin_person])
-    =txt_pair('/who', replies.first, sender: 'admin')
+    %h3=t '.who.heading'
+    -subscribers = t('.who.people').map{|key, value| Subscriber.new(name: value[:name], number: value[:number])}
+    -subscribers.last.admin = true
+    -replies = who_messages(subscribers)
+    =txt_pair("/#{t('commands.who')}", replies.first, sender: t('.admin_name'))
     -if replies.length > 1
       =txt_pair('', replies[1])
     -if replies.length > 2
       =txt_pair('', '…')
-    %p The * indicates an admin.
+    %p=t '.who.admin_note'
 %section.row
   .large-6.small-12.columns
-    %h3 Freeze/thaw
-    =txt_pair('/freeze', t('txts.freeze', admin_name: '@admin'), sender: 'admin')
-    =txt_pair('everyone okay?', t('txts.frozen'), sender: 'francine')
-    =txt_pair('/thaw', t('txts.thaw', admin_name: '@admin'), sender: 'admin')
+    %h3=t '.freezing.heading'
+    =txt_pair("/#{t('commands.freeze')}", t('txts.freeze', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
+    =txt_pair(t('.freezing.blocked_message'), t('txts.frozen'), sender: t('.freezing.sender'))
+    =txt_pair("/#{t('commands.thaw')}", t('txts.thaw', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
   .large-6.small-12.columns
-    %h3 Mute/unmute
-    =txt_pair('i keep spamming the list!', t('txts.relayed', subscriber_count: t('subscribers', count: 1337)), sender: 'rogers')
-    =txt_pair('/mute @rogers', t('txts.mute', mutee_name: '@rogers', admin_name: '@admin'), sender: 'admin')
-    =txt_pair('i want to spam again!', t('txts.muted_fail'), sender: 'rogers')
-    =txt_pair('', t('txts.muted_report', mutee_name: '@rogers', muted_message: 'i want to spam again!'), receiver: 'admin')
-    =txt_pair('/unmute @rogers', t('txts.unmute', unmutee_name: '@rogers', admin_name: '@admin'), sender: 'admin')
+    %h3=t '.muting.heading'
+    =txt_pair(t('.muting.annoying_message'), t('txts.relayed', subscriber_count: t('subscribers', count: 1337)), sender: t('.muting.muted'))
+    =txt_pair("/#{t('commands.mute')} #{t('.muting.addressable_muted')}", t('txts.mute', mutee_name: t('.muting.addressable_muted'), admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
+    =txt_pair(t('.muting.blocked_annoying_message'), t('txts.muted_fail'), sender: t('.muting.muted'))
+    =txt_pair('', t('txts.muted_report', mutee_name: t('.muting.addressable_muted'), muted_message: t('.muting.blocked_annoying_message')), receiver: t('.admin_name'))
+    =txt_pair("/#{t('commands.unmute')} #{t('.muting.addressable_muted')}", t('txts.unmute', unmutee_name: t('.muting.addressable_muted'), admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
 %section.row
   .large-6.small-12.columns
-    %h3 Close/open
-    =txt_pair('/close', t('txts.admin.close', admin_name: '@admin'), sender: 'admin')
-    =txt_pair('subscribe nefarious', t('txts.close'), sender: '+15145551212')
-    =txt_pair('', t('txts.bounce_notification', number: '+15145551212', message: 'subscribe nefarious'), receiver: 'admin')
-    =txt_pair('/open', t('txts.admin.open', admin_name: '@admin'), sender: 'admin')
+    %h3=t('.closing.heading')
+    =txt_pair("/#{t('commands.close')}", t('txts.admin.close', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
+    -subscribe_message = "#{t('commands.subscribe')} #{t('.closing.blocked_name')}"
+    =txt_pair(subscribe_message, t('txts.close'), sender: t('.closing.blocked_number'))
+    =txt_pair('', t('txts.bounce_notification', number: t('.closing.blocked_number'), message: subscribe_message), receiver: t('.admin_name'))
+    =txt_pair("/#{t('commands.open')}", t('txts.admin.open', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
   .large-6.small-12.columns
-    %h3 Rename
-    =txt_pair('/rename awesome', t('txts.rename', relay_name: 'awesome'), sender: 'admin')
+    %h3=t '.renaming.heading'
+    =txt_pair("/#{t('commands.rename')} #{t('.renaming.new_relay_name')}", t('txts.rename', relay_name: t('.renaming.new_relay_name'), sender: t('.admin_name')))
 %section.row
   .large-6.small-12.columns
-    %h3 Clear
-    =txt_pair('/clear', t('txts.admin.clear'), sender: 'admin')
+    %h3=t '.clearing.heading'
+    =txt_pair("/#{t('commands.clear')}", t('txts.admin.clear'), sender: t('.admin_name'))
   .large-6.small-12.columns
-    %h3 Delete
-    =txt_pair('/delete', t('txts.admin.delete', admin_name: '@admin'), sender: 'admin')
+    %h3=t '.deleting.heading'
+    =txt_pair("/#{t('commands.delete')}", t('txts.admin.delete', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
 %section.row
   .large-6.small-12.columns
-    %h3 Admin/unadmin
-    -response=t('txts.admin.admin', adminer_name: '@admin', adminee_name: '@francine')
-    =txt_pair('/admin @francine', response, sender: 'admin', receiver: 'admin')
-    =txt_pair('', response, receiver: 'francine')
+    %h3=t '.adminning.heading'
+    -response=t('txts.admin.admin', adminer_name: t('.addressable_admin_name'), adminee_name: t('.adminning.addressable_adminee_name'))
+    =txt_pair("/#{t('commands.admin')} #{t('.adminning.addressable_adminee_name')}", response, sender: t('.admin_name'), receiver: t('.admin_name'))
+    =txt_pair('', response, receiver: t('.adminning.adminee_name'))
 
-    =txt_pair('/unadmin @francine', t('txts.admin.unadmin', unadminer_name: '@admin', unadminee_name: '@francine'), sender: 'admin', receiver: 'admin')
+    =txt_pair("/#{t('commands.unadmin')} #{t('.adminning.addressable_adminee_name')}", t('txts.admin.unadmin', unadminer_name: t('.addressable_admin_name'), unadminee_name: t('.adminning.addressable_adminee_name')), sender: t('.admin_name'), receiver: t('.admin_name'))
   .large-6.small-12.columns
-    %h3 Moderation and voice
-    =txt_pair('/moderate', t('txts.admin.moderate', admin_name: '@admin'), sender: 'admin')
-    =txt_pair('come to my party!', t('txts.moderated_fail'), sender: '+15145551212')
-    =txt_pair('', t('txts.moderated_report', subscriber_name: 'anon#+15145551212', moderated_message: 'come to my party!'), receiver: 'admin')
-    =txt_pair('/voice @alice', t('txts.voice', admin_name: '@admin', voicee_name: '@alice'), sender: 'admin')
-    =txt_pair('we need support!', t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
-    =txt_pair('/unvoice @bob', t('txts.unvoice', admin_name: '@admin', unvoicee_name: '@bob'), sender: 'admin')
-    =txt_pair('/unmoderate', t('txts.admin.unmoderate', admin_name: '@admin'), sender: 'admin')
+    %h3=t '.moderating.heading'
+    =txt_pair("/#{t('commands.moderate')}", t('txts.admin.moderate', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
+    =txt_pair(t('.moderating.moderated_message'), t('txts.moderated_fail'), sender: t('.moderating.moderated_number'))
+    =txt_pair('', t('txts.moderated_report', subscriber_name: "anon##{t('.moderating.moderated_number')}", moderated_message: t('.moderating.moderated_message')), receiver: t('.admin_name'))
+    =txt_pair("/#{t('commands.voice')} #{t('.moderating.addressable_voiced_name')}", t('txts.voice', admin_name: t('.addressable_admin_name'), voicee_name: t('.moderating.addressable_voiced_name')), sender: t('.admin_name'))
+    =txt_pair(t('.moderating.relayed_message'), t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: t('.moderating.voiced_name'))
+    =txt_pair("/#{t('commands.unvoice')} #{t('.moderating.addressable_unvoiced_name')}", t('txts.unvoice', admin_name: t('.addressable_admin_name'), unvoicee_name: t('.moderating.addressable_unvoiced_name')), sender: t('.admin_name'))
+    =txt_pair("/#{t('commands.unmoderate')}", t('txts.admin.unmoderate', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
 %section.row
   .large-6.small-12.columns
-    %h3 Timestamps
-    -timestamp = '%l:%M'
-    =txt_pair("/timestamp #{timestamp}", t('txts.admin.timestamp', admin_name: 'admin', timestamp: timestamp), sender: 'admin')
-    %p For details on how to format the timestamp, visit #{link_to "strftime.org", "http://strftime.org/"}. The example timestamp is (hours in 12-hour format):(minutes).
-    -relay_message = 'come to berri square! the rev!'
-    -message = '@alice on my way'
-    =txt_pair(relay_message, t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: 'alice')
-    =txt_pair('', "#{Time.zone.now.strftime(timestamp).strip} @alice sez: #{relay_message}", receiver: "bob")
-    =txt_pair(message, t('txts.direct.sent', target_name: '@alice'), sender: 'bob')
-    =txt_pair('', t('txts.direct.outgoing', prefix: "#{Time.zone.now.strftime(timestamp).strip} ", sender: '@bob', message: message), receiver: 'alice')
+    %h3=t '.timestamping.heading'
+    -timestamp = t('.timestamping.example_timestamp')
+    -relay = Relay.new(timestamp: timestamp)
+    -relayer = Subscriber.new(name: t('.timestamping.relay_sender'))
+    =txt_pair("/#{t('commands.timestamp')} #{timestamp}", t('txts.admin.timestamp', admin_name: t('.admin_name'), timestamp: timestamp), sender: t('.admin_name'))
+    %p=t('.timestamping.link_html', link: link_to("strftime.org", "http://strftime.org/"))
+    -relay_message = t('.timestamping.relayed_message')
+    -message = t('.timestamping.direct_message')
+    =txt_pair(relay_message, t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: t('.timestamping.relay_sender'))
+    =txt_pair('', RelayedTxtFormatter.new(relay: relay, sender: relayer, txt: Txt.new(body: t('.timestamping.relayed_message'), created_at: Time.now)).format, receiver: t('.timestamping.direct_sender'))
+    =txt_pair(message, t('txts.direct.sent', target_name: "@#{t('.timestamping.relay_sender')}"), sender: t('.timestamping.direct_sender'))
+    =txt_pair('', t('txts.direct.outgoing', prefix: "#{Time.zone.now.strftime(timestamp).strip} ", sender: "@#{t('.timestamping.direct_sender')}", message: message), receiver: t('.timestamping.relay_sender'))
 
 %section.row
   .large-6.small-12.columns
-    %h2 Feedback
-    %p Things to consider:
+    %h2=t('.feedback.heading')
+    %p=t('.feedback.list_introduction')
     %ul
-      %li was it easy to sign up?
-      %li did you experience any bugs?
-      %li or other confusions?
-      %li do you have any suggestions?
-    %p To provide feedback, please visit the #{link_to "GitHub issues page", "https://github.com/backspace/retxt/issues"}.
+      %li=t('.feedback.easy')
+      %li=t('.feedback.bugs')
+      %li=t('.feedback.confusions')
+      %li=t('.feedback.suggestions')
+    %p=t('.feedback.link_html', link: link_to(t('.feedback.link_text'), "https://github.com/backspace/retxt/issues"))
 
 
 %section.row.credits
-  %p Developed by #{link_to 'chromatin', 'http://chromatin.ca/'}
-  %p
-    <a href="http://thenounproject.com/noun/radio-tower/#icon-No1316" target="_blank">Radio Tower</a> designed by <a href="http://thenounproject.com/johncaserta" target="_blank">John Caserta</a> from The Noun Project
+  %p=t('.footer.developer_html', link: link_to('chromatin', 'http://chromatin.ca/'))
+  %p=t('.footer.image_credit_html', icon: '<a href="http://thenounproject.com/noun/radio-tower/#icon-No1316" target="_blank">Radio Tower</a>'.html_safe, designer: '<a href="http://thenounproject.com/johncaserta" target="_blank">John Caserta</a>'.html_safe)

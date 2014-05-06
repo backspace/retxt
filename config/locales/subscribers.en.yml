@@ -4,6 +4,8 @@ en:
     one: 1 subscriber
     other: "%{count} subscribers"
 
+    anon: anon
+
     index:
       number: '#'
       name: name

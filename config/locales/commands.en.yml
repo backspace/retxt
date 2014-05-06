@@ -1,0 +1,36 @@
+en:
+  commands:
+    subscribe: subscribe
+    unsubscribe: unsubscribe
+
+    about: about
+
+    name: name
+
+    create: create
+    who: who
+
+    freeze: freeze
+    thaw: thaw
+
+    mute: mute
+    unmute: unmute
+
+    close: close
+    open: open
+
+    rename: rename
+
+    clear: clear
+    delete: delete
+
+    admin: admin
+    unadmin: unadmin
+
+    moderate: moderate
+    unmoderate: unmoderate
+
+    voice: voice
+    unvoice: unvoice
+
+    timestamp: timestamp

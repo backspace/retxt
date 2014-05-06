@@ -1,0 +1,140 @@
+en:
+  home:
+    index:
+
+      summary: This is the homepage for a text message relay system. Subscribers can send a message to one number and it will be forwarded to everyone else subscribed.
+
+      admin_name: admin
+      addressable_admin_name: "@admin"
+
+      display_number:
+        number_explanation: is the number all the commands below should be sent to. This could change in the future.
+        no_number: There appears to be no phone number associated with the relay?!
+
+      subscribing:
+        heading: Subscribing
+        subscriber: alice
+        relay_name: the relay
+        giving_a_name: Optionally, specify a name when subscribing.
+      unsubscribing:
+        heading: Unsubscribing
+        response: (this message is intercepted by the text message gateway and out of our control. you need to send 'start' to get back in communication with the relay.)
+
+      relaying:
+        heading: Relay a message
+        message: there's a tornado destroying super c!
+        sender: alice
+        recipient_explanation: "Other subscribers will receive the message like this:"
+        other_receiver_1: francine
+        other_receiver_2: pascal
+
+      etiquette:
+        heading: Etiquette
+        no_fake_emergencies: Don’t send fake emergency messages! Creating a panic isn’t fun times.
+        others_will_receive: Be mindful that other subscribers will be receiving your messages.
+        will_cost_money: Plus, each incoming and outgoing message costs $0.075.
+        no_spam: Therefore, don’t spam!
+
+      about:
+        heading: About
+
+      names:
+        heading: Names
+        new_name: bob
+
+      direct_messaging:
+        heading: Direct messaging
+        target_name: alice
+        message: "@%{target_name} see you there!"
+        explanation: "@%{target_name} will receive the message like this:"
+        sender: bob
+
+      admin:
+        heading: Admin-only commands
+        explanation: The following commands are admin-only.
+
+      creating:
+        heading: Create a new relay
+        relay_name: temp
+        admin_from_new_number: "%{admin_name}, from new #"
+
+      who:
+        heading: Who
+        admin_note: "The * indicates an admin."
+        people:
+          first:
+            name: alex
+            number: "+12045551313"
+          second:
+            name: brenda
+            number: "+15145551414"
+          third:
+            name: chris
+            number: "+14165551515"
+          four:
+            name: donna
+            number: "+16045551616"
+
+      freezing:
+        heading: "Freeze/thaw"
+        blocked_message: "everyone okay?"
+        sender: francine
+
+      muting:
+        heading: "Mute/unmute"
+        annoying_message: "i keep spamming the list!"
+        blocked_annoying_message: "i want to spam again!"
+        muted: rogers
+        addressable_muted: "@rogers"
+
+      closing:
+        heading: "Close/open"
+        blocked_name: nefarious
+        blocked_number: "+15145551212"
+
+      renaming:
+        heading: Rename
+        new_relay_name: awesome
+
+      clearing:
+        heading: Clear
+
+      deleting:
+        heading: Delete
+
+      adminning:
+        heading: Admin/unadmin
+        adminee_name: francine
+        addressable_adminee_name: "@francine"
+
+      moderating:
+        heading: Moderation and voice
+        moderated_message: "come to my party!"
+        moderated_number: "+15145551212"
+        relayed_message: "we need support!"
+        voiced_name: alice
+        addressable_voiced_name: "@alice"
+        addressable_unvoiced_name: "@bob"
+
+      timestamping:
+        heading: Timestamps
+        example_timestamp: "%l:%M"
+        link_html: For details on how to format the timestamp, visit %{link}. The example timestamp is (hours in 12-hour format):(minutes).
+        relay_sender: "alice"
+        relayed_message: "come to berri square! the rev!"
+        direct_message: "@alice on my way"
+        direct_sender: bob
+
+      feedback:
+        heading: Feedback
+        list_introduction: "Things to consider:"
+        easy: was it easy to sign up?
+        bugs: did you experience any bugs?
+        confusions: or other confusions?
+        suggestions: do you have any suggestions?
+        link_html: To provide feedback, please visit the %{link}.
+        link_text: GitHub issues page
+
+      footer:
+        developer_html: Developed by %{link}
+        image_credit_html: "%{icon} designed by %{designer} from The Noun Project"
