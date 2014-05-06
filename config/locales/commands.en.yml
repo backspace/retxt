@@ -3,7 +3,9 @@ en:
     subscribe: subscribe
     unsubscribe: unsubscribe
 
-    help: about
+    help:
+      - about
+      - help
 
     name: name
 
