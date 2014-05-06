@@ -1,65 +1,66 @@
 class ParsesCommands
-  def initialize(command, context)
+  def initialize(command, context, structure = COMMAND_STRUCTURE)
     @command = command
     @context = context
+    @structure = structure
   end
 
   def parse
-    if command == 'help' || command == 'about'
-      Help
-    elsif command == 'name'
-      Name
-    elsif command == 'subscribe'
-      Subscribe
-    elsif command == 'unsubscribe'
-      Unsubscribe
-    elsif command == '/create'
-      Create
-    elsif command == '/moderate'
-      Moderate
-    elsif command == '/unmoderate'
-      Unmoderate
-    elsif command == '/freeze'
-      Freeze
-    elsif command == '/thaw' || command == '/unthaw'
-      Thaw
-    elsif command == '/who'
-      Who
-    elsif command == '/mute'
-      Mute
-    elsif command == '/unmute'
-      Unmute
-    elsif command == '/voice'
-      Voice
-    elsif command == '/unvoice'
-      Unvoice
-    elsif command == '/admin'
-      Admin
-    elsif command == '/unadmin'
-      Unadmin
-    elsif command == '/close'
-      Close
-    elsif command == '/open'
-      Open
-    elsif command == '/rename'
-      Rename
-    elsif command == '/clear'
-      Clear
-    elsif command == '/delete'
-      Delete
-    elsif command == '/timestamp'
-      Timestamp
-    elsif command.start_with? '/'
-      Unknown
-    elsif command.start_with? '@'
-      DirectMessage
-    else
-      RelayCommand
-    end
+    command_class_name.camelize.constantize
   end
 
   protected
   def command
     @command
+  end
+
+  def command_is_slashed?
+    command.start_with? "/"
+  end
+
+  def command_is_addressed?
+    command.start_with? "@"
+  end
+
+  def slashless_command
+    @slashless_command ||= command[1..-1]
+  end
+
+  def command_class_name
+    if command_is_addressed?
+      'direct_message'
+    else
+      matching_command = command_hash.find do |key, value|
+        if requires_slash?(key) && command_is_slashed?
+          matches_command?(value, slashless_command)
+        else
+          matches_command?(value, command)
+        end
+      end
+
+      if matching_command
+        matching_command.first.to_s
+      elsif command_is_slashed?
+        'unknown'
+      else
+        'relay_command'
+      end
+    end
+  end
+
+  def command_hash
+    @command_hash ||= I18n.t('commands')
+  end
+
+  def requires_slash?(command)
+    keys_requiring_slash.include? command
+  end
+
+  def keys_requiring_slash
+    @structure[:slash_requiring] || []
+  end
+
+  def matches_command?(candidates, command)
+    candidates.is_a?(Array) ? candidates.include?(command) : candidates == command
   end
 end
