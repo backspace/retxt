@@ -1,4 +1,4 @@
-require_relative '../../app/commands/executor'
+require_relative '../../lib/executor'
 
 require_relative '../../app/models/command_context'
 require_relative '../../lib/parses_commands'
