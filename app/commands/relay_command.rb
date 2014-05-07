@@ -20,9 +20,7 @@ class RelayCommand
         if @relay.subscription_for(@sender).muted
           SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.muted_fail'), originating_txt_id: @command_context.originating_txt_id)
 
-          @relay.admins.each do |admin|
-            SendsTxts.send_txt(from: @relay.number, to: admin.number, body: I18n.t('txts.muted_report', mutee_name: @sender.addressable_name, muted_message: @content), originating_txt_id: @command_context.originating_txt_id)
-          end
+          TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: I18n.t('txts.muted_report', mutee_name: @sender.addressable_name, muted_message: @content), originating_txt_id: @command_context.originating_txt_id)
         else
           to_relay = RelayedTxtFormatter.new(relay: @relay, sender: @sender, txt: @txt).format
 

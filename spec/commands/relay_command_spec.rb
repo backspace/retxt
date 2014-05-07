@@ -129,14 +129,11 @@ describe RelayCommand do
       end
 
       it 'notifies admins and responds that the sender is muted' do
-        admin = double('admin', number: 5)
-        relay.stub(:admins).and_return([admin])
-
         I18n.should_receive('t').with('txts.muted_fail').and_return('muted fail')
         SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'muted fail', originating_txt_id: command_context.originating_txt_id)
 
         I18n.should_receive('t').with('txts.muted_report', mutee_name: sender.addressable_name, muted_message: content).and_return('muted report')
-        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: admin.number, body: 'muted report', originating_txt_id: command_context.originating_txt_id)
+        TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'muted report', originating_txt_id: command_context.originating_txt_id)
 
         execute
       end
