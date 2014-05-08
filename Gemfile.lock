@@ -102,10 +102,6 @@ GEM
     jwt (0.1.11)
       multi_json (>= 1.5)
     kgio (2.9.2)
-    localtunnel (0.3)
-      json (>= 1.2.4)
-      net-ssh (>= 2.0.22)
-      net-ssh-gateway (>= 1.0.1)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -130,9 +126,6 @@ GEM
       optionable (~> 0.2.0)
     multi_json (1.9.3)
     multi_test (0.1.1)
-    net-ssh (2.9.0)
-    net-ssh-gateway (1.2.0)
-      net-ssh (>= 2.6.5)
     newrelic_rpm (3.8.0.218)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
@@ -247,7 +240,6 @@ DEPENDENCIES
   foreman
   haml
   jquery-rails
-  localtunnel
   mocha
   mongoid (~> 4.0.0.beta1)
   mongoid-app_settings
