@@ -1,3 +1,5 @@
+require 'active_support/core_ext/object/blank'
+
 class Subscribe
   def initialize(command_context, options = {})
     @command_context = command_context
