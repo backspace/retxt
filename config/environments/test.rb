@@ -36,5 +36,5 @@ ReTxt::Application.configure do
   config.eager_load = false
 
   config.i18n.enforce_available_locales = false
-  config.i18n.load_path += Dir[Rails.root.join('spec', 'locales', '*.*.{rb,yml}')]
+  config.i18n.load_path += Dir[Rails.root.join('spec', 'locales', '**.{rb,yml}')]
 end
