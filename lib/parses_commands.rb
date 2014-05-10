@@ -3,10 +3,16 @@ class ParsesCommands
     @command = command
     @context = context
     @structure = structure
+
+    @command_hash = {}
   end
 
   def parse
     command_class_name.camelize.constantize
+  end
+
+  def locale
+    @locale
   end
 
   protected
@@ -30,10 +36,19 @@ class ParsesCommands
     if command_is_addressed?
       'direct_message'
     else
-      matching_command = find_matching_command
+      I18n.available_locales.each do |locale|
+        @matching_command = find_matching_command(select_locale_setting_keys(command_hash_in_locale(locale)))
 
-      if matching_command
-        matching_command.first.to_s
+        if @matching_command
+          @locale = locale
+          break
+        end
+      end
+
+      @matching_command = find_matching_command(command_hash_in_locale(@context.locale)) unless @matching_command
+
+      if @matching_command
+        @matching_command.first.to_s
       elsif command_is_slashed?
         'unknown'
       else
@@ -42,8 +57,8 @@ class ParsesCommands
     end
   end
 
-  def command_hash
-    @command_hash ||= I18n.t('commands')
+  def command_hash_in_locale(locale)
+    @command_hash[locale] ||= I18n.t('commands', locale: locale)
   end
 
   def requires_slash?(command)
@@ -54,12 +69,20 @@ class ParsesCommands
     @structure[:slash_requiring] || []
   end
 
+  def select_locale_setting_keys(command_hash)
+    command_hash.select{|key, value| locale_setting_keys.include? key}
+  end
+
+  def locale_setting_keys
+    @structure[:locale_setting] || []
+  end
+
   def matches_command?(candidates, command)
     candidates.is_a?(Array) ? candidates.include?(command) : candidates == command
   end
 
-  def find_matching_command
-    command_hash.find do |key, value|
+  def find_matching_command(commands)
+    commands.find do |key, value|
       if requires_slash?(key) && command_is_slashed?
         matches_command?(value, slashless_command)
       else
