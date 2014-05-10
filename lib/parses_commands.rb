@@ -30,13 +30,7 @@ class ParsesCommands
     if command_is_addressed?
       'direct_message'
     else
-      matching_command = command_hash.find do |key, value|
-        if requires_slash?(key) && command_is_slashed?
-          matches_command?(value, slashless_command)
-        else
-          matches_command?(value, command)
-        end
-      end
+      matching_command = find_matching_command
 
       if matching_command
         matching_command.first.to_s
@@ -62,5 +56,15 @@ class ParsesCommands
 
   def matches_command?(candidates, command)
     candidates.is_a?(Array) ? candidates.include?(command) : candidates == command
+  end
+
+  def find_matching_command
+    command_hash.find do |key, value|
+      if requires_slash?(key) && command_is_slashed?
+        matches_command?(value, slashless_command)
+      else
+        matches_command?(value, command)
+      end
+    end
   end
 end
