@@ -8,6 +8,7 @@ When(/^I make 'user@example\.com' an admin$/) do
   user = User.find_by(email: 'user@example.com')
 
   page.find("#user_#{user.id}").check("admin")
+  wait_for_ajax
 end
 
 Then(/^I should see that '(.*)' is registered$/) do |address|
