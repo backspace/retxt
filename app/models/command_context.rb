@@ -5,12 +5,15 @@ class CommandContext
   attr_accessor :arguments
   attr_accessor :application_url
 
+  attr_accessor :locale
+
   def initialize(options = {})
     @sender = options[:sender]
     @relay = options[:relay]
     @originating_txt = options[:originating_txt]
     @arguments = options[:arguments]
     @application_url = options[:application_url]
+    @locale = options[:locale]
   end
 
   def txt

@@ -33,8 +33,11 @@ describe Executor do
     parser = double(:parser)
     ParsesCommands.should_receive(:new).with(message, command_context).and_return(parser)
     parser.should_receive(:parse).and_return(command_class)
+
+    parser.should_receive(:locale).and_return(:locale)
+
     command = double(:command)
-    command_class.should_receive(:new).with(command_context).and_return(command)
+    command_class.should_receive(:new).with(command_context.tap{|context| context.locale = :locale }).and_return(command)
     command.should_receive(:execute)
 
     send_message message

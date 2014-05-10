@@ -29,6 +29,9 @@ class Executor
   end
 
   def execute
-    ParsesCommands.new(command, command_context).parse.new(command_context).execute
+    parser = ParsesCommands.new(command, command_context)
+    command_class = parser.parse
+    command_context.locale = parser.locale
+    command_class.new(command_context).execute
   end
 end
