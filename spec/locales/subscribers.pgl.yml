@@ -1,0 +1,8 @@
+pgl:
+  subscribers:
+    anon: anonay
+
+  other:
+    zero: 0 othersay
+    one: 1 otheray
+    other: "%{count} othersay"

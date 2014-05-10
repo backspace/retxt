@@ -32,6 +32,10 @@ class Executor
     parser = ParsesCommands.new(command, command_context)
     command_class = parser.parse
     command_context.locale = parser.locale
-    command_class.new(command_context).execute
+    command_object = command_class.new(command_context)
+
+    I18n.with_locale(command_context.locale) do
+      command_object.execute
+    end
   end
 end

@@ -27,5 +27,9 @@ COMMAND_STRUCTURE = {
     :unvoice,
 
     :timestamp
+  ],
+
+  locale_setting: [
+    :subscribe
   ]
 }

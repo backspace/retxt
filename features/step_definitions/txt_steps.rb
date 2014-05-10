@@ -21,14 +21,18 @@ When(/^'(\w*)' txts '([^']*)'( to relay A)?$/) do |name, content, relay_given|
   post '/txts/incoming', Body: content, From: Subscriber.find_by(name: name).number, To: relay.number
 end
 
-Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|non-admin|moderated|unmoderated|timestamp) txt( from (\d+))?$/) do |message_type, non_default_source, source|
+Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|non-admin|moderated|unmoderated|timestamp) txt( in Pig Latin)?( from (\d+))?$/) do |message_type, in_pig_latin, non_default_source, source|
+  @original_locale = I18n.locale
+
+  I18n.locale = :pgl if in_pig_latin.present?
+
   my_addressable_name = Subscriber.find_by(number: my_number).addressable_name
 
   if message_type == 'help'
 
     message = I18n.t('txts.help', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
   elsif message_type == 'welcome'
-    message = 'welcome'
+    message = I18n.t('txts.welcome', relay_name: Relay.first.name, subscriber_name: Subscriber.first.name_or_anon, subscriber_count: I18n.t('other', count: Relay.first.subscription_count - 1))
   elsif message_type == 'confirmation'
     message = I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
   elsif message_type == 'directconfirmation'
@@ -56,6 +60,8 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
   else
     response_should_include message
   end
+
+  I18n.locale = @original_locale
 end
 
 Then(/^I should receive a message that I am not subscribed$/) do
