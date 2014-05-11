@@ -45,7 +45,7 @@ class ParsesCommands
         end
       end
 
-      @matching_command = find_matching_command(command_hash_in_locale(@context.locale)) unless @matching_command
+      @matching_command = find_matching_command(command_hash_in_locale(@context.locale || I18n.default_locale)) unless @matching_command
 
       if @matching_command
         @matching_command.first.to_s

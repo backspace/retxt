@@ -9,6 +9,8 @@ class Subscriber
 
   field :admin, type: Boolean
 
+  field :locale, type: String
+
   has_many :subscriptions
 
   def name_or_anon

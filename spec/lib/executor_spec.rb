@@ -18,10 +18,10 @@ describe Executor do
 
   let(:message) { 'help' }
   let(:number) { "5551313" }
-  let!(:subscriber) { Subscriber.create!(number: number) }
+  let!(:subscriber) { Subscriber.create!(number: number, locale: :locale) }
 
   let(:arguments) { message.index(" ") ? message[message.index(" ") + 1..-1] : nil }
-  let(:command_context) { CommandContext.new(sender: subscriber, relay: relay, originating_txt: txt, arguments: arguments) }
+  let(:command_context) { CommandContext.new(sender: subscriber, relay: relay, originating_txt: txt, arguments: arguments, locale: subscriber.locale) }
 
   def send_message(message)
     Subscriber.stub(:find_or_create_by).with(number: subscriber.number).and_return(subscriber)

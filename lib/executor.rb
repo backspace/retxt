@@ -25,13 +25,15 @@ class Executor
   end
 
   def command_context
-    @command_context ||= CommandContext.new(sender: subscriber, relay: target_relay, originating_txt: txt, arguments: after_command)
+    @command_context ||= CommandContext.new(sender: subscriber, relay: target_relay, originating_txt: txt, arguments: after_command, locale: subscriber.locale)
   end
 
   def execute
     parser = ParsesCommands.new(command, command_context)
     command_class = parser.parse
-    command_context.locale = parser.locale
+
+    command_context.locale = parser.locale || command_context.locale
+
     command_object = command_class.new(command_context)
 
     I18n.with_locale(command_context.locale) do

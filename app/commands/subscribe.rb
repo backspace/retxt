@@ -44,8 +44,10 @@ class Subscribe
   def persist_subscriber
     if @sender.persisted?
       @subscriber = @sender
+      @subscriber.locale = @command_context.locale
+      @subscriber.save
     else
-      @subscriber = @subscriberRepository.create(number: @sender.number)
+      @subscriber = @subscriberRepository.create(number: @sender.number, locale: @command_context.locale)
     end
   end
 

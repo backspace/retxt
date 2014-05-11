@@ -26,7 +26,7 @@ describe Subscribe do
 
     it 'subscribes the sender and notifies admins' do
       subscriber = double('subscriber', name_or_anon: 'anon')
-      subscriberRepository.should_receive(:create).with(number: sender.number).and_return(subscriber)
+      subscriberRepository.should_receive(:create).with(number: sender.number, locale: command_context.locale).and_return(subscriber)
       subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: subscriber)
 
       relay.should_receive(:subscription_count).and_return(5)
@@ -50,7 +50,7 @@ describe Subscribe do
 
       it 'subscribes the sender, changes their name, and notifies admins' do
         subscriber = double('subscriber', name_or_anon: 'anon')
-        subscriberRepository.should_receive(:create).with(number: sender.number).and_return(subscriber)
+        subscriberRepository.should_receive(:create).with(number: sender.number, locale: command_context.locale).and_return(subscriber)
         subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: subscriber)
 
         ChangesNames.should_receive(:change_name).with(subscriber, arguments)
@@ -95,7 +95,10 @@ describe Subscribe do
         sender.stub(:name_or_anon).and_return('anon')
       end
 
-      it 'creates a subscription and notifies admins' do
+      it 'sets the subscriber locale, creates a subscription, and notifies admins' do
+        sender.should_receive(:locale=).with(command_context.locale)
+        sender.should_receive(:save)
+
         subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: sender)
 
         relay.should_receive(:subscription_count).and_return(5)

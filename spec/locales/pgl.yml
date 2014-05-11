@@ -1,8 +1,13 @@
 pgl:
   commands:
     subscribe: ubscribesay
+    help: aboutay
 
   subscribers:
+    zero: 0 ubscriberssay
+    one: 1 ubscribersay
+    other: "%{count} ubscriberssay"
+
     anon: anonay
 
   other:
@@ -13,6 +18,8 @@ pgl:
   txts:
     welcome: "elcomeway otay %{relay_name}. yray amenay: %{subscriber_name}. cmdsay: aboutay, unsubscribeay, amenay. artstay txtay way/@ & amenay otay irectday txtay. anyay otheray txtay isay entsay otay %{subscriber_count}"
     disclaimer: "isclaimerday"
+
+    help: "aboutay essagemay inay Igpay Atinlay"
 
     admin:
       subscribed: "%{name} ubscribedsay omfray %{number}"
