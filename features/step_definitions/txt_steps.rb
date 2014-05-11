@@ -29,7 +29,6 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
   my_addressable_name = Subscriber.find_by(number: my_number).addressable_name
 
   if message_type == 'help'
-
     message = I18n.t('txts.help', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
   elsif message_type == 'welcome'
     message = I18n.t('txts.welcome', relay_name: Relay.first.name, subscriber_name: Subscriber.first.name_or_anon, subscriber_count: I18n.t('other', count: Relay.first.subscription_count - 1))
