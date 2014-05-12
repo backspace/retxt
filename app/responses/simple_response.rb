@@ -11,4 +11,9 @@ class SimpleResponse
       originating_txt_id: @context.originating_txt_id
     )
   end
+
+  private
+  def template_name
+    self.class.name.underscore.gsub "_response", ""
+  end
 end
