@@ -4,12 +4,16 @@ class SimpleResponse
   end
 
   def deliver(recipient)
-    SendsTxts.send_txt(
-      from: @context.relay.number,
-      to: recipient.number,
-      body: I18n.t("txts.#{template_name}", template_parameters(recipient).merge(locale: recipient.locale)),
-      originating_txt_id: @context.originating_txt_id
-    )
+    if recipient.is_a? Array
+      recipient.each{|recipient| deliver(recipient) }
+    else
+      SendsTxts.send_txt(
+        from: @context.relay.number,
+        to: recipient.number,
+        body: I18n.t("txts.#{template_name}", template_parameters(recipient).merge(locale: recipient.locale)),
+        originating_txt_id: @context.originating_txt_id
+      )
+    end
   end
 
   private
