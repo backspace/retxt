@@ -23,7 +23,17 @@ Before do
   end)
 end
 
-After do
+After do |scenario|
+  if scenario.failed? && scenario.exception.message.include?("SendsTxts.send_txt")
+    table = Terminal::Table.new(
+      title: 'Calls to SendsTxts.send_txt',
+      headings: ['from', 'to', 'body', 'originating_txt_id'],
+      rows: Mocha::Mockery.instance.invocations.select{|invocation| invocation.method_name == :send_txt }.map(&:arguments).map(&:first).map{|arguments| [arguments[:from], arguments[:to], arguments[:body][0..30], arguments[:originating_txt_id]] }
+    )
+
+    STDOUT.puts table
+  end
+
   SendsTxts.unstub(:send_txt)
   Mocha::Mockery.reset_instance
 end

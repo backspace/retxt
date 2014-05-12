@@ -24,6 +24,7 @@ group :test do
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'timecop'
+  gem 'terminal-table'
 end
 
 group :development, :test do
