@@ -3,6 +3,9 @@ require_relative '../../app/commands/subscribe'
 require_relative '../../app/responses/subscription_notification'
 require_relative '../../app/responses/welcome_response'
 require_relative '../../app/responses/disclaimer_response'
+require_relative '../../app/responses/closed_response'
+require_relative '../../app/responses/already_subscribed_response'
+require_relative '../../app/responses/bounce_notification'
 
 require 'command_context'
 require 'changes_names'
@@ -69,11 +72,8 @@ describe Subscribe do
       end
 
       it 'bounces the sender and notifies admins' do
-        I18n.should_receive('t').with('txts.close').and_return('closed')
-        SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'closed', originating_txt_id: command_context.originating_txt_id)
-
-        I18n.should_receive('t').with('txts.bounce_notification', number: sender.number, message: "subscribe#{arguments.present? ? " #{arguments}" : ''}").and_return('bounce')
-        TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'bounce', originating_txt_id: command_context.originating_txt_id)
+        ClosedResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver)})
+        BounceNotification.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(relay.admins)})
 
         execute
       end
@@ -107,9 +107,7 @@ describe Subscribe do
     end
 
     it 'sends the already-subscribed message' do
-      I18n.should_receive('t').with('txts.already_subscribed').and_return('already subscribed')
-
-      SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'already subscribed', originating_txt_id: command_context.originating_txt_id)
+      AlreadySubscribedResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
 
       execute
     end

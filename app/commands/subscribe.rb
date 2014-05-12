@@ -23,12 +23,12 @@ class Subscribe
   end
 
   def already_subscribed
-    SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.already_subscribed'), originating_txt_id: @command_context.originating_txt_id)
+    AlreadySubscribedResponse.new(@command_context).deliver(@sender)
   end
 
   def relay_closed
-    SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.close'), originating_txt_id: @command_context.originating_txt_id)
-    TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: I18n.t('txts.bounce_notification', number: @sender.number, message: "subscribe#{@arguments.present? ? " #{@arguments}" : ''}"), originating_txt_id: @command_context.originating_txt_id)
+    ClosedResponse.new(@command_context).deliver(@sender)
+    BounceNotification.new(@command_context).deliver(@relay.admins)
   end
 
   def subscribe_sender
