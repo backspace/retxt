@@ -1,12 +1,5 @@
 require_relative '../../app/commands/subscribe'
 
-require_relative '../../app/responses/subscription_notification'
-require_relative '../../app/responses/welcome_response'
-require_relative '../../app/responses/disclaimer_response'
-require_relative '../../app/responses/closed_response'
-require_relative '../../app/responses/already_subscribed_response'
-require_relative '../../app/responses/bounce_notification'
-
 require 'command_context'
 require 'changes_names'
 require 'txts_relay_admins'
