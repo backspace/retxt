@@ -98,8 +98,20 @@ Then(/^subscribers other than (\w*) should( not)? receive that message( signed b
   end
 end
 
-Then(/^the admin should receive a txt saying anon (un)?subscribed$/) do |unsubscribed|
-  response_should_include I18n.t("txts.admin.#{unsubscribed ? 'un' : ''}subscribed", name: 'anon', number: my_number), @admin.number
+Then(/^(the admin|'(\w*)') should receive a txt saying anon (un)?subscribed( in (English|Pig Latin))?$/) do |recipient, recipient_name, unsubscribed, language_present, language|
+  if language_present
+    locale = language == "English" ? :en : :pgl
+  else
+    locale = nil
+  end
+
+  if recipient_name
+    admin = Subscriber.find_by(name: recipient_name)
+  else
+    admin = @admin
+  end
+
+  response_should_include I18n.t("txts.admin.#{unsubscribed ? 'un' : ''}subscribed", name: 'anon', number: my_number, locale: locale), admin.number
 end
 
 Then(/^the admin should receive a txt saying 'bob' unsubscribed$/) do

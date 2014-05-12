@@ -60,6 +60,6 @@ class Subscribe
   end
 
   def notify_admins
-    TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: I18n.t('txts.admin.subscribed', name: @subscriber.name_or_anon, number: @sender.number), originating_txt_id: @command_context.originating_txt_id)
+    SubscriptionNotification.new(@command_context).deliver(@relay.admins)
   end
 end

@@ -1,4 +1,7 @@
 require_relative '../../app/commands/subscribe'
+
+require_relative '../../app/responses/subscription_notification'
+
 require 'command_context'
 require 'changes_names'
 require 'txts_relay_admins'
@@ -39,8 +42,9 @@ describe Subscribe do
       SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer', originating_txt_id: command_context.originating_txt_id)
 
 
-      I18n.should_receive('t').with('txts.admin.subscribed', name: 'anon', number: sender.number).and_return('subscribed')
-      TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'subscribed', originating_txt_id: command_context.originating_txt_id)
+      notification = double(:notification)
+      SubscriptionNotification.should_receive(:new).with(command_context).and_return(notification)
+      notification.should_receive(:deliver).with(relay.admins)
 
       execute
     end
@@ -66,8 +70,9 @@ describe Subscribe do
         SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer', originating_txt_id: command_context.originating_txt_id)
 
 
-        I18n.should_receive('t').with('txts.admin.subscribed', name: arguments, number: sender.number).and_return('subscribed')
-        TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'subscribed', originating_txt_id: command_context.originating_txt_id)
+        notification = double(:notification)
+        SubscriptionNotification.should_receive(:new).with(command_context).and_return(notification)
+        notification.should_receive(:deliver).with(relay.admins)
 
         execute
       end
@@ -111,8 +116,9 @@ describe Subscribe do
         SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer', originating_txt_id: command_context.originating_txt_id)
 
 
-        I18n.should_receive('t').with('txts.admin.subscribed', name: 'anon', number: sender.number).and_return('subscribed')
-        TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'subscribed', originating_txt_id: command_context.originating_txt_id)
+        notification = double(:notification)
+        SubscriptionNotification.should_receive(:new).with(command_context).and_return(notification)
+        notification.should_receive(:deliver).with(relay.admins)
 
         execute
       end
