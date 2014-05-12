@@ -9,7 +9,7 @@ class Rename
 
   def execute
     if @sender.admin
-      @relay.rename!(@arguments)
+      @relay.rename(@arguments)
       SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.rename', relay_name: @arguments), originating_txt_id: @command_context.originating_txt_id)
     else
       SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.nonadmin'), originating_txt_id: @command_context.originating_txt_id)

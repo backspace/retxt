@@ -27,7 +27,7 @@ describe Delete do
 
   context 'from a non-admin' do
     it 'does not rename the relay' do
-      relay.should_not_receive(:rename!)
+      relay.should_not_receive(:rename)
       execute
     end
 

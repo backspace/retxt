@@ -13,7 +13,7 @@ describe Moderate do
   it 'delegates to ModifyRelay' do
     I18n.should_receive('t').with('txts.admin.moderate', admin_name: sender.addressable_name).and_return('moderate')
     modifier = double('modifier')
-    ModifyRelay.should_receive(:new).with(command_context, modifier: :moderate!, success_message: 'moderate').and_return(modifier)
+    ModifyRelay.should_receive(:new).with(command_context, modifier: :moderate, success_message: 'moderate').and_return(modifier)
 
     modifier.should_receive(:execute)
 

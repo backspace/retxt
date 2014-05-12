@@ -14,7 +14,7 @@ class Unmute
   private
   def modifier
     lambda do |subscription|
-      subscription.unmute!
+      subscription.unmute
     end
   end
 end

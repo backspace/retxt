@@ -6,6 +6,6 @@ class Open
   end
 
   def execute
-    ModifyRelay.new(@command_context, modifier: :open!, success_message: I18n.t('txts.admin.open', admin_name: @sender.addressable_name)).execute
+    ModifyRelay.new(@command_context, modifier: :open, success_message: I18n.t('txts.admin.open', admin_name: @sender.addressable_name)).execute
   end
 end

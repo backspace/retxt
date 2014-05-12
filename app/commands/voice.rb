@@ -14,7 +14,7 @@ class Voice
   private
   def modifier
     lambda do |subscription|
-      subscription.voice!
+      subscription.voice
     end
   end
 end

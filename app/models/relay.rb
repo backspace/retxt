@@ -26,31 +26,31 @@ class Relay
     Relay.asc(:created_at).first
   end
 
-  def freeze!
+  def freeze
     update_attribute(:frozen, true)
   end
 
-  def thaw!
+  def thaw
     update_attribute(:frozen, false)
   end
 
-  def close!
+  def close
     update_attribute(:closed, true)
   end
 
-  def open!
+  def open
     update_attribute(:closed, false)
   end
 
-  def moderate!
+  def moderate
     update_attribute(:moderated, true)
   end
 
-  def unmoderate!
+  def unmoderate
     update_attribute(:moderated, false)
   end
 
-  def rename!(name)
+  def rename(name)
     update_attribute(:name, name)
   end
 

@@ -14,7 +14,7 @@ class Unvoice
   private
   def modifier
     lambda do |subscription|
-      subscription.unvoice!
+      subscription.unvoice
     end
   end
 end

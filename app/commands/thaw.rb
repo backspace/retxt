@@ -6,6 +6,6 @@ class Thaw
   end
 
   def execute
-    ModifyRelay.new(@command_context, modifier: :thaw!, success_message: I18n.t('txts.thaw', admin_name: @sender.addressable_name)).execute
+    ModifyRelay.new(@command_context, modifier: :thaw, success_message: I18n.t('txts.thaw', admin_name: @sender.addressable_name)).execute
   end
 end

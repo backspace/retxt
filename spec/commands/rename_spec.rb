@@ -18,7 +18,7 @@ describe Rename do
     end
 
     it 'renames the relay' do
-      relay.should_receive(:rename!).with(arguments)
+      relay.should_receive(:rename).with(arguments)
       execute
     end
 
@@ -31,7 +31,7 @@ describe Rename do
 
   context 'from a non-admin' do
     it 'does not rename the relay' do
-      relay.should_not_receive(:rename!)
+      relay.should_not_receive(:rename)
       execute
     end
 

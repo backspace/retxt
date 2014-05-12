@@ -10,19 +10,19 @@ class Subscription
   field :muted, type: Boolean, default: false
   field :voiced, type: Boolean, default: false
 
-  def mute!
+  def mute
     update_attribute(:muted, true)
   end
 
-  def unmute!
+  def unmute
     update_attribute(:muted, false)
   end
 
-  def voice!
+  def voice
     update_attribute(:voiced, true)
   end
 
-  def unvoice!
+  def unvoice
     update_attribute(:voiced, false)
   end
 end
