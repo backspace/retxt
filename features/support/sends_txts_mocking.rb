@@ -25,4 +25,5 @@ end
 
 After do
   SendsTxts.unstub(:send_txt)
+  Mocha::Mockery.reset_instance
 end
