@@ -7,7 +7,7 @@ class SimpleResponse
     SendsTxts.send_txt(
       from: @context.relay.number,
       to: recipient.number,
-      body: I18n.t("txts.#{template_name}", locale: recipient.locale),
+      body: I18n.t("txts.#{template_name}", template_parameters(recipient).merge(locale: recipient.locale)),
       originating_txt_id: @context.originating_txt_id
     )
   end
@@ -15,5 +15,9 @@ class SimpleResponse
   private
   def template_name
     self.class.name.underscore.gsub "_response", ""
+  end
+
+  def template_parameters(recipient)
+    {}
   end
 end

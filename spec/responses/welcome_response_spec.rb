@@ -1,3 +1,4 @@
+require_relative '../../app/responses/simple_response'
 require_relative '../../app/responses/welcome_response'
 
 require 'command_context'
