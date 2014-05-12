@@ -1,6 +1,8 @@
 require_relative '../../app/commands/subscribe'
 
 require_relative '../../app/responses/subscription_notification'
+require_relative '../../app/responses/welcome_response'
+require_relative '../../app/responses/disclaimer_response'
 
 require 'command_context'
 require 'changes_names'
@@ -32,15 +34,9 @@ describe Subscribe do
       subscriberRepository.should_receive(:create).with(number: sender.number, locale: command_context.locale).and_return(subscriber)
       subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: subscriber)
 
-      relay.should_receive(:subscription_count).and_return(5)
-      I18n.should_receive('t').with('other', count: 4).and_return('4 others')
 
-      I18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: 'anon', subscriber_count: '4 others').and_return('welcome')
-      SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'welcome', originating_txt_id: command_context.originating_txt_id)
-
-      I18n.should_receive('t').with('txts.disclaimer').and_return('disclaimer')
-      SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer', originating_txt_id: command_context.originating_txt_id)
-
+      WelcomeResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
+      DisclaimerResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
 
       notification = double(:notification)
       SubscriptionNotification.should_receive(:new).with(command_context).and_return(notification)
@@ -60,14 +56,8 @@ describe Subscribe do
         ChangesNames.should_receive(:change_name).with(subscriber, arguments)
         subscriber.stub(:name_or_anon).and_return(arguments)
 
-        relay.should_receive(:subscription_count).and_return(5)
-        I18n.should_receive('t').with('other', count: 4).and_return('4 others')
-
-        I18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: arguments, subscriber_count: '4 others').and_return('welcome')
-        SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'welcome', originating_txt_id: command_context.originating_txt_id)
-
-        I18n.should_receive('t').with('txts.disclaimer').and_return('disclaimer')
-        SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer', originating_txt_id: command_context.originating_txt_id)
+        WelcomeResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
+        DisclaimerResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
 
 
         notification = double(:notification)
@@ -106,15 +96,8 @@ describe Subscribe do
 
         subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: sender)
 
-        relay.should_receive(:subscription_count).and_return(5)
-        I18n.should_receive('t').with('other', count: 4).and_return('4 others')
-
-        I18n.should_receive('t').with('txts.welcome', relay_name: relay.name, subscriber_name: 'anon', subscriber_count: '4 others').and_return('welcome')
-        SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'welcome', originating_txt_id: command_context.originating_txt_id)
-
-        I18n.should_receive('t').with('txts.disclaimer').and_return('disclaimer')
-        SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer', originating_txt_id: command_context.originating_txt_id)
-
+        WelcomeResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
+        DisclaimerResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
 
         notification = double(:notification)
         SubscriptionNotification.should_receive(:new).with(command_context).and_return(notification)

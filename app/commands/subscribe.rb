@@ -52,11 +52,8 @@ class Subscribe
   end
 
   def send_welcome_messages
-    other_subscribers = @relay.subscription_count - 1
-    other_subscribers_text = I18n.t('other', count: other_subscribers)
-
-    SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.welcome', relay_name: @relay.name, subscriber_name: @subscriber.name_or_anon, subscriber_count: other_subscribers_text), originating_txt_id: @command_context.originating_txt_id)
-    SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.disclaimer'), originating_txt_id: @command_context.originating_txt_id)
+    WelcomeResponse.new(@command_context).deliver(@sender)
+    DisclaimerResponse.new(@command_context).deliver(@sender)
   end
 
   def notify_admins
