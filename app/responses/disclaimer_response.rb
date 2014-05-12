@@ -1,9 +1,6 @@
-class DisclaimerResponse
-  def initialize(command_context)
-    @context = command_context
-  end
-
-  def deliver(recipient)
-    SendsTxts.send_txt(from: @context.relay.number, to: recipient.number, body: I18n.t('txts.disclaimer', locale: recipient.locale), originating_txt_id: @context.originating_txt_id)
+class DisclaimerResponse < SimpleResponse
+  private
+  def template_name
+    'disclaimer'
   end
 end
