@@ -38,10 +38,9 @@ describe Subscribe do
       subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: subscriber)
 
 
-      WelcomeResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
-      DisclaimerResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
-
-      SubscriptionNotification.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver)})
+      expect_response_to_sender 'WelcomeResponse'
+      expect_response_to_sender 'DisclaimerResponse'
+      expect_notification_of_admins 'SubscriptionNotification'
 
       execute
     end
@@ -57,10 +56,9 @@ describe Subscribe do
         ChangesNames.should_receive(:change_name).with(subscriber, arguments)
         subscriber.stub(:name_or_anon).and_return(arguments)
 
-        WelcomeResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
-        DisclaimerResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
-
-        SubscriptionNotification.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver)})
+        expect_response_to_sender 'WelcomeResponse'
+        expect_response_to_sender 'DisclaimerResponse'
+        expect_notification_of_admins 'SubscriptionNotification'
 
         execute
       end
@@ -72,8 +70,8 @@ describe Subscribe do
       end
 
       it 'bounces the sender and notifies admins' do
-        ClosedResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver)})
-        BounceNotification.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(relay.admins)})
+        expect_response_to_sender 'ClosedResponse'
+        expect_notification_of_admins 'BounceNotification'
 
         execute
       end
@@ -91,10 +89,9 @@ describe Subscribe do
 
         subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: sender)
 
-        WelcomeResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
-        DisclaimerResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
-
-        SubscriptionNotification.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver)})
+        expect_response_to_sender 'WelcomeResponse'
+        expect_response_to_sender 'DisclaimerResponse'
+        expect_notification_of_admins 'SubscriptionNotification'
 
         execute
       end
@@ -107,7 +104,7 @@ describe Subscribe do
     end
 
     it 'sends the already-subscribed message' do
-      AlreadySubscribedResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
+      expect_response_to_sender 'AlreadySubscribedResponse'
 
       execute
     end

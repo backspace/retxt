@@ -21,4 +21,16 @@ shared_context 'command context' do
   def sender_is_admin
     sender.stub(:admin).and_return(true)
   end
+
+  def expect_response_to_sender(klass)
+    response_class = double(klass)
+    stub_const(klass, response_class)
+    response_class.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
+  end
+
+  def expect_notification_of_admins(klass)
+    response_class = double(klass)
+    stub_const(klass, response_class)
+    response_class.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(relay.admins)})
+  end
 end
