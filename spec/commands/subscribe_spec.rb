@@ -38,9 +38,7 @@ describe Subscribe do
       WelcomeResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
       DisclaimerResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
 
-      notification = double(:notification)
-      SubscriptionNotification.should_receive(:new).with(command_context).and_return(notification)
-      notification.should_receive(:deliver).with(relay.admins)
+      SubscriptionNotification.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver)})
 
       execute
     end
@@ -59,10 +57,7 @@ describe Subscribe do
         WelcomeResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
         DisclaimerResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
 
-
-        notification = double(:notification)
-        SubscriptionNotification.should_receive(:new).with(command_context).and_return(notification)
-        notification.should_receive(:deliver).with(relay.admins)
+        SubscriptionNotification.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver)})
 
         execute
       end
@@ -99,9 +94,7 @@ describe Subscribe do
         WelcomeResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
         DisclaimerResponse.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
 
-        notification = double(:notification)
-        SubscriptionNotification.should_receive(:new).with(command_context).and_return(notification)
-        notification.should_receive(:deliver).with(relay.admins)
+        SubscriptionNotification.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver)})
 
         execute
       end
