@@ -1,0 +1,2 @@
+class FrozenResponse < SimpleResponse
+end
