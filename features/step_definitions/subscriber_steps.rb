@@ -11,7 +11,7 @@ def create_relay_with_subscriber(name, subscriber)
 end
 
 Given(/^I am subscribed( to relay (\w*))?( as an admin)?( as '(\w*)')?( at '(\d*)')?$/) do |non_default_relay, relay_name, admin, name_given, name, number_given, number|
-  subscriber = Subscriber.create(number: my_number)
+  subscriber = Subscriber.find_or_create_by(number: my_number)
 
   if name_given
     subscriber.update_attribute(:name, name)
