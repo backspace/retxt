@@ -28,7 +28,7 @@ After do |scenario|
     table = Terminal::Table.new(
       title: 'Calls to SendsTxts.send_txt',
       headings: ['from', 'to', 'body', 'originating_txt_id'],
-      rows: Mocha::Mockery.instance.invocations.select{|invocation| invocation.method_name == :send_txt }.map(&:arguments).map(&:first).map{|arguments| [arguments[:from], arguments[:to], arguments[:body][0..30], arguments[:originating_txt_id]] }
+      rows: Mocha::Mockery.instance.invocations.select{|invocation| invocation.method_name == :send_txt }.map(&:arguments).map(&:first).map{|arguments| [arguments[:from], arguments[:to], arguments[:body][0..50], arguments[:originating_txt_id]] }
     )
 
     STDOUT.puts table
