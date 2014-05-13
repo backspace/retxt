@@ -21,7 +21,7 @@ When(/^'(\w*)' txts '([^']*)'( to relay A)?$/) do |name, content, relay_given|
   post '/txts/incoming', Body: content, From: Subscriber.find_by(name: name).number, To: relay.number
 end
 
-Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|non-admin|missing-target|moderated|unmoderated|timestamp) txt( in Pig Latin)?( from (\d+))?$/) do |message_type, in_pig_latin, non_default_source, source|
+Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|no-anon-direct|non-admin|missing-target|moderated|unmoderated|timestamp) txt( in Pig Latin)?( from (\d+))?$/) do |message_type, in_pig_latin, non_default_source, source|
   @original_locale = I18n.locale
 
   I18n.locale = :pgl if in_pig_latin.present?
@@ -42,6 +42,8 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
     message = 'goodbye'
   elsif message_type == 'created'
     message = I18n.t('txts.admin.create', relay_name: Relay.all.sort_by(&:created_at).last.name, admin_name: Subscriber.first.addressable_name)
+  elsif message_type == 'no-anon-direct'
+    message = I18n.t('txts.direct.anonymous')
   elsif message_type == 'non-admin'
     message = I18n.t('txts.nonadmin')
   elsif message_type == 'missing-target'

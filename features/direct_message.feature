@@ -15,3 +15,8 @@ Feature: Direct message
     Given I am subscribed as 'alice'
     When I txt '@francine i love you'
     Then I should receive a txt including 'your message was not sent because @francine could not be found'
+
+  Scenario: I cannot direct message when anonymous
+    Given I am subscribed
+    When I txt '@pascal gay marry me!'
+    Then I should receive a no-anon-direct txt
