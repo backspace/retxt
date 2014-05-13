@@ -29,6 +29,10 @@ class SimpleResponse
     @context.txt
   end
 
+  def arguments
+    @context.arguments
+  end
+
   private
   def template_name
     self.class.name.underscore.gsub "_response", ""

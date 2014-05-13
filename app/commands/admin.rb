@@ -14,12 +14,12 @@ class Admin
       if adminee
         adminee.admin!
 
-        TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: I18n.t('txts.admin.admin', adminer_name: @sender.addressable_name, adminee_name: adminee.addressable_name), originating_txt_id: @command_context.originating_txt_id)
+        AdminificationNotification.new(@command_context).deliver(@relay.admins)
       else
-        SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.missing_target', target: @arguments), originating_txt_id: @command_context.originating_txt_id)
+        MissingTargetResponse.new(@command_context).deliver(@sender)
       end
     else
-      SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.nonadmin'), originating_txt_id: @command_context.originating_txt_id)
+      NonAdminResponse.new(@command_context).deliver(@sender)
     end
   end
 end
