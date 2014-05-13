@@ -8,6 +8,6 @@ class Help
   end
 
   def execute
-    SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.help', subscriber_count: I18n.t('subscribers', count: @relay.subscribers.length - 1)), originating_txt_id: @command_context.originating_txt_id)
+    HelpResponse.new(@command_context).deliver @sender
   end
 end
