@@ -5,6 +5,6 @@ class BounceNotification < SimpleResponse
   end
 
   def template_parameters(recipient)
-    {number: @context.sender.number, message: @context.txt.body}
+    {number: sender.number, message: txt.body}
   end
 end

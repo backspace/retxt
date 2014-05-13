@@ -5,6 +5,6 @@ class SubscriptionNotification < SimpleResponse
   end
 
   def template_parameters(recipient)
-    {name: @context.sender.name_or_anon, number: @context.sender.number}
+    {name: sender.name_or_anon, number: sender.number}
   end
 end

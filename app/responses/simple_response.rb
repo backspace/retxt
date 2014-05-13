@@ -16,6 +16,19 @@ class SimpleResponse
     end
   end
 
+  protected
+  def relay
+    @context.relay
+  end
+
+  def sender
+    @context.sender
+  end
+
+  def txt
+    @context.txt
+  end
+
   private
   def template_name
     self.class.name.underscore.gsub "_response", ""
