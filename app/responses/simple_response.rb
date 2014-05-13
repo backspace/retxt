@@ -8,7 +8,7 @@ class SimpleResponse
       recipient.each{|recipient| deliver(recipient) }
     else
       SendsTxts.send_txt(
-        from: @context.relay.number,
+        from: origin_of_txt,
         to: recipient.number,
         body: I18n.t("txts.#{template_name}", template_parameters(recipient).merge(locale: recipient.locale)),
         originating_txt_id: @context.originating_txt_id
@@ -31,6 +31,10 @@ class SimpleResponse
 
   def arguments
     @context.arguments
+  end
+
+  def origin_of_txt
+    relay.number
   end
 
   private

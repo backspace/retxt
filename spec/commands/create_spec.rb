@@ -37,16 +37,15 @@ describe Create do
 
       subscription_repository.should_receive(:create).with(relay: relay, subscriber: sender)
 
-      I18n.stub(:t).with('txts.admin.create', admin_name: sender.addressable_name, relay_name: arguments).and_return('create')
-      TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'create', originating_txt_id: command_context.originating_txt_id)
+      relay.should_receive(:admins).and_return(new_relay_admins = double)
+      expect_notification_of new_relay_admins, 'CreationNotification'
 
       execute
     end
   end
 
   it 'replies with the non-admin message' do
-    I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-    SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin', originating_txt_id: command_context.originating_txt_id)
+    expect_response_to_sender 'NonAdminResponse'
     execute
   end
 end

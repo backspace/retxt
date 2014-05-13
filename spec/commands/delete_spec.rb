@@ -16,9 +16,7 @@ describe Delete do
     end
 
     it 'notifies admins and deletes the relay' do
-      I18n.stub(:t).with('txts.admin.delete', admin_name: sender.addressable_name).and_return('delete')
-      TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'delete')
-
+      expect_notification_of_admins 'DeletionNotification'
       DeletesRelays.should_receive(:delete_relay).with(relay: relay)
 
       execute
@@ -26,14 +24,9 @@ describe Delete do
   end
 
   context 'from a non-admin' do
-    it 'does not rename the relay' do
-      relay.should_not_receive(:rename)
-      execute
-    end
-
-    it 'replies with the non-admin message' do
-      I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin', originating_txt_id: command_context.originating_txt_id)
+    it 'does not delete the relay and responds with the non-admin message' do
+      relay.should_not_receive(:delete)
+      expect_response_to_sender 'NonAdminResponse'
       execute
     end
   end

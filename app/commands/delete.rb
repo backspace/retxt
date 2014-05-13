@@ -7,10 +7,10 @@ class Delete
 
   def execute
     if @sender.admin
-      TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: I18n.t('txts.admin.delete', admin_name: @sender.addressable_name))
+      DeletionNotification.new(@command_context).deliver(@relay.admins)
       DeletesRelays.delete_relay(relay: @relay)
     else
-      SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.nonadmin'), originating_txt_id: @command_context.originating_txt_id)
+      NonAdminResponse.new(@command_context).deliver @sender
     end
   end
 end
