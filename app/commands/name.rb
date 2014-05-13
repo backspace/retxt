@@ -9,6 +9,6 @@ class Name
 
   def execute
     ChangesNames.change_name(@sender, @new_name)
-    SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.name', name: @sender.name_or_anon), originating_txt_id: @command_context.originating_txt_id)
+    NameResponse.new(@command_context).deliver @sender
   end
 end

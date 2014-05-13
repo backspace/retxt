@@ -1,6 +1,8 @@
 require_relative '../../app/commands/name'
 require 'command_context'
 
+require_relative '../../lib/changes_names'
+
 describe Name do
   include_context 'command context'
   let(:arguments) { 'newname' }
@@ -16,10 +18,7 @@ describe Name do
 
     it 'changes the sender name and sends a confirmation' do
       ChangesNames.should_receive(:change_name).with(sender, arguments)
-      sender.should_receive(:name_or_anon).and_return(arguments)
-      I18n.should_receive('t').with('txts.name', name: arguments).and_return('name')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'name', originating_txt_id: command_context.originating_txt_id)
-
+      expect_response_to_sender 'NameResponse'
       execute
     end
   end
