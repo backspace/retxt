@@ -23,8 +23,7 @@ describe Clear do
 
       subscription.should_receive(:destroy)
 
-      I18n.should_receive(:t).with('txts.admin.clear').and_return('clear')
-      TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'clear')
+      expect_notification_of_admins 'ClearNotification'
 
       execute
     end
@@ -32,9 +31,8 @@ describe Clear do
 
   context 'from a non-admin' do
     it 'replies with the non-admin message' do
-      I18n.stub(:t).with('txts.nonadmin').and_return('non-admin')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin', originating_txt_id: command_context.originating_txt_id)
-       execute
+      expect_response_to_sender 'NonAdminResponse'
+      execute
     end
   end
 end

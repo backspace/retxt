@@ -11,9 +11,9 @@ class Clear
         @relay.subscription_for(subscriber).destroy
       end
 
-      TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: I18n.t('txts.admin.clear'))
+      ClearNotification.new(@command_context).deliver(@relay.admins)
     else
-      SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.nonadmin'), originating_txt_id: @command_context.originating_txt_id)
+      NonAdminResponse.new(@command_context).deliver(@sender)
     end
   end
 end
