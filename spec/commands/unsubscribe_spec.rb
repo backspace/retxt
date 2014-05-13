@@ -22,14 +22,8 @@ describe Unsubscribe do
 
       subscription.should_receive(:destroy)
 
-      I18n.should_receive('t').with('txts.goodbye').and_return('goodbye')
-      SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'goodbye', originating_txt_id: command_context.originating_txt_id)
-
-      sender.stub(:name_or_anon).and_return('name')
-
-      I18n.should_receive('t').with('txts.admin.unsubscribed', name: sender.name_or_anon, number: sender.number).and_return('unsubscribed')
-      TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: 'unsubscribed', originating_txt_id: command_context.originating_txt_id)
-
+      expect_response_to_sender 'UnsubscribeResponse'
+      expect_notification_of_admins 'UnsubscriptionNotification'
       execute
     end
   end
@@ -40,8 +34,7 @@ describe Unsubscribe do
     end
 
     it 'sends the not subscribed message' do
-      I18n.should_receive('t').with('txts.not_subscribed').and_return('not subscribed')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'not subscribed', originating_txt_id: command_context.originating_txt_id)
+      expect_response_to_sender 'NotSubscribedBounceResponse'
       execute
     end
   end
