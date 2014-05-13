@@ -11,16 +11,15 @@ class DirectMessage
   def execute
     if @relay.subscribed?(@sender)
       if @sender.anonymous?
-        SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.direct.anonymous'), originating_txt_id: @command_context.originating_txt_id)
+        ForbiddenAnonymousDirectMessageResponse.new(@command_context).deliver @sender
       else
         target_subscriber = FindsSubscribers.find(target)
 
         if target_subscriber
-          SendsTxts.send_txt(from: @relay.number, to: target_subscriber.number, body: I18n.t('txts.direct.outgoing', prefix: TimestampFormatter.new(relay: @relay, txt: @txt).format, sender: @sender.addressable_name, message: @content), originating_txt_id: @command_context.originating_txt_id)
-
-          SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.direct.sent', target_name: target), originating_txt_id: @command_context.originating_txt_id)
+          OutgoingDirectMessageResponse.new(@command_context).deliver(target_subscriber)
+          SentDirectMessageResponse.new(@command_context).deliver(@sender)
         else
-          SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.direct.missing_target', target_name: target), originating_txt_id: @command_context.originating_txt_id)
+          MissingDirectMessageTargetResponse.new(@command_context).deliver(@sender)
         end
       end
     end

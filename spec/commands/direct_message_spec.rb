@@ -30,15 +30,11 @@ describe DirectMessage do
 
         before do
           FindsSubscribers.stub(:find).with('@user').and_return(target)
-          TimestampFormatter.should_receive(:new).with(relay: relay, txt: txt).and_return(timestamp)
         end
 
         it 'sends the message and replies' do
-          I18n.stub(:t).with('txts.direct.outgoing', prefix: timestamp.format, sender: sender.addressable_name, message: content).and_return('outgoing')
-          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: target.number, body: 'outgoing', originating_txt_id: command_context.originating_txt_id)
-
-          I18n.stub(:t).with('txts.direct.sent', target_name: '@user').and_return('sent')
-          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'sent', originating_txt_id: command_context.originating_txt_id)
+          expect_response_to target, 'OutgoingDirectMessageResponse'
+          expect_response_to_sender 'SentDirectMessageResponse'
 
           execute
         end
@@ -50,8 +46,7 @@ describe DirectMessage do
         end
 
         it 'sends the failed message' do
-          I18n.stub(:t).with('txts.direct.missing_target', target_name: '@user').and_return('failed')
-          SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'failed', originating_txt_id: command_context.originating_txt_id)
+          expect_response_to_sender 'MissingDirectMessageTargetResponse'
 
           execute
         end
@@ -64,9 +59,7 @@ describe DirectMessage do
       end
 
       it 'forbids the message' do
-        I18n.stub(:t).with('txts.direct.anonymous').and_return('forbidden')
-        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'forbidden', originating_txt_id: command_context.originating_txt_id)
-
+        expect_response_to_sender 'ForbiddenAnonymousDirectMessageResponse'
         execute
       end
     end

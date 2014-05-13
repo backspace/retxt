@@ -23,9 +23,13 @@ shared_context 'command context' do
   end
 
   def expect_response_to_sender(klass)
+    expect_response_to(sender, klass)
+  end
+
+  def expect_response_to(target, klass)
     response_class = double(klass)
     stub_const(klass, response_class)
-    response_class.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(sender)})
+    response_class.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(target)})
   end
 
   def expect_notification_of_admins(klass)
