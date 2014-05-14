@@ -6,6 +6,6 @@ class Unmoderate
   end
 
   def execute
-    ModifyRelay.new(@command_context, modifier: :unmoderate, success_response: RelayModificationNotification.new(@command_context, 'admin.unmoderate')).execute
+    ModifyRelay.new(@command_context, modifier: :unmoderate, success_response: RelayModificationNotification.new(@command_context, 'unmoderate')).execute
   end
 end

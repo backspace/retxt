@@ -6,7 +6,7 @@ class RelayModificationNotification < SimpleResponse
 
   private
   def template_name
-    @template_name
+    "admin.#{@template_name}"
   end
 
   def template_parameters(recipient)

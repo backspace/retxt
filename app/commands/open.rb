@@ -6,6 +6,6 @@ class Open
   end
 
   def execute
-    ModifyRelay.new(@command_context, modifier: :open, success_response: RelayModificationNotification.new(@command_context, 'admin.open')).execute
+    ModifyRelay.new(@command_context, modifier: :open, success_response: RelayModificationNotification.new(@command_context, 'open')).execute
   end
 end

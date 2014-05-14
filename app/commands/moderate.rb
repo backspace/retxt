@@ -6,6 +6,6 @@ class Moderate
   end
 
   def execute
-    ModifyRelay.new(@command_context, modifier: :moderate, success_response: RelayModificationNotification.new(@command_context, 'admin.moderate')).execute
+    ModifyRelay.new(@command_context, modifier: :moderate, success_response: RelayModificationNotification.new(@command_context, 'moderate')).execute
   end
 end

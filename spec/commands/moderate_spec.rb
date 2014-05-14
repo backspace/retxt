@@ -12,7 +12,7 @@ describe Moderate do
 
   it 'delegates to ModifyRelay' do
     modifier = double('modifier')
-    RelayModificationNotification.should_receive(:new).with(command_context, 'admin.moderate').and_return(notification = double)
+    RelayModificationNotification.should_receive(:new).with(command_context, 'moderate').and_return(notification = double)
     ModifyRelay.should_receive(:new).with(command_context, modifier: :moderate, success_response: notification).and_return(modifier)
 
     modifier.should_receive(:execute)
