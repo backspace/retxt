@@ -6,7 +6,7 @@ class ModifySubscription
     @arguments = command_context.arguments
 
     @modifier = options[:modifier]
-    @success_message = options[:success_message]
+    @success_response = options[:success_response]
   end
 
   def execute
@@ -20,15 +20,15 @@ class ModifySubscription
 
   private
   def reject_unless_admin
-    SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.nonadmin'), originating_txt_id: @command_context.originating_txt_id)
+    NonAdminResponse.new(@command_context).deliver @sender
   end
 
   def reject_missing_target
-    SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.missing_target', target: @arguments), originating_txt_id: @command_context.originating_txt_id)
+    MissingTargetResponse.new(@command_context).deliver @sender
   end
 
   def reject_unsubscribed_target
-    SendsTxts.send_txt(from: @relay.number, to: @sender.number, body: I18n.t('txts.unsubscribed_target', target: @arguments), originating_txt_id: @command_context.originating_txt_id)
+    UnsubscribedTargetResponse.new(@command_context).deliver @sender
   end
 
   def modify_subscription
@@ -36,6 +36,6 @@ class ModifySubscription
   end
 
   def notify_admins
-    TxtsRelayAdmins.txt_relay_admins(relay: @relay, body: @success_message, originating_txt_id: @command_context.originating_txt_id)
+    @success_response.deliver @relay.admins
   end
 end

@@ -8,7 +8,7 @@ class Mute
   end
 
   def execute
-    ModifySubscription.new(@command_context, success_message: I18n.t('txts.mute', mutee_name: @arguments, admin_name: @sender.addressable_name), modifier: modifier).execute
+    ModifySubscription.new(@command_context, success_response: SubscriptionModificationNotification.new(@command_context, 'mute'), modifier: modifier).execute
   end
 
   private

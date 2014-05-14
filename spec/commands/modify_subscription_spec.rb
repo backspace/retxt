@@ -7,7 +7,7 @@ describe ModifySubscription do
   include_context 'command context'
 
   let(:arguments) { '@user' }
-  let(:success_message) { 'success!' }
+  let(:success_response) { double }
   let(:modifier) { lambda{} }
 
   let(:finds_subscribers) { double('finds_subscribers') }
@@ -17,7 +17,7 @@ describe ModifySubscription do
   end
 
   def execute
-    ModifySubscription.new(command_context, modifier: modifier, success_message: success_message).execute
+    ModifySubscription.new(command_context, modifier: modifier, success_response: success_response).execute
   end
 
   context 'from an admin' do
@@ -39,14 +39,9 @@ describe ModifySubscription do
           relay.stub(:subscription_for).with(target).and_return(subscription)
         end
 
-        it 'calls the modifier with the subscription' do
+        it 'calls the modifier with the subscription and delivers the response' do
           modifier.should_receive(:call).with(subscription)
-          execute
-        end
-
-        it 'notifies all admins of the change' do
-          modifier.stub(:call)
-          TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: success_message, originating_txt_id: command_context.originating_txt_id)
+          success_response.should_receive(:deliver).with(relay.admins)
           execute
         end
       end
@@ -56,8 +51,7 @@ describe ModifySubscription do
       end
 
       it 'replies with the unsubscribed target message' do
-        I18n.should_receive('t').with('txts.unsubscribed_target', target: arguments).and_return('unsubscribed')
-        SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'unsubscribed', originating_txt_id: command_context.originating_txt_id)
+        expect_response_to_sender 'UnsubscribedTargetResponse'
         execute
       end
     end
@@ -67,15 +61,13 @@ describe ModifySubscription do
     end
 
     it 'replies with the missing target message' do
-      I18n.should_receive('t').with('txts.missing_target', target: arguments).and_return('missing')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'missing', originating_txt_id: command_context.originating_txt_id)
+      expect_response_to_sender 'MissingTargetResponse'
       execute
     end
   end
 
   it 'replies with the non-admin message' do
-    I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-    SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin', originating_txt_id: command_context.originating_txt_id)
+    expect_response_to_sender 'NonAdminResponse'
     execute
   end
 end

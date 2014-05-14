@@ -8,7 +8,7 @@ class Unmute
   end
 
   def execute
-    ModifySubscription.new(@command_context, success_message: I18n.t('txts.unmute', unmutee_name: @arguments, admin_name: @sender.addressable_name), modifier: modifier).execute
+    ModifySubscription.new(@command_context, success_response: SubscriptionModificationNotification.new(@command_context, 'unmute'), modifier: modifier).execute
   end
 
   private

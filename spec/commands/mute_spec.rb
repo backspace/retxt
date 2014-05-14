@@ -13,14 +13,15 @@ describe Mute do
   end
 
   it 'delegates to ModifySubscription' do
-    I18n.should_receive('t').with('txts.mute', mutee_name: arguments, admin_name: sender.addressable_name).and_return('mute')
     modify_subscription = double('modify subscription')
 
     modifier = double('modifier')
 
     Mute.any_instance.stub(:modifier).and_return(modifier)
 
-    ModifySubscription.should_receive(:new).with(command_context, modifier: modifier, success_message: 'mute').and_return(modify_subscription)
+    SubscriptionModificationNotification.should_receive(:new).with(command_context, 'mute').and_return(notification = double)
+
+    ModifySubscription.should_receive(:new).with(command_context, modifier: modifier, success_response: notification).and_return(modify_subscription)
     modify_subscription.should_receive(:execute)
 
     execute

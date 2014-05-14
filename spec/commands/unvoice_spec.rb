@@ -13,14 +13,15 @@ describe Unvoice do
   end
 
   it 'delegates to ModifySubscription' do
-    I18n.should_receive('t').with('txts.unvoice', unvoicee_name: arguments, admin_name: sender.addressable_name).and_return('unvoice')
     modify_subscription = double('modify subscription')
 
     modifier = double('modifier')
 
     Unvoice.any_instance.stub(:modifier).and_return(modifier)
 
-    ModifySubscription.should_receive(:new).with(command_context, modifier: modifier, success_message: 'unvoice').and_return(modify_subscription)
+    SubscriptionModificationNotification.should_receive(:new).with(command_context, 'unvoice').and_return(notification = double)
+
+    ModifySubscription.should_receive(:new).with(command_context, modifier: modifier, success_response: notification).and_return(modify_subscription)
     modify_subscription.should_receive(:execute)
 
     execute
