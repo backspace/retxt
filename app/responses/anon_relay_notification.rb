@@ -1,7 +1,7 @@
 class AnonRelayNotification < SimpleResponse
   private
   def template_name
-    'relay_identifier'
+    'admin.relay_identifier'
   end
 
   def template_parameters(recipient)

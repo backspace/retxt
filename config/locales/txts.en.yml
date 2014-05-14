@@ -1,7 +1,6 @@
 en:
   txts:
     relayed: "your message was sent to %{subscriber_count}"
-    relay_identifier: "the relayed message beginning \"%{beginning}...\" came from %{absolute_name}"
     frozen: 'the relay is frozen'
     moderated_fail: "forwarded your message to admins because the relay is moderated"
     moderated_report: "%{subscriber_name} tried to say: %{moderated_message}"
@@ -50,6 +49,8 @@ en:
       close: "%{admin_name} closed subscriptions"
       open: "%{admin_name} opened subscriptions"
       timestamp: "%{admin_name} set the timestamp to %{timestamp}"
+
+      relay_identifier: "the relayed message beginning \"%{beginning}...\" came from %{absolute_name}"
 
     direct:
       sent: "your message was sent to %{target_name}"
