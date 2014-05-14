@@ -119,7 +119,7 @@ Then(/^(the admin|'(\w*)') should receive a txt saying anon (un)?subscribed( in 
 end
 
 Then(/^the admin should receive a txt saying 'bob' unsubscribed$/) do
-  response_should_include I18n.t("txts.admin.unsubscribed", name: 'bob', number: my_number), @admin.number
+  response_should_include I18n.t("txts.admin.unsubscribed", name: 'bob', number: Subscriber.find_by(name: 'bob').number), @admin.number
 end
 
 Then(/^the admin should receive a txt including '([^']*)'$/) do |content|
