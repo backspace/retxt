@@ -6,6 +6,6 @@ class Timestamp
   end
 
   def execute
-    ModifyRelay.new(@command_context, modifier: :timestamp!, success_message: I18n.t('txts.admin.timestamp', admin_name: @sender.addressable_name, timestamp: @arguments)).execute
+    ModifyRelay.new(@command_context, modifier: :timestamp!, success_response: TimestampModificationNotification.new(@command_context)).execute
   end
 end

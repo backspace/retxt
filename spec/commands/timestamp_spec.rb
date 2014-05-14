@@ -12,14 +12,13 @@ describe Timestamp do
   end
 
   it 'delegates to ModifyRelay' do
-    I18n.should_receive('t').with('txts.admin.timestamp', admin_name: sender.addressable_name, timestamp: arguments).and_return('timestamp')
-
     modify_relay = double('modify relay')
     modifier = :timestamp!
 
     Timestamp.any_instance.stub(:modifier).and_return(modifier)
 
-    ModifyRelay.should_receive(:new).with(command_context, modifier: modifier, success_message: 'timestamp').and_return(modify_relay)
+    TimestampModificationNotification.should_receive(:new).with(command_context).and_return(notification = double)
+    ModifyRelay.should_receive(:new).with(command_context, modifier: modifier, success_response: notification).and_return(modify_relay)
     modify_relay.should_receive(:execute)
 
     execute

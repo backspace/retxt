@@ -5,12 +5,12 @@ describe ModifyRelay do
 
   include_context 'command context'
 
-  let(:success_message) { 'success!' }
+  let(:success_response) { double }
   let(:modifier) { :modify! }
   let(:arguments) { nil }
 
   def execute
-    ModifyRelay.new(command_context, modifier: modifier, success_message: success_message).execute
+    ModifyRelay.new(command_context, modifier: modifier, success_response: success_response).execute
   end
 
   context 'from an admin' do
@@ -19,21 +19,18 @@ describe ModifyRelay do
       sender_is_admin
     end
 
-    it 'modifies the relay' do
+    it 'modifies the relay and delivers the success response' do
       relay.should_receive(modifier)
-      execute
-    end
-
-    it 'replies with the success message' do
-      TxtsRelayAdmins.should_receive(:txt_relay_admins).with(relay: relay, body: success_message, originating_txt_id: command_context.originating_txt_id)
+      success_response.should_receive(:deliver).with(relay.admins)
       execute
     end
 
     context 'with arguments' do
       let(:arguments) { 'an argument' }
 
-      it 'modifies the relay with the arguments' do
+      it 'modifies the relay with the arguments and delivers the success response' do
         relay.should_receive(modifier).with(arguments)
+        success_response.should_receive(:deliver).with(relay.admins)
         execute
       end
     end
@@ -41,14 +38,9 @@ describe ModifyRelay do
 
   context 'from a non-admin' do
 
-    it 'does not modify the relay' do
+    it 'does not modify the relay and replies with the non-admin response' do
       relay.should_not_receive(modifier)
-      execute
-    end
-
-    it 'replies with the non-admin message' do
-      I18n.should_receive('t').with('txts.nonadmin').and_return('non-admin')
-      SendsTxts.should_receive(:send_txt).with(from: relay.number, to: sender.number, body: 'non-admin', originating_txt_id: command_context.originating_txt_id)
+      expect_response_to_sender 'NonAdminResponse'
       execute
     end
   end

@@ -6,6 +6,6 @@ class Freeze
   end
 
   def execute
-    ModifyRelay.new(@command_context, modifier: :freeze, success_message: I18n.t('txts.freeze', admin_name: @sender.addressable_name)).execute
+    ModifyRelay.new(@command_context, modifier: :freeze, success_response: RelayModificationNotification.new(@command_context, 'freeze')).execute
   end
 end
