@@ -10,13 +10,6 @@ class SubscriptionModificationNotification < SimpleResponse
   end
 
   def template_parameters(recipient)
-    {admin_name: sender.addressable_name}.tap do |hash|
-      hash[target_key] = arguments
-    end
-  end
-
-  def target_key
-    # FIXME temporary hack to turn 'voice' template into 'voicee_name' key
-    "#{@template_name}e_name".to_sym
+    {admin_name: sender.addressable_name, target_name: arguments}
   end
 end

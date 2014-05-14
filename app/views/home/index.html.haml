@@ -82,10 +82,10 @@
   .large-6.small-12.columns
     %h3=t '.muting.heading'
     =txt_pair(t('.muting.annoying_message'), t('txts.relayed', subscriber_count: t('subscribers', count: 1337)), sender: t('.muting.muted'))
-    =txt_pair("/#{t('commands.mute')} #{t('.muting.addressable_muted')}", t('txts.mute', mutee_name: t('.muting.addressable_muted'), admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
+    =txt_pair("/#{t('commands.mute')} #{t('.muting.addressable_muted')}", t('txts.mute', target_name: t('.muting.addressable_muted'), admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
     =txt_pair(t('.muting.blocked_annoying_message'), t('txts.muted_fail'), sender: t('.muting.muted'))
     =txt_pair('', t('txts.muted_report', mutee_name: t('.muting.addressable_muted'), muted_message: t('.muting.blocked_annoying_message')), receiver: t('.admin_name'))
-    =txt_pair("/#{t('commands.unmute')} #{t('.muting.addressable_muted')}", t('txts.unmute', unmutee_name: t('.muting.addressable_muted'), admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
+    =txt_pair("/#{t('commands.unmute')} #{t('.muting.addressable_muted')}", t('txts.unmute', target_name: t('.muting.addressable_muted'), admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
 %section.row
   .large-6.small-12.columns
     %h3=t('.closing.heading')
@@ -117,9 +117,9 @@
     =txt_pair("/#{t('commands.moderate')}", t('txts.admin.moderate', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
     =txt_pair(t('.moderating.moderated_message'), t('txts.moderated_fail'), sender: t('.moderating.moderated_number'))
     =txt_pair('', t('txts.moderated_report', subscriber_name: "anon##{t('.moderating.moderated_number')}", moderated_message: t('.moderating.moderated_message')), receiver: t('.admin_name'))
-    =txt_pair("/#{t('commands.voice')} #{t('.moderating.addressable_voiced_name')}", t('txts.voice', admin_name: t('.addressable_admin_name'), voicee_name: t('.moderating.addressable_voiced_name')), sender: t('.admin_name'))
+    =txt_pair("/#{t('commands.voice')} #{t('.moderating.addressable_voiced_name')}", t('txts.voice', admin_name: t('.addressable_admin_name'), target_name: t('.moderating.addressable_voiced_name')), sender: t('.admin_name'))
     =txt_pair(t('.moderating.relayed_message'), t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: t('.moderating.voiced_name'))
-    =txt_pair("/#{t('commands.unvoice')} #{t('.moderating.addressable_unvoiced_name')}", t('txts.unvoice', admin_name: t('.addressable_admin_name'), unvoicee_name: t('.moderating.addressable_unvoiced_name')), sender: t('.admin_name'))
+    =txt_pair("/#{t('commands.unvoice')} #{t('.moderating.addressable_unvoiced_name')}", t('txts.unvoice', admin_name: t('.addressable_admin_name'), target_name: t('.moderating.addressable_unvoiced_name')), sender: t('.admin_name'))
     =txt_pair("/#{t('commands.unmoderate')}", t('txts.admin.unmoderate', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
 %section.row
   .large-6.small-12.columns
