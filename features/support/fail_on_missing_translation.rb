@@ -1,5 +1,6 @@
 module I18n
   def self.just_raise_that_exception(*args)
+    puts args
     raise args.first
   end
 end
