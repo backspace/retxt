@@ -1,7 +1,7 @@
 class MutedBounceNotification < SimpleResponse
   private
   def template_name
-    'muted_report'
+    'admin.muted_report'
   end
 
   def template_parameters(recipient)

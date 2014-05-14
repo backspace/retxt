@@ -3,12 +3,8 @@ en:
     relayed: "your message was sent to %{subscriber_count}"
     frozen: 'the relay is frozen'
     moderated_fail: "forwarded your message to admins because the relay is moderated"
-    moderated_report: "%{subscriber_name} tried to say: %{moderated_message}"
     muted_fail: "did not forward your message because you have been muted by an admin"
-    muted_report: "%{mutee_name} tried to say: %{muted_message}"
     close: "subscriptions are closed"
-    bounce_notification: "%{number} tried to subscribe: %{message}"
-    rename: "renamed relay to %{relay_name}"
 
     nonadmin: 'you are not an admin'
     not_subscribed: 'you are not subscribed'
@@ -23,14 +19,13 @@ en:
 
     unknown: "sorry, did not understand your command. messages beginning with a / are reserved for commands to the relay."
 
-    missing_target: "your command failed because %{target} could not be found"
-
     admin:
       create: "%{admin_name} created a new relay! called %{relay_name}"
       subscribed: "%{name} subscribed from %{number}"
       unsubscribed: "%{name} unsubscribed :(, phone number: %{number}"
       clear: "this relay has been cleared of all non-admin subscribers."
       delete: "%{admin_name} is deleting this relay. this number will no longer respond."
+      rename: "renamed relay to %{relay_name}"
 
       admin: "%{adminer_name} made %{adminee_name} an admin"
       unadmin: "%{unadminer_name} made %{unadminee_name} not an admin!"
@@ -39,6 +34,8 @@ en:
       unmute: "%{admin_name} unmuted %{target_name}"
       voice: "%{admin_name} voiced %{target_name}"
       unvoice: "%{admin_name} unvoiced %{target_name}"
+
+      missing_target: "your command failed because %{target} could not be found"
 
       freeze: "%{admin_name} froze the relay"
       thaw: "%{admin_name} thawed the relay"
@@ -51,6 +48,9 @@ en:
       timestamp: "%{admin_name} set the timestamp to %{timestamp}"
 
       relay_identifier: "the relayed message beginning \"%{beginning}...\" came from %{absolute_name}"
+      bounce_notification: "%{number} tried to subscribe: %{message}"
+      moderated_report: "%{subscriber_name} tried to say: %{moderated_message}"
+      muted_report: "%{mutee_name} tried to say: %{muted_message}"
 
     direct:
       sent: "your message was sent to %{target_name}"

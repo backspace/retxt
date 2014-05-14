@@ -1,7 +1,7 @@
 class ModeratedBounceNotification < SimpleResponse
   private
   def template_name
-    'moderated_report'
+    'admin.moderated_report'
   end
 
   def template_parameters(recipient)

@@ -47,7 +47,7 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
   elsif message_type == 'non-admin'
     message = I18n.t('txts.nonadmin')
   elsif message_type == 'missing-target'
-    message = I18n.t('txts.missing_target', target: @txt_content.split(" ").last)
+    message = I18n.t('txts.admin.missing_target', target: @txt_content.split(" ").last)
   elsif message_type == 'moderated'
     message = I18n.t('txts.admin.moderate', admin_name: my_addressable_name)
   elsif message_type == 'unmoderated'
