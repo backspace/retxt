@@ -7,12 +7,8 @@ en:
     thaw: "%{admin_name} thawed the relay"
     moderated_fail: "forwarded your message to admins because the relay is moderated"
     moderated_report: "%{subscriber_name} tried to say: %{moderated_message}"
-    mute: "%{admin_name} muted %{target_name}"
     muted_fail: "did not forward your message because you have been muted by an admin"
     muted_report: "%{mutee_name} tried to say: %{muted_message}"
-    unmute: "%{admin_name} unmuted %{target_name}"
-    voice: "%{admin_name} voiced %{target_name}"
-    unvoice: "%{admin_name} unvoiced %{target_name}"
     close: "subscriptions are closed"
     bounce_notification: "%{number} tried to subscribe: %{message}"
     rename: "renamed relay to %{relay_name}"
@@ -41,6 +37,11 @@ en:
 
       admin: "%{adminer_name} made %{adminee_name} an admin"
       unadmin: "%{unadminer_name} made %{unadminee_name} not an admin!"
+
+      mute: "%{admin_name} muted %{target_name}"
+      unmute: "%{admin_name} unmuted %{target_name}"
+      voice: "%{admin_name} voiced %{target_name}"
+      unvoice: "%{admin_name} unvoiced %{target_name}"
 
       moderate: "%{admin_name} set the relay to be moderated. only admins and subscribers with 'voice' can relay messages. to give voice: /voice @name"
       unmoderate: "%{admin_name} set this relay to be unmoderated. all subscribers who are not muted can relay messages."
