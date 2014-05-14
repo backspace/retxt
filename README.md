@@ -80,7 +80,7 @@ Open the tunnel and run the server:
 
     foreman start -f Procfile.dev
 
-Once you see the `web` output from Foreman showing that `WEBrick` is ready, access the setup interface at http://$RETXT_SUBDOMAIN.ngrok.com/. You will create an account and specify your phone number and the application will create a relay. It costs $1!
+Once you see the `web` output from Foreman showing that `WEBrick` is ready, access the setup interface at http://$RETXT_SUBDOMAIN.ngrok.com/. You will create an account and specify your phone number and the application will create a relay. **It costs $1!**
 
 From then on, you need only run the latter `foreman` command to work in development.
 
