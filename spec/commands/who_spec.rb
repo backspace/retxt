@@ -8,7 +8,7 @@ describe Who do
   let(:who_txt_content) { ['a who!', 'another who'] }
 
   def execute
-    Who.new(command_context, who_txt: who_txt).execute
+    Who.new(command_context).execute
   end
 
   context 'from an admin' do
@@ -17,9 +17,13 @@ describe Who do
     end
 
     it 'replies with the who txt' do
-      who_txt.should_receive(:generate).with(relay: relay).and_return(who_txt_content)
-      SendsTxts.should_receive(:send_txts).with(from: relay.number, to: sender.number, body: who_txt_content, originating_txt_id: command_context.originating_txt_id)
+      expect_response_to_sender 'WhoResponse'
       execute
     end
+  end
+
+  it 'replies with the non-admin response' do
+    expect_response_to_sender 'NonAdminResponse'
+    execute
   end
 end

@@ -15,7 +15,7 @@ describe WhoResponse do
   let(:relay) { double('relay', subscriptions: subscriptions) }
 
   it 'generates a who response' do
-    response = WhoResponse.generate(relay: relay)
-    response.should include("@admin* 2\nmuted (muted) 3\nanon 1\nvoiced (voiced) 4")
+    response = WhoResponse.new(double(:context, relay: relay))
+    response.body.should include("@admin* 2\nmuted (muted) 3\nanon 1\nvoiced (voiced) 4")
   end
 end

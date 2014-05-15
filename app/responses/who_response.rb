@@ -1,7 +1,5 @@
-class WhoResponse
-  def self.generate(options)
-    relay = options[:relay]
-
+class WhoResponse < SimpleResponse
+  def body
     response = ""
 
     relay.subscriptions.sort_by(&:created_at).each do |subscription|
@@ -12,8 +10,17 @@ class WhoResponse
     response
   end
 
+  def deliver(recipient)
+    SendsTxts.send_txts(
+      from: origin_of_txt,
+      to: recipient.number,
+      body: body,
+      originating_txt_id: @context.originating_txt_id
+    )
+  end
+
   private
-  def self.subscription_states(subscription)
+  def subscription_states(subscription)
     s = ""
 
     s << " (muted)" if subscription.muted
