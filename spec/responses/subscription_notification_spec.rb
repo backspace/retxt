@@ -12,7 +12,7 @@ describe SubscriptionNotification do
     notification = SubscriptionNotification.new(command_context)
 
     [1, 2].each do |locale|
-      I18n.should_receive(:t).with('txts.admin.subscribed', name: sender.name_or_anon, number: sender.number, locale: locale).and_return(locale)
+      I18n.should_receive(:t).with('txts.admin.subscription', name: sender.name_or_anon, number: sender.number, locale: locale).and_return(locale)
       SendsTxts.should_receive(:send_txt).with(to: locale, from: relay.number, body: locale, originating_txt_id: command_context.originating_txt_id)
     end
 

@@ -39,7 +39,15 @@ class SimpleResponse
 
   private
   def template_name
-    self.class.name.underscore.gsub "_response", ""
+    admin_template_name || underscored_class_name.gsub("_response", "")
+  end
+
+  def admin_template_name
+    "admin.#{underscored_class_name.gsub "_notification", ""}" if underscored_class_name.include? "_notification"
+  end
+
+  def underscored_class_name
+    @underscored_class_name ||= self.class.name.underscore
   end
 
   def template_parameters(recipient)

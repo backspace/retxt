@@ -5,10 +5,6 @@ class CreationNotification < SimpleResponse
   end
 
   private
-  def template_name
-    'admin.create'
-  end
-
   def template_parameters(recipient)
     {admin_name: sender.addressable_name, relay_name: arguments}
   end

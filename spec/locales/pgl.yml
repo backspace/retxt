@@ -22,4 +22,4 @@ pgl:
     help: "aboutay essagemay inay Igpay Atinlay"
 
     admin:
-      subscribed: "%{name} ubscribedsay omfray %{number}"
+      subscription: "%{name} ubscribedsay omfray %{number}"

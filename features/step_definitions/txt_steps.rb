@@ -41,7 +41,7 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
   elsif message_type == 'goodbye'
     message = 'goodbye'
   elsif message_type == 'created'
-    message = I18n.t('txts.admin.create', relay_name: Relay.all.sort_by(&:created_at).last.name, admin_name: Subscriber.first.addressable_name)
+    message = I18n.t('txts.admin.creation', relay_name: Relay.all.sort_by(&:created_at).last.name, admin_name: Subscriber.first.addressable_name)
   elsif message_type == 'no-anon-direct'
     message = I18n.t('txts.direct.anonymous')
   elsif message_type == 'non-admin'
@@ -55,7 +55,7 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
   elsif message_type == 'timestamp'
     content_words = @txt_content.split(" ")
     timestamp = content_words.length > 1 ? content_words.last : ""
-    message = I18n.t('txts.admin.timestamp', admin_name: my_addressable_name, timestamp: timestamp)
+    message = I18n.t('txts.admin.timestamp_modification', admin_name: my_addressable_name, timestamp: timestamp)
   end
 
   if non_default_source
@@ -115,11 +115,11 @@ Then(/^(the admin|'(\w*)') should receive a txt saying anon (un)?subscribed( in 
     admin = @admin
   end
 
-  response_should_include I18n.t("txts.admin.#{unsubscribed ? 'un' : ''}subscribed", name: 'anon', number: my_number, locale: locale), admin.number
+  response_should_include I18n.t("txts.admin.#{unsubscribed ? 'un' : ''}subscription", name: 'anon', number: my_number, locale: locale), admin.number
 end
 
 Then(/^the admin should receive a txt saying 'bob' unsubscribed$/) do
-  response_should_include I18n.t("txts.admin.unsubscribed", name: 'bob', number: Subscriber.find_by(name: 'bob').number), @admin.number
+  response_should_include I18n.t("txts.admin.unsubscription", name: 'bob', number: Subscriber.find_by(name: 'bob').number), @admin.number
 end
 
 Then(/^the admin should receive a txt including '([^']*)'$/) do |content|
