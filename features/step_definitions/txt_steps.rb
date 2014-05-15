@@ -45,7 +45,7 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
   elsif message_type == 'no-anon-direct'
     message = I18n.t('txts.direct.anonymous')
   elsif message_type == 'non-admin'
-    message = I18n.t('txts.nonadmin')
+    message = I18n.t('txts.non_admin_bounce')
   elsif message_type == 'missing-target'
     message = I18n.t('txts.admin.missing_target', target: @txt_content.split(" ").last)
   elsif message_type == 'moderated'
