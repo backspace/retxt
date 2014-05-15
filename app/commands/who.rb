@@ -9,7 +9,7 @@ class Who
     if @sender.admin
       WhoResponse.new(@command_context).deliver @sender
     else
-      NonAdminResponse.new(@command_context).deliver @sender
+      NonAdminBounceResponse.new(@command_context).deliver @sender
     end
   end
 end

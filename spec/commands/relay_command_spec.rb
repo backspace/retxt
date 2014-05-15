@@ -51,7 +51,7 @@ describe RelayCommand do
       end
 
       it 'responds that the relay is frozen' do
-        expect_response_to_sender 'FrozenResponse'
+        expect_response_to_sender 'FrozenBounceResponse'
         execute
       end
     end

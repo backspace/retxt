@@ -1,4 +1,4 @@
-class MissingTargetResponse < SimpleResponse
+class MissingTargetBounceResponse < SimpleResponse
   private
   def template_name
     'admin.missing_target'

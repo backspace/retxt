@@ -46,7 +46,7 @@ describe DirectMessage do
         end
 
         it 'sends the failed message' do
-          expect_response_to_sender 'MissingDirectMessageTargetResponse'
+          expect_response_to_sender 'MissingDirectMessageTargetBounceResponse'
 
           execute
         end
@@ -59,7 +59,7 @@ describe DirectMessage do
       end
 
       it 'forbids the message' do
-        expect_response_to_sender 'ForbiddenAnonymousDirectMessageResponse'
+        expect_response_to_sender 'ForbiddenAnonymousDirectMessageBounceResponse'
         execute
       end
     end

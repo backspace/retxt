@@ -11,7 +11,7 @@ class DirectMessage
   def execute
     if @relay.subscribed?(@sender)
       if @sender.anonymous?
-        ForbiddenAnonymousDirectMessageResponse.new(@command_context).deliver @sender
+        ForbiddenAnonymousDirectMessageBounceResponse.new(@command_context).deliver @sender
       else
         target_subscriber = FindsSubscribers.find(target)
 
@@ -19,7 +19,7 @@ class DirectMessage
           OutgoingDirectMessageResponse.new(@command_context).deliver(target_subscriber)
           SentDirectMessageResponse.new(@command_context).deliver(@sender)
         else
-          MissingDirectMessageTargetResponse.new(@command_context).deliver(@sender)
+          MissingDirectMessageTargetBounceResponse.new(@command_context).deliver(@sender)
         end
       end
     end

@@ -1,4 +1,4 @@
-class BounceNotification < SimpleResponse
+class ClosedBounceNotification < SimpleResponse
   private
   def template_name
     'admin.bounce_notification'

@@ -1,0 +1,2 @@
+class UnknownBounceResponse < SimpleResponse
+end

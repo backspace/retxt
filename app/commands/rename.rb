@@ -12,7 +12,7 @@ class Rename
       @relay.rename(@arguments)
       RenameResponse.new(@command_context).deliver @sender
     else
-      NonAdminResponse.new(@command_context).deliver @sender
+      NonAdminBounceResponse.new(@command_context).deliver @sender
     end
   end
 end

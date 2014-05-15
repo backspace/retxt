@@ -23,12 +23,12 @@ class Subscribe
   end
 
   def already_subscribed
-    AlreadySubscribedResponse.new(@command_context).deliver(@sender)
+    AlreadySubscribedBounceResponse.new(@command_context).deliver(@sender)
   end
 
   def relay_closed
     ClosedResponse.new(@command_context).deliver(@sender)
-    BounceNotification.new(@command_context).deliver(@relay.admins)
+    ClosedBounceNotification.new(@command_context).deliver(@relay.admins)
   end
 
   def subscribe_sender

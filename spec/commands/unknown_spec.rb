@@ -9,7 +9,7 @@ describe Unknown do
   end
 
   it 'replies with the rename message' do
-    expect_response_to_sender 'UnknownResponse'
+    expect_response_to_sender 'UnknownBounceResponse'
     execute
   end
 end

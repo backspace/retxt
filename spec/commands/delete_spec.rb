@@ -26,7 +26,7 @@ describe Delete do
   context 'from a non-admin' do
     it 'does not delete the relay and responds with the non-admin message' do
       relay.should_not_receive(:delete)
-      expect_response_to_sender 'NonAdminResponse'
+      expect_response_to_sender 'NonAdminBounceResponse'
       execute
     end
   end

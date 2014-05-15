@@ -40,7 +40,7 @@ describe ModifyRelay do
 
     it 'does not modify the relay and replies with the non-admin response' do
       relay.should_not_receive(modifier)
-      expect_response_to_sender 'NonAdminResponse'
+      expect_response_to_sender 'NonAdminBounceResponse'
       execute
     end
   end

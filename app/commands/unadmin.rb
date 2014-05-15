@@ -15,10 +15,10 @@ class Unadmin
         unadminee.unadmin!
         UnadminificationNotification.new(@command_context).deliver(@relay.admins)
       else
-        MissingTargetResponse.new(@command_context).deliver(@sender)
+        MissingTargetBounceResponse.new(@command_context).deliver(@sender)
       end
     else
-      NonAdminResponse.new(@command_context).deliver(@sender)
+      NonAdminBounceResponse.new(@command_context).deliver(@sender)
     end
   end
 end

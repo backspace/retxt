@@ -31,7 +31,7 @@ describe Clear do
 
   context 'from a non-admin' do
     it 'replies with the non-admin message' do
-      expect_response_to_sender 'NonAdminResponse'
+      expect_response_to_sender 'NonAdminBounceResponse'
       execute
     end
   end

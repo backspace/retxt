@@ -10,7 +10,7 @@ class Delete
       DeletionNotification.new(@command_context).deliver(@relay.admins)
       DeletesRelays.delete_relay(relay: @relay)
     else
-      NonAdminResponse.new(@command_context).deliver @sender
+      NonAdminBounceResponse.new(@command_context).deliver @sender
     end
   end
 end

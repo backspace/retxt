@@ -1,7 +1,7 @@
 en:
   txts:
     relayed: "your message was sent to %{subscriber_count}"
-    frozen: 'the relay is frozen'
+    frozen_bounce: 'the relay is frozen'
     moderated_fail: "forwarded your message to admins because the relay is moderated"
     muted_fail: "did not forward your message because you have been muted by an admin"
     close: "subscriptions are closed"
@@ -11,13 +11,13 @@ en:
     name: "your name is %{name}. change it with 'name (new name)'"
     welcome: "welcome to %{relay_name}. yr name: %{subscriber_name}. cmds: about, unsubscribe, name. start txt w/@ & name to direct txt. any other txt is sent to %{subscriber_count}"
     disclaimer: "note: this relay is in no way secure! your txts could be monitored, as could the relay itself. act accordingly!"
-    already_subscribed: "you are already subscribed"
+    already_subscribed_bounce: "you are already subscribed"
 
     goodbye: "goodbye"
 
     help: "cmds: about, unsubscribe, name. start txt w/'@' & a name to direct txt. any other txt is sent to %{subscriber_count}"
 
-    unknown: "sorry, did not understand your command. messages beginning with a / are reserved for commands to the relay."
+    unknown_bounce: "sorry, did not understand your command. messages beginning with a / are reserved for commands to the relay."
 
     admin:
       create: "%{admin_name} created a new relay! called %{relay_name}"

@@ -1,2 +1,0 @@
-class UnknownResponse < SimpleResponse
-end

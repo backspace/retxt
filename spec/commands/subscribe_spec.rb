@@ -64,7 +64,7 @@ describe Subscribe do
 
       it 'bounces the sender and notifies admins' do
         expect_response_to_sender 'ClosedResponse'
-        expect_notification_of_admins 'BounceNotification'
+        expect_notification_of_admins 'ClosedBounceNotification'
 
         execute
       end
@@ -97,7 +97,7 @@ describe Subscribe do
     end
 
     it 'sends the already-subscribed message' do
-      expect_response_to_sender 'AlreadySubscribedResponse'
+      expect_response_to_sender 'AlreadySubscribedBounceResponse'
 
       execute
     end

@@ -1,0 +1,2 @@
+class FrozenBounceResponse < SimpleResponse
+end

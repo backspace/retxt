@@ -72,7 +72,7 @@ Then(/^I should receive a message that I am not subscribed$/) do
 end
 
 Then(/^I should receive a message that the relay is frozen$/) do
-  response_should_include I18n.t('txts.frozen')
+  response_should_include I18n.t('txts.frozen_bounce')
 end
 
 Then(/^I should not receive a txt including '(.*)'$/) do |content|

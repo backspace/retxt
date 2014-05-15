@@ -1,0 +1,2 @@
+class AlreadySubscribedBounceResponse < SimpleResponse
+end

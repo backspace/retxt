@@ -27,7 +27,7 @@ class RelayCommand
   end
 
   def frozen
-    FrozenResponse.new(@command_context).deliver @sender
+    FrozenBounceResponse.new(@command_context).deliver @sender
   end
 
   def relay_moderated_and_sender_voiceless?

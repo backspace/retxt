@@ -20,11 +20,11 @@ class ModifySubscription
 
   private
   def reject_unless_admin
-    NonAdminResponse.new(@command_context).deliver @sender
+    NonAdminBounceResponse.new(@command_context).deliver @sender
   end
 
   def reject_missing_target
-    MissingTargetResponse.new(@command_context).deliver @sender
+    MissingTargetBounceResponse.new(@command_context).deliver @sender
   end
 
   def reject_unsubscribed_target

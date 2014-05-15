@@ -1,2 +1,0 @@
-class AlreadySubscribedResponse < SimpleResponse
-end

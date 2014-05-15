@@ -1,2 +1,0 @@
-class FrozenResponse < SimpleResponse
-end

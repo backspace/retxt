@@ -8,6 +8,6 @@ class Unknown
   end
 
   def execute
-    UnknownResponse.new(@command_context).deliver @sender
+    UnknownBounceResponse.new(@command_context).deliver @sender
   end
 end

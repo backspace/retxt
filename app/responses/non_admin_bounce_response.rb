@@ -1,4 +1,4 @@
-class NonAdminResponse < SimpleResponse
+class NonAdminBounceResponse < SimpleResponse
   private
   def template_name
     'nonadmin'

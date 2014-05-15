@@ -1,4 +1,4 @@
-class MissingDirectMessageTargetResponse < SimpleResponse
+class MissingDirectMessageTargetBounceResponse < SimpleResponse
   private
   def template_name
     'direct.missing_target'

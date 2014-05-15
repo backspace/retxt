@@ -13,7 +13,7 @@ class Clear
 
       ClearNotification.new(@command_context).deliver(@relay.admins)
     else
-      NonAdminResponse.new(@command_context).deliver(@sender)
+      NonAdminBounceResponse.new(@command_context).deliver(@sender)
     end
   end
 end
