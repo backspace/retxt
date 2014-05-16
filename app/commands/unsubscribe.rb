@@ -14,6 +14,7 @@ class Unsubscribe
       UnsubscriptionNotification.new(@command_context).deliver @relay.admins
     else
       NotSubscribedBounceResponse.new(@command_context).deliver @sender
+      NotSubscribedUnsubscribeBounceNotification.new(@command_context).deliver @relay.admins
     end
   end
 end

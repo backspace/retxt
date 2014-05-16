@@ -52,6 +52,7 @@ en:
       moderated_bounce: "%{subscriber_name} tried to say: %{moderated_message}"
       muted_bounce: "%{mutee_name} tried to say: %{muted_message}"
       not_subscribed_bounce: "unsubscribed %{number} tried to say: %{message}"
+      not_subscribed_unsubscribe_bounce: "unsubscribed %{number} tried to unsubscribe: %{message}"
       non_admin_bounce: "%{sender_absolute_name} tried to use an admin command: %{message}"
       frozen_bounce: "%{sender_absolute_name} tried to relay this to the frozen relay: %{message}"
 

@@ -12,5 +12,7 @@ Feature: Unsubscribe
     Then I should not see that 'bob' is subscribed to relay A
 
   Scenario: A non-subscriber unsubscribes
-    When I txt 'unsubscribe'
+    When 'alice' is subscribed as an admin
+    And I txt 'unsubscribe'
     Then I should receive a message that I am not subscribed
+    And 'alice' should receive a not-subscribed-bounce-notification txt
