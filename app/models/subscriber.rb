@@ -32,7 +32,7 @@ class Subscriber
   scope :admins, -> { where(admin: true) }
 
   def sent
-    Txt.where(from: number)
+    Txt.from(number)
   end
 
   def admin!

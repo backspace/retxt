@@ -8,7 +8,7 @@ class TxtsController < ApplicationController
 
   def index
     @subscriber = Subscriber.find(params[:subscriber_id])
-    @txts = Txt.where(from: @subscriber.number)
+    @txts = Txt.from(@subscriber.number)
   end
 
   def incoming

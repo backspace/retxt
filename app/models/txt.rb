@@ -8,6 +8,8 @@ class Txt
   field :service_id, type: String
   field :originating_txt_id, type: String
 
+  scope :from, -> (number) { where(from: number) }
+
   def receiver
     Subscriber.find_by(number: to)
   end
