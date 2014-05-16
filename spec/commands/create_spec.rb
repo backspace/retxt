@@ -1,7 +1,6 @@
 require_relative '../../app/commands/create'
 require 'command_context'
 require 'buys_numbers'
-require 'txts_relay_admins'
 require 'extracts_area_codes'
 
 

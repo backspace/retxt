@@ -1,6 +1,5 @@
 require_relative '../../app/commands/clear'
 require 'command_context'
-require 'txts_relay_admins'
 
 describe Clear do
   include_context 'command context'

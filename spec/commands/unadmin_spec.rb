@@ -1,8 +1,6 @@
 require_relative '../../app/commands/unadmin'
 require 'command_context'
 
-require 'txts_relay_admins'
-
 describe Unadmin do
   include_context 'command context'
 

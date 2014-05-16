@@ -1,8 +1,6 @@
 require_relative '../../app/commands/admin'
 require 'command_context'
 
-require 'txts_relay_admins'
-
 describe Admin do
   include_context 'command context'
 

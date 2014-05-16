@@ -2,7 +2,6 @@ require_relative '../../app/commands/subscribe'
 
 require 'command_context'
 require 'changes_names'
-require 'txts_relay_admins'
 
 describe Subscribe do
   include_context 'command context'

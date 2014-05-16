@@ -1,6 +1,5 @@
 require_relative '../../app/commands/unsubscribe'
 require 'command_context'
-require 'txts_relay_admins'
 
 describe Unsubscribe do
   include_context 'command context'

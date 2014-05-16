@@ -1,6 +1,5 @@
 require_relative '../../app/commands/delete'
 require 'command_context'
-require 'txts_relay_admins'
 require 'deletes_relays'
 
 describe Delete do
