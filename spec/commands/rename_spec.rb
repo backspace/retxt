@@ -19,7 +19,7 @@ describe Rename do
 
     it 'renames the relay and responds' do
       relay.should_receive(:rename).with(arguments)
-      expect_response_to_sender 'RenameResponse'
+      expect_notification_of_admins 'RenameNotification'
       execute
     end
   end

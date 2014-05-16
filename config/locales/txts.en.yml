@@ -25,7 +25,7 @@ en:
       unsubscription: "%{name} unsubscribed :(, phone number: %{number}"
       clear: "this relay has been cleared of all non-admin subscribers."
       deletion: "%{admin_name} is deleting this relay. this number will no longer respond."
-      rename: "renamed relay to %{relay_name}"
+      rename: "%{admin_name} renamed relay to %{relay_name}"
 
       adminification: "%{adminer_name} made %{adminee_name} an admin"
       unadminification: "%{unadminer_name} made %{unadminee_name} not an admin!"

@@ -10,7 +10,7 @@ class Rename
   def execute
     if @sender.admin
       @relay.rename(@arguments)
-      RenameResponse.new(@command_context).deliver @sender
+      RenameNotification.new(@command_context).deliver @relay.admins
     else
       NonAdminBounceResponse.new(@command_context).deliver @sender
       NonAdminBounceNotification.new(@command_context).deliver @relay.admins

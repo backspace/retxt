@@ -97,7 +97,7 @@
     =txt_pair("/#{t('commands.open')}", t('txts.admin.open', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
   .large-6.small-12.columns
     %h3=t '.renaming.heading'
-    =txt_pair("/#{t('commands.rename')} #{t('.renaming.new_relay_name')}", t('txts.admin.rename', relay_name: t('.renaming.new_relay_name'), sender: t('.admin_name')))
+    =txt_pair("/#{t('commands.rename')} #{t('.renaming.new_relay_name')}", t('txts.admin.rename', relay_name: t('.renaming.new_relay_name'), admin_name: "@#{t('.admin_name')}"), sender: t('.admin_name'))
 %section.row
   .large-6.small-12.columns
     %h3=t '.clearing.heading'
