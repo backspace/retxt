@@ -13,6 +13,7 @@ class Rename
       RenameResponse.new(@command_context).deliver @sender
     else
       NonAdminBounceResponse.new(@command_context).deliver @sender
+      NonAdminBounceNotification.new(@command_context).deliver @relay.admins
     end
   end
 end

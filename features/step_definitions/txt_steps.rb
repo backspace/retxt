@@ -21,7 +21,7 @@ When(/^'(\w*)' txts '([^']*)'( to relay A)?$/) do |name, content, relay_given|
   post '/txts/incoming', Body: content, From: Subscriber.find_by(name: name).number, To: relay.number
 end
 
-Then(/^(I|'(\w*)') should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|no-anon-direct|non-admin|missing-target|moderated|unmoderated|timestamp|not-subscribed-notification) txt( in Pig Latin)?( from (\d+))?$/) do |subject, name, message_type, in_pig_latin, non_default_source, source|
+Then(/^(I|'(\w*)') should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|no-anon-direct|non-admin|missing-target|moderated|unmoderated|timestamp|not-subscribed-notification|non-admin-attempt) txt( in Pig Latin)?( from (\d+))?$/) do |subject, name, message_type, in_pig_latin, non_default_source, source|
   @original_locale = I18n.locale
 
   I18n.locale = :pgl if in_pig_latin.present?
@@ -64,6 +64,8 @@ Then(/^(I|'(\w*)') should receive an? (already-subscribed|help|welcome|confirmat
     message = I18n.t('txts.admin.timestamp_modification', admin_name: addressable_name, timestamp: timestamp)
   elsif message_type == 'not-subscribed-notification'
     message = I18n.t('txts.admin.not_subscribed_bounce', number: my_number, message: @txt_content)
+  elsif message_type == 'non-admin-attempt'
+    message = I18n.t('txts.admin.non_admin_bounce', sender_absolute_name: "anon##{my_number}", message: @txt_content)
   end
 
   if non_default_source

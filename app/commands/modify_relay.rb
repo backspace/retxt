@@ -19,6 +19,7 @@ class ModifyRelay
       @success_response.deliver @relay.admins
     else
       NonAdminBounceResponse.new(@command_context).deliver @sender
+      NonAdminBounceNotification.new(@command_context).deliver @relay.admins
     end
   end
 end

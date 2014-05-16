@@ -28,6 +28,7 @@ describe Rename do
     it 'does not rename the relay and bounces' do
       relay.should_not_receive(:rename)
       expect_response_to_sender 'NonAdminBounceResponse'
+      expect_notification_of_admins 'NonAdminBounceNotification'
       execute
     end
   end

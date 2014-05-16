@@ -21,6 +21,7 @@ class ModifySubscription
   private
   def reject_unless_admin
     NonAdminBounceResponse.new(@command_context).deliver @sender
+    NonAdminBounceNotification.new(@command_context).deliver @relay.admins
   end
 
   def reject_missing_target

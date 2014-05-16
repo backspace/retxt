@@ -26,6 +26,7 @@ describe Delete do
     it 'does not delete the relay and responds with the non-admin message' do
       relay.should_not_receive(:delete)
       expect_response_to_sender 'NonAdminBounceResponse'
+      expect_notification_of_admins 'NonAdminBounceNotification'
       execute
     end
   end

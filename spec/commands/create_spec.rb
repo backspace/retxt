@@ -45,6 +45,7 @@ describe Create do
 
   it 'replies with the non-admin message' do
     expect_response_to_sender 'NonAdminBounceResponse'
+    expect_notification_of_admins 'NonAdminBounceNotification'
     execute
   end
 end
