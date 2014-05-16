@@ -51,6 +51,7 @@ en:
       closed_bounce: "%{number} tried to subscribe: %{message}"
       moderated_bounce: "%{subscriber_name} tried to say: %{moderated_message}"
       muted_bounce: "%{mutee_name} tried to say: %{muted_message}"
+      not_subscribed_bounce: "unsubscribed %{number} tried to say: %{message}"
 
     direct:
       sent: "your message was sent to %{target_name}"

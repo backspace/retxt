@@ -22,6 +22,9 @@ Feature: Relay
 
   Scenario: Non-subscriber tries to relay
     Given two other people are subscribed
+    And 'alice' is subscribed as an admin
+
     When I txt 'a giant sucking sound is emanating from the metro'
     Then subscribers other than me should not receive that message
     And I should receive a message that I am not subscribed
+    And 'alice' should receive a not-subscribed-notification txt

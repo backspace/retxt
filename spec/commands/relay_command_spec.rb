@@ -113,6 +113,7 @@ describe RelayCommand do
 
     it 'responds that the sender is not subscribed' do
       expect_response_to_sender 'NotSubscribedBounceResponse'
+      expect_notification_of_admins 'NotSubscribedBounceNotification'
       execute
     end
   end

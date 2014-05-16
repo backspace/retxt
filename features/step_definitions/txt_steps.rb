@@ -21,12 +21,18 @@ When(/^'(\w*)' txts '([^']*)'( to relay A)?$/) do |name, content, relay_given|
   post '/txts/incoming', Body: content, From: Subscriber.find_by(name: name).number, To: relay.number
 end
 
-Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|no-anon-direct|non-admin|missing-target|moderated|unmoderated|timestamp) txt( in Pig Latin)?( from (\d+))?$/) do |message_type, in_pig_latin, non_default_source, source|
+Then(/^(I|'(\w*)') should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|no-anon-direct|non-admin|missing-target|moderated|unmoderated|timestamp|not-subscribed-notification) txt( in Pig Latin)?( from (\d+))?$/) do |subject, name, message_type, in_pig_latin, non_default_source, source|
   @original_locale = I18n.locale
 
   I18n.locale = :pgl if in_pig_latin.present?
 
-  my_addressable_name = Subscriber.find_by(number: my_number).addressable_name
+  if subject == 'I'
+    number = my_number
+  else
+    number = Subscriber.find_by(name: name).number
+  end
+
+  addressable_name = Subscriber.find_by(number: number).addressable_name
 
   if message_type == 'help'
     message = I18n.t('txts.help', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
@@ -49,19 +55,21 @@ Then(/^I should receive an? (already-subscribed|help|welcome|confirmation|direct
   elsif message_type == 'missing-target'
     message = I18n.t('txts.admin.missing_target', target: @txt_content.split(" ").last)
   elsif message_type == 'moderated'
-    message = I18n.t('txts.admin.moderate', admin_name: my_addressable_name)
+    message = I18n.t('txts.admin.moderate', admin_name: addressable_name)
   elsif message_type == 'unmoderated'
-    message = I18n.t('txts.admin.unmoderate', admin_name: my_addressable_name)
+    message = I18n.t('txts.admin.unmoderate', admin_name: addressable_name)
   elsif message_type == 'timestamp'
     content_words = @txt_content.split(" ")
     timestamp = content_words.length > 1 ? content_words.last : ""
-    message = I18n.t('txts.admin.timestamp_modification', admin_name: my_addressable_name, timestamp: timestamp)
+    message = I18n.t('txts.admin.timestamp_modification', admin_name: addressable_name, timestamp: timestamp)
+  elsif message_type == 'not-subscribed-notification'
+    message = I18n.t('txts.admin.not_subscribed_bounce', number: my_number, message: @txt_content)
   end
 
   if non_default_source
-    response_should_include message, my_number, source
+    response_should_include message, number, source
   else
-    response_should_include message
+    response_should_include message, number
   end
 
   I18n.locale = @original_locale

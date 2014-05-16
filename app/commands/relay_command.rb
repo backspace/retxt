@@ -24,6 +24,7 @@ class RelayCommand
 
   def not_subscribed
     NotSubscribedBounceResponse.new(@command_context).deliver @sender
+    NotSubscribedBounceNotification.new(@command_context).deliver @relay.admins
   end
 
   def frozen
