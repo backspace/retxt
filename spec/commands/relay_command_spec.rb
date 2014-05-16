@@ -52,6 +52,7 @@ describe RelayCommand do
 
       it 'responds that the relay is frozen' do
         expect_response_to_sender 'FrozenBounceResponse'
+        expect_notification_of_admins 'FrozenBounceNotification'
         execute
       end
     end

@@ -78,6 +78,7 @@
     %h3=t '.freezing.heading'
     =txt_pair("/#{t('commands.freeze')}", t('txts.admin.freeze', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
     =txt_pair(t('.freezing.blocked_message'), t('txts.frozen_bounce'), sender: t('.freezing.sender'))
+    =txt_pair('', t('txts.admin.frozen_bounce', sender_absolute_name: t('.freezing.sender'), message: t('.freezing.blocked_message')), receiver: t('.admin_name'))
     =txt_pair("/#{t('commands.thaw')}", t('txts.admin.thaw', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
   .large-6.small-12.columns
     %h3=t '.muting.heading'

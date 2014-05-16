@@ -16,6 +16,7 @@ Feature: Freeze and thaw
     When I txt 'a train derailed'
     Then I should receive a message that the relay is frozen
     And subscribers other than me should not receive that message
+    And 'alice' should receive a frozen-bounce-notification txt
 
     When 'alice' txts '/thaw'
     Then I should receive a txt including '@alice thawed the relay'
