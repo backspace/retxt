@@ -1,16 +1,12 @@
-class Who
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
-  end
+require_relative 'abstract_command'
 
+class Who < AbstractCommand
   def execute
-    if @sender.admin
-      WhoResponse.new(@command_context).deliver @sender
+    if sender.admin
+      WhoResponse.new(context).deliver sender
     else
-      NonAdminBounceResponse.new(@command_context).deliver @sender
-      NonAdminBounceNotification.new(@command_context).deliver @relay.admins
+      NonAdminBounceResponse.new(context).deliver sender
+      NonAdminBounceNotification.new(context).deliver relay.admins
     end
   end
 end

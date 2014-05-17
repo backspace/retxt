@@ -1,26 +1,20 @@
-class Admin
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
+require_relative 'abstract_command'
 
-    @arguments = command_context.arguments
-  end
-
+class Admin < AbstractCommand
   def execute
-    if @sender.admin
-      adminee = FindsSubscribers.find(@arguments)
+    if sender.admin
+      adminee = FindsSubscribers.find(arguments)
 
       if adminee
         adminee.admin!
 
-        AdminificationNotification.new(@command_context).deliver(@relay.admins)
+        AdminificationNotification.new(context).deliver(relay.admins)
       else
-        MissingTargetBounceResponse.new(@command_context).deliver(@sender)
+        MissingTargetBounceResponse.new(context).deliver(sender)
       end
     else
-      NonAdminBounceResponse.new(@command_context).deliver(@sender)
-      NonAdminBounceNotification.new(@command_context).deliver @relay.admins
+      NonAdminBounceResponse.new(context).deliver(sender)
+      NonAdminBounceNotification.new(context).deliver relay.admins
     end
   end
 end

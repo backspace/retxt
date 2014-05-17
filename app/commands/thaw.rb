@@ -1,11 +1,7 @@
-class Thaw
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
-  end
+require_relative 'abstract_command'
 
+class Thaw < AbstractCommand
   def execute
-    ModifyRelay.new(@command_context, modifier: :thaw, success_response: RelayModificationNotification.new(@command_context, 'thaw')).execute
+    ModifyRelay.new(context, modifier: :thaw, success_response: RelayModificationNotification.new(context, 'thaw')).execute
   end
 end

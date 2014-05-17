@@ -1,14 +1,8 @@
-class Mute
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
+require_relative 'abstract_command'
 
-    @arguments = command_context.arguments
-  end
-
+class Mute < AbstractCommand
   def execute
-    ModifySubscription.new(@command_context, success_response: SubscriptionModificationNotification.new(@command_context, 'mute'), modifier: modifier).execute
+    ModifySubscription.new(context, success_response: SubscriptionModificationNotification.new(context, 'mute'), modifier: modifier).execute
   end
 
   private

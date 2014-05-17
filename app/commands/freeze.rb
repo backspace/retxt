@@ -1,11 +1,7 @@
-class Freeze
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
-  end
+require_relative 'abstract_command'
 
+class Freeze < AbstractCommand
   def execute
-    ModifyRelay.new(@command_context, modifier: :freeze, success_response: RelayModificationNotification.new(@command_context, 'freeze')).execute
+    ModifyRelay.new(context, modifier: :freeze, success_response: RelayModificationNotification.new(context, 'freeze')).execute
   end
 end

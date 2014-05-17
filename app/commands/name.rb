@@ -1,14 +1,8 @@
-class Name
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
+require_relative 'abstract_command'
 
-    @new_name = command_context.arguments
-  end
-
+class Name < AbstractCommand
   def execute
-    ChangesNames.change_name(@sender, @new_name)
-    NameResponse.new(@command_context).deliver @sender
+    ChangesNames.change_name(sender, arguments)
+    NameResponse.new(context).deliver sender
   end
 end

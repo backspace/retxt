@@ -1,11 +1,7 @@
-class Moderate
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
-  end
+require_relative 'abstract_command'
 
+class Moderate < AbstractCommand
   def execute
-    ModifyRelay.new(@command_context, modifier: :moderate, success_response: RelayModificationNotification.new(@command_context, 'moderate')).execute
+    ModifyRelay.new(context, modifier: :moderate, success_response: RelayModificationNotification.new(context, 'moderate')).execute
   end
 end

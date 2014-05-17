@@ -1,11 +1,7 @@
-class Timestamp
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @arguments = command_context.arguments
-  end
+require_relative 'abstract_command'
 
+class Timestamp < AbstractCommand
   def execute
-    ModifyRelay.new(@command_context, modifier: :timestamp!, success_response: TimestampModificationNotification.new(@command_context)).execute
+    ModifyRelay.new(context, modifier: :timestamp!, success_response: TimestampModificationNotification.new(context)).execute
   end
 end

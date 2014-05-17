@@ -1,13 +1,7 @@
-class Help
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
+require_relative 'abstract_command'
 
-    @arguments = command_context.arguments
-  end
-
+class Help < AbstractCommand
   def execute
-    HelpResponse.new(@command_context).deliver @sender
+    HelpResponse.new(context).deliver sender
   end
 end

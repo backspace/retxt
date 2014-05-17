@@ -1,20 +1,16 @@
-class Unsubscribe
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
-  end
+require_relative 'abstract_command'
 
+class Unsubscribe < AbstractCommand
   def execute
-    if @relay.subscribed?(@sender)
-      subscription = @relay.subscription_for(@sender)
+    if relay.subscribed?(sender)
+      subscription = relay.subscription_for(sender)
       subscription.destroy
 
-      UnsubscribeResponse.new(@command_context).deliver @sender
-      UnsubscriptionNotification.new(@command_context).deliver @relay.admins
+      UnsubscribeResponse.new(context).deliver sender
+      UnsubscriptionNotification.new(context).deliver relay.admins
     else
-      NotSubscribedBounceResponse.new(@command_context).deliver @sender
-      NotSubscribedUnsubscribeBounceNotification.new(@command_context).deliver @relay.admins
+      NotSubscribedBounceResponse.new(context).deliver sender
+      NotSubscribedUnsubscribeBounceNotification.new(context).deliver relay.admins
     end
   end
 end

@@ -1,25 +1,18 @@
-class DirectMessage
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
+require_relative 'abstract_command'
 
-    @txt = command_context.txt
-    @content = @txt.body
-  end
-
+class DirectMessage < AbstractCommand
   def execute
-    if @relay.subscribed?(@sender)
-      if @sender.anonymous?
-        ForbiddenAnonymousDirectMessageBounceResponse.new(@command_context).deliver @sender
+    if relay.subscribed?(sender)
+      if sender.anonymous?
+        ForbiddenAnonymousDirectMessageBounceResponse.new(context).deliver sender
       else
         target_subscriber = FindsSubscribers.find(target)
 
         if target_subscriber
-          OutgoingDirectMessageResponse.new(@command_context).deliver(target_subscriber)
-          SentDirectMessageResponse.new(@command_context).deliver(@sender)
+          OutgoingDirectMessageResponse.new(context).deliver(target_subscriber)
+          SentDirectMessageResponse.new(context).deliver(sender)
         else
-          MissingDirectMessageTargetBounceResponse.new(@command_context).deliver(@sender)
+          MissingDirectMessageTargetBounceResponse.new(context).deliver(sender)
         end
       end
     end
@@ -27,6 +20,6 @@ class DirectMessage
 
   private
   def target
-    @content.split.first
+    context.txt.body.split.first
   end
 end

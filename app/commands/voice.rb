@@ -1,14 +1,8 @@
-class Voice
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
+require_relative 'abstract_command'
 
-    @arguments = command_context.arguments
-  end
-
+class Voice < AbstractCommand
   def execute
-    ModifySubscription.new(@command_context, success_response: SubscriptionModificationNotification.new(@command_context, 'voice'), modifier: modifier).execute
+    ModifySubscription.new(context, success_response: SubscriptionModificationNotification.new(context, 'voice'), modifier: modifier).execute
   end
 
   private

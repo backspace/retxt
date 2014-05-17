@@ -1,19 +1,13 @@
-class Rename
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
+require_relative 'abstract_command'
 
-    @arguments = command_context.arguments
-  end
-
+class Rename < AbstractCommand
   def execute
-    if @sender.admin
-      @relay.rename(@arguments)
-      RenameNotification.new(@command_context).deliver @relay.admins
+    if sender.admin
+      relay.rename(arguments)
+      RenameNotification.new(context).deliver relay.admins
     else
-      NonAdminBounceResponse.new(@command_context).deliver @sender
-      NonAdminBounceNotification.new(@command_context).deliver @relay.admins
+      NonAdminBounceResponse.new(context).deliver sender
+      NonAdminBounceNotification.new(context).deliver relay.admins
     end
   end
 end

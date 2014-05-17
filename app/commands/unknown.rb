@@ -1,13 +1,7 @@
-class Unknown
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
+require_relative 'abstract_command'
 
-    @arguments = command_context.arguments
-  end
-
+class Unknown < AbstractCommand
   def execute
-    UnknownBounceResponse.new(@command_context).deliver @sender
+    UnknownBounceResponse.new(context).deliver sender
   end
 end

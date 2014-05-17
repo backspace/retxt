@@ -1,11 +1,7 @@
-class Open
-  def initialize(command_context)
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
-  end
+require_relative 'abstract_command'
 
+class Open < AbstractCommand
   def execute
-    ModifyRelay.new(@command_context, modifier: :open, success_response: RelayModificationNotification.new(@command_context, 'open')).execute
+    ModifyRelay.new(context, modifier: :open, success_response: RelayModificationNotification.new(context, 'open')).execute
   end
 end

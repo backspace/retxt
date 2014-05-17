@@ -1,10 +1,11 @@
 require 'active_support/core_ext/object/blank'
 
-class Subscribe
+require_relative 'abstract_command'
+
+class Subscribe < AbstractCommand
   def initialize(command_context, options = {})
-    @command_context = command_context
-    @sender = command_context.sender
-    @relay = command_context.relay
+    super command_context
+
     @subscriberRepository = options[:subscriberRepository] || Subscriber
     @subscriptionRepository = options[:subscriptionRepository] || Subscription
     @arguments = command_context.arguments
@@ -12,51 +13,51 @@ class Subscribe
 
   def execute
     return already_subscribed if sender_subscribed?
-    return relay_closed if @relay.closed
+    return relay_closed if relay.closed
 
     subscribe_sender
   end
 
   private
   def sender_subscribed?
-    @relay.subscribed?(@sender)
+    relay.subscribed?(sender)
   end
 
   def already_subscribed
-    AlreadySubscribedBounceResponse.new(@command_context).deliver(@sender)
+    AlreadySubscribedBounceResponse.new(context).deliver(sender)
   end
 
   def relay_closed
-    ClosedResponse.new(@command_context).deliver(@sender)
-    ClosedBounceNotification.new(@command_context).deliver(@relay.admins)
+    ClosedResponse.new(context).deliver(sender)
+    ClosedBounceNotification.new(context).deliver(relay.admins)
   end
 
   def subscribe_sender
     persist_subscriber
-    @subscriptionRepository.create(relay: @relay, subscriber: @subscriber)
+    @subscriptionRepository.create(relay: relay, subscriber: @subscriber)
 
-    ChangesNames.change_name(@subscriber, @arguments) if @arguments
+    ChangesNames.change_name(@subscriber, arguments) if arguments
 
     send_welcome_messages
     notify_admins
   end
 
   def persist_subscriber
-    if @sender.persisted?
-      @subscriber = @sender
-      @subscriber.locale = @command_context.locale
+    if sender.persisted?
+      @subscriber = sender
+      @subscriber.locale = context.locale
       @subscriber.save
     else
-      @subscriber = @subscriberRepository.create(number: @sender.number, locale: @command_context.locale)
+      @subscriber = @subscriberRepository.create(number: sender.number, locale: context.locale)
     end
   end
 
   def send_welcome_messages
-    WelcomeResponse.new(@command_context).deliver(@sender)
-    DisclaimerResponse.new(@command_context).deliver(@sender)
+    WelcomeResponse.new(context).deliver(sender)
+    DisclaimerResponse.new(context).deliver(sender)
   end
 
   def notify_admins
-    SubscriptionNotification.new(@command_context).deliver(@relay.admins)
+    SubscriptionNotification.new(context).deliver(relay.admins)
   end
 end
