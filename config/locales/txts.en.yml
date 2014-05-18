@@ -1,64 +1,64 @@
 en:
   txts:
-    relayed: "your message was sent to %{subscriber_count}"
-    frozen_bounce: 'the relay is frozen'
-    moderated_fail: "forwarded your message to admins because the relay is moderated"
-    muted_fail: "did not forward your message because you have been muted by an admin"
-    close: "subscriptions are closed"
+    relayed: "Your message was sent to %{subscriber_count}."
+    frozen_bounce: 'Could not relay your message because the relay is frozen.'
+    moderated_fail: "Forwarded your message to admins because the relay is moderated."
+    muted_fail: "Could not forward your message because you have been muted by an admin."
+    close: "Could not subscribe you because subscriptions are closed."
 
-    non_admin_bounce: 'you are not an admin'
-    not_subscribed_relay_bounce: 'you are not subscribed'
-    not_subscribed_unsubscribe_bounce: 'you are not subscribed'
-    name: "your name is %{name}. change it with 'name (new name)'"
-    welcome: "welcome to %{relay_name}. yr name: %{subscriber_name}. cmds: about, unsubscribe, name. start txt w/@ & name to direct txt. any other txt is sent to %{subscriber_count}"
-    disclaimer: "note: this relay is in no way secure! your txts could be monitored, as could the relay itself. act accordingly!"
-    already_subscribed_bounce: "you are already subscribed"
+    non_admin_bounce: 'You are not an admin.'
+    not_subscribed_relay_bounce: 'Could not relay your message because you are not subscribed.'
+    not_subscribed_unsubscribe_bounce: 'Could not unsubscribe you because you are not subscribed.'
+    name: "Your name is %{name}. Change it with 'name (new name)'."
+    welcome: "Welcome to %{relay_name}, %{subscriber_name}. Cmds: about, unsubscribe, name. Write '@name hello!' to direct txt by name. Any other txt is sent to %{subscriber_count}."
+    disclaimer: "This relay is in no way secure! Your txts could be monitored, as could the relay itself. Act accordingly!"
+    already_subscribed_bounce: "Could not subscribe you because you are already subscribed."
 
-    goodbye: "goodbye"
+    goodbye: "You are now unsubscribed."
 
-    help: "cmds: about, unsubscribe, name. start txt w/'@' & a name to direct txt. any other txt is sent to %{subscriber_count}"
+    help: "Cmds: about, unsubscribe, name. Write '@name hello!' to direct txt by name. Any other txt is sent to %{subscriber_count}."
 
-    unknown_bounce: "sorry, did not understand your command. messages beginning with a / are reserved for commands to the relay."
+    unknown_bounce: "Did not understand your command. Messages beginning with a / are reserved for commands to the relay."
 
     admin:
-      creation: "%{admin_name} created a new relay! called %{relay_name}"
-      subscription: "%{name} subscribed from %{number}"
-      unsubscription: "%{name} unsubscribed :(, phone number: %{number}"
-      clear: "this relay has been cleared of all non-admin subscribers."
-      deletion: "%{admin_name} is deleting this relay. this number will no longer respond."
-      rename: "%{admin_name} renamed relay to %{relay_name}"
+      creation: "%{admin_name} created a new relay called %{relay_name}."
+      subscription: "%{name} at %{number} subscribed."
+      unsubscription: "%{name} at %{number} unsubscribed."
+      clear: "This relay has been cleared of all non-admin subscribers."
+      deletion: "%{admin_name} is deleting this relay. This number will no longer respond."
+      rename: "%{admin_name} renamed this relay to %{relay_name}."
 
       adminification: "%{admin_name} made %{target_name} an admin."
       unadminification: "%{admin_name} made %{target_name} not an admin."
 
-      mute: "%{admin_name} muted %{target_name}"
-      unmute: "%{admin_name} unmuted %{target_name}"
-      voice: "%{admin_name} voiced %{target_name}"
-      unvoice: "%{admin_name} unvoiced %{target_name}"
+      mute: "%{admin_name} muted %{target_name}. They can no longer relay messages."
+      unmute: "%{admin_name} unmuted %{target_name}. They can again relay messages."
+      voice: "%{admin_name} voiced %{target_name}. They can relay messages during moderation."
+      unvoice: "%{admin_name} unvoiced %{target_name}. They canno longer relay messages during moderation."
 
-      missing_target: "your command failed because %{target} could not be found"
+      missing_target: "Your command failed because %{target} could not be found."
 
-      freeze: "%{admin_name} froze the relay"
-      thaw: "%{admin_name} thawed the relay"
+      freeze: "%{admin_name} froze the relay. No messages can be relayed."
+      thaw: "%{admin_name} thawed the relay. Messages can again be relayed."
 
-      moderate: "%{admin_name} set the relay to be moderated. only admins and subscribers with 'voice' can relay messages. to give voice: /voice @name"
-      unmoderate: "%{admin_name} set this relay to be unmoderated. all subscribers who are not muted can relay messages."
+      moderate: "%{admin_name} set the relay to be moderated. Only admins and subscribers with 'voice' can relay messages. To give voice: /voice @name"
+      unmoderate: "%{admin_name} set this relay to be unmoderated. All subscribers who are not muted can relay messages."
 
-      close: "%{admin_name} closed subscriptions"
-      open: "%{admin_name} opened subscriptions"
-      timestamp_modification: "%{admin_name} set the timestamp to %{timestamp}"
+      close: "%{admin_name} closed subscriptions."
+      open: "%{admin_name} opened subscriptions."
+      timestamp_modification: "%{admin_name} set the timestamp to %{timestamp}. Relayed messages will be timestamped in that ppattern."
 
-      anon_relay: "the relayed message beginning \"%{beginning}...\" came from %{absolute_name}"
+      anon_relay: "The relayed message beginning \"%{beginning}...\" came from %{absolute_name}."
       closed_bounce: "%{number} tried to subscribe: %{message}"
       moderated_bounce: "%{subscriber_name} tried to say: %{moderated_message}"
-      muted_bounce: "%{mutee_name} tried to say: %{muted_message}"
-      not_subscribed_relay_bounce: "unsubscribed %{number} tried to say: %{message}"
-      not_subscribed_unsubscribe_bounce: "unsubscribed %{number} tried to unsubscribe: %{message}"
+      muted_bounce: "Muted subscriber %{mutee_name} tried to say: %{muted_message}"
+      not_subscribed_relay_bounce: "Unsubscribed %{number} tried to say: %{message}"
+      not_subscribed_unsubscribe_bounce: "Unsubscribed %{number} tried to unsubscribe: %{message}"
       non_admin_bounce: "%{sender_absolute_name} tried to use an admin command: %{message}"
       frozen_bounce: "%{sender_absolute_name} tried to relay this to the frozen relay: %{message}"
 
     direct:
-      sent: "your message was sent to %{target_name}"
+      sent: "Your message was sent to %{target_name}"
       outgoing: "%{prefix}%{sender} said to you: %{message}"
-      missing_target: "your message was not sent because %{target_name} could not be found"
-      anonymous: "you cannot send a message when you are anonymous. change your name with 'name yourname' to set your name"
+      missing_target: "Your message was not sent because %{target_name} could not be found."
+      anonymous: "You cannot send a message when you are anonymous. change your name with 'name yourname'."
