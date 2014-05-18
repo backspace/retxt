@@ -39,7 +39,7 @@
 %section.row
   .large-6.small-12.columns
     %h2=t '.about.heading'
-    =txt_pair(t('commands.help'), t('txts.help', subscriber_count: t('other', count: @subscriber_count)))
+    =txt_pair(t('commands.help').first, t('txts.help', subscriber_count: t('other', count: @subscriber_count)))
   .large-6.small-12.columns
     %h2=t '.names.heading'
     =txt_pair(t('commands.name'), t('txts.name', name: t('subscribers.anon')))
