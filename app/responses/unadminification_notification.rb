@@ -1,6 +1,6 @@
 class UnadminificationNotification < SimpleResponse
   private
   def template_parameters(recipient)
-    {unadminer_name: sender.addressable_name, unadminee_name: arguments}
+    {admin_name: sender.addressable_name, target_name: arguments}
   end
 end

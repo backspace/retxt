@@ -108,11 +108,11 @@
 %section.row
   .large-6.small-12.columns
     %h3=t '.adminning.heading'
-    -response=t('txts.admin.adminification', adminer_name: t('.addressable_admin_name'), adminee_name: t('.adminning.addressable_adminee_name'))
+    -response=t('txts.admin.adminification', admin_name: t('.addressable_admin_name'), target_name: t('.adminning.addressable_adminee_name'))
     =txt_pair("/#{t('commands.admin')} #{t('.adminning.addressable_adminee_name')}", response, sender: t('.admin_name'), receiver: t('.admin_name'))
     =txt_pair('', response, receiver: t('.adminning.adminee_name'))
 
-    =txt_pair("/#{t('commands.unadmin')} #{t('.adminning.addressable_adminee_name')}", t('txts.admin.unadminification', unadminer_name: t('.addressable_admin_name'), unadminee_name: t('.adminning.addressable_adminee_name')), sender: t('.admin_name'), receiver: t('.admin_name'))
+    =txt_pair("/#{t('commands.unadmin')} #{t('.adminning.addressable_adminee_name')}", t('txts.admin.unadminification', admin_name: t('.addressable_admin_name'), target_name: t('.adminning.addressable_adminee_name')), sender: t('.admin_name'), receiver: t('.admin_name'))
   .large-6.small-12.columns
     %h3=t '.moderating.heading'
     =txt_pair("/#{t('commands.moderate')}", t('txts.admin.moderate', admin_name: t('.addressable_admin_name')), sender: t('.admin_name'))
