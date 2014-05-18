@@ -63,7 +63,7 @@ Then(/^(I|'(\w*)') should receive an? (already-subscribed|help|welcome|confirmat
     timestamp = content_words.length > 1 ? content_words.last : ""
     message = I18n.t('txts.admin.timestamp_modification', admin_name: addressable_name, timestamp: timestamp)
   elsif message_type == 'not-subscribed-notification'
-    message = I18n.t('txts.admin.not_subscribed_bounce', number: my_number, message: @txt_content)
+    message = I18n.t('txts.admin.not_subscribed_relay_bounce', number: my_number, message: @txt_content)
   elsif message_type == 'non-admin-attempt'
     message = I18n.t('txts.admin.non_admin_bounce', sender_absolute_name: "anon##{my_number}", message: @txt_content)
   elsif message_type == 'frozen-bounce-notification'

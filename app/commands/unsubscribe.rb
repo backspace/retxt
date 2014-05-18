@@ -9,7 +9,7 @@ class Unsubscribe < AbstractCommand
       UnsubscribeResponse.new(context).deliver sender
       UnsubscriptionNotification.new(context).deliver relay.admins
     else
-      NotSubscribedBounceResponse.new(context).deliver sender
+      NotSubscribedUnsubscribeBounceResponse.new(context).deliver sender
       NotSubscribedUnsubscribeBounceNotification.new(context).deliver relay.admins
     end
   end

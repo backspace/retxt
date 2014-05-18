@@ -1,0 +1,2 @@
+class NotSubscribedUnsubscribeBounceResponse < SimpleResponse
+end

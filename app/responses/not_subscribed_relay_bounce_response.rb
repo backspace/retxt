@@ -1,0 +1,2 @@
+class NotSubscribedRelayBounceResponse < SimpleResponse
+end

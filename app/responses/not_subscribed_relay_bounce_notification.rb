@@ -1,4 +1,4 @@
-class NotSubscribedBounceNotification < SimpleResponse
+class NotSubscribedRelayBounceNotification < SimpleResponse
   private
   def template_parameters(recipient)
     {number: sender.number, message: txt.body}

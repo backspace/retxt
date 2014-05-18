@@ -33,7 +33,7 @@ describe Unsubscribe do
     end
 
     it 'sends the not subscribed message' do
-      expect_response_to_sender 'NotSubscribedBounceResponse'
+      expect_response_to_sender 'NotSubscribedUnsubscribeBounceResponse'
       expect_notification_of_admins 'NotSubscribedUnsubscribeBounceNotification'
       execute
     end

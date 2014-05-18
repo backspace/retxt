@@ -16,8 +16,8 @@ class RelayCommand < AbstractCommand
   end
 
   def not_subscribed
-    NotSubscribedBounceResponse.new(context).deliver sender
-    NotSubscribedBounceNotification.new(context).deliver relay.admins
+    NotSubscribedRelayBounceResponse.new(context).deliver sender
+    NotSubscribedRelayBounceNotification.new(context).deliver relay.admins
   end
 
   def frozen
