@@ -3,7 +3,7 @@ class HomeController < ApplicationController
 
   def index
     @relay = Relay.master
-    @subscriber_count = Subscriber.count
+    @subscriber_count = 5
   end
 
   private
