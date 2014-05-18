@@ -9,14 +9,14 @@ Feature: Timestamps
 
     When I txt 'hello' at 13:10
     Then I should receive a confirmation txt
-    And 'bob' should receive a txt including '1:10 @alice sez: hello'
+    And subscribers other than me should receive that 1:10-timestamped message signed by 'alice'
 
     When I txt '@bob you are areshum' at 13:15
     Then I should receive a directconfirmation txt
-    And bob should receive '1:15 @alice said to you: @bob you are areshum'
+    And bob should receive a 1:15-timestamped direct message from alice saying 'you are areshum'
 
     When I txt '/timestamp'
     Then I should receive a timestamp txt
 
     When I txt 'hello again'
-    And 'bob' should receive a txt including '@alice sez: hello again'
+    Then subscribers other than me should receive that message signed by 'alice'

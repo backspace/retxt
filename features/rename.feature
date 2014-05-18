@@ -7,6 +7,6 @@ Feature: Rename
     And I am subscribed to relay A as an admin
 
     When I txt '/rename X' to relay A
-    Then I should receive a txt including 'anon renamed relay to X'
+    Then I should receive a txt that anon renamed the relay to X
     And I visit the subscribers list
     Then I should see that 'alice' is subscribed to relay X

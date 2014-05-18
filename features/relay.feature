@@ -9,7 +9,7 @@ Feature: Relay
 
     Then subscribers other than me should receive that message signed by 'anon'
     And I should receive a confirmation txt
-    And 'alice' should receive a txt including 'the relayed message beginning "a tornado i..." came from anon#1234'
+    And alice should receive a txt that identifies the sender of the anonymous message
 
   Scenario: Relay a signed txt
     Given I am subscribed as 'fork'

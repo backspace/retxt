@@ -15,8 +15,8 @@ Feature: Moderation
     Then subscribers other than me should receive that message signed by 'alice'
 
     When 'bob' txts 'me too'
-    Then 'bob' should receive a txt including 'forwarded your message to admins because the relay is moderated'
-    And 'alice' should receive a txt including '@bob#1234 tried to say: me too'
+    Then bob should receive a txt that the relay is moderated
+    And alice should receive a txt that bob tried to relay a message under moderation
 
   Scenario: Admin gives voice
     Given I am subscribed as an admin as 'alice'
@@ -27,8 +27,8 @@ Feature: Moderation
     Then I should receive a moderated txt
 
     When I txt '/voice @colleen'
-    Then 'alice' should receive a txt including '@alice voiced @colleen'
-    And 'dreya' should receive a txt including '@alice voiced @colleen'
+    Then alice should receive a txt that alice voiced colleen
+    And dreya should receive a txt that alice voiced colleen
 
     Given I am signed in as an admin
     When I visit the subscribers list
@@ -63,8 +63,8 @@ Feature: Moderation
     Then I should see that 'bob' is voiced
 
     When I txt '/unvoice @bob'
-    Then I should receive a txt including '@alice unvoiced @bob'
-    And 'colleen' should receive a txt including '@alice unvoiced @bob'
+    Then I should receive a txt that alice unvoiced bob
+    And colleen should receive a txt that alice unvoiced bob
 
     When I visit the subscribers list
     Then I should not see that 'bob' is voiced

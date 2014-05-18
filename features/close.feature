@@ -5,18 +5,18 @@ Feature: Close
     And someone is subscribed to relay X as 'bob' at '1337'
 
     When 'alice' txts '/close'
-    Then 'alice' should receive a txt including '@alice closed subscriptions'
+    Then alice should receive a txt that alice closed subscriptions
 
     When 'bob' txts 'subscribe'
-    Then 'bob' should receive a txt including 'subscriptions are closed'
-    And the admin should receive a txt including '1337 tried to subscribe: subscribe'
+    Then bob should receive a txt that subscriptions are closed
+    And alice should receive a txt that bob tried to subscribe
 
     Given I am signed in as an admin
     When I visit the subscribers list
     Then I should see that the relay is closed
 
     When 'alice' txts '/open'
-    Then 'alice' should receive a txt including '@alice opened subscriptions'
+    Then alice should receive a txt that alice opened subscriptions
 
     When I visit the subscribers list
     Then I should not see that the relay is closed

@@ -6,9 +6,9 @@ Feature: Admin
     And someone is subscribed as 'colleen'
 
     When 'alice' txts '/admin @colleen'
-    Then colleen should receive a txt including '@alice made @colleen an admin'
-    And alice should receive a txt including '@alice made @colleen an admin'
-    And bob should receive a txt including '@alice made @colleen an admin'
+    Then colleen should receive a txt that alice made colleen an admin
+    And alice should receive a txt that alice made colleen an admin
+    And bob should receive a txt that alice made colleen an admin
 
     Given I am signed in as an admin
     When I visit the subscribers list
@@ -20,8 +20,8 @@ Feature: Admin
     And 'colleen' is subscribed as an admin
 
     When 'colleen' txts '/unadmin @bob'
-    Then alice should receive a txt including '@colleen made @bob not an admin!'
-    And colleen should receive a txt including '@colleen made @bob not an admin!'
+    Then alice should receive a txt that colleen made bob not an admin
+    And colleen should receive a txt that colleen made bob not an admin
 
     Given I am signed in as an admin
     When I visit the subscribers list

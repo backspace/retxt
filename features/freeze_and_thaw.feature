@@ -6,8 +6,8 @@ Feature: Freeze and thaw
     And 'alice' is subscribed as an admin
 
     When 'alice' txts '/freeze'
-    Then I should receive a txt including '@alice froze the relay'
-    And 'alice' should receive a txt including '@alice froze the relay'
+    Then I should receive a txt that alice froze the relay
+    And alice should receive a txt that alice froze the relay
 
     Given I am signed in as an admin
     When I visit the subscribers list
@@ -19,8 +19,8 @@ Feature: Freeze and thaw
     And 'alice' should receive a frozen-bounce-notification txt
 
     When 'alice' txts '/thaw'
-    Then I should receive a txt including '@alice thawed the relay'
-    And 'alice' should receive a txt including '@alice thawed the relay'
+    Then I should receive a txt that alice thawed the relay
+    And alice should receive a txt that alice thawed the relay
 
     When I visit the subscribers list
     Then I should not see that the relay is frozen

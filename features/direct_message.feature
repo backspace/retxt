@@ -8,13 +8,13 @@ Feature: Direct message
 
     When I txt '@bob you are kewl'
     Then I should receive a directconfirmation txt
-    And bob should receive '@alice said to you: @bob you are kewl'
-    And colleen should not receive 'you are kewl'
+    And bob should receive a direct message from alice saying 'you are kewl'
+    And colleen should not receive a direct message from alice saying 'you are kewl'
 
   Scenario: I direct message a non-existent subscriber
     Given I am subscribed as 'alice'
     When I txt '@francine i love you'
-    Then I should receive a txt including 'your message was not sent because @francine could not be found'
+    Then I should receive a direct message bounce response because @francine could not be found
 
   Scenario: I cannot direct message when anonymous
     Given I am subscribed
