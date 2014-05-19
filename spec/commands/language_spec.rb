@@ -57,4 +57,18 @@ describe Language do
       execute
     end
   end
+
+  context 'when there are no arguments' do
+    let(:arguments) { nil }
+
+    before do
+      # why must this be here?
+      relay.stub(:subscribed?).with(sender).and_return false
+    end
+
+    it 'sends the language list response' do
+      expect_response_to_sender 'LanguageListResponse'
+      execute
+    end
+  end
 end

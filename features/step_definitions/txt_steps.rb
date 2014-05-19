@@ -114,7 +114,7 @@ Then(/^(\w*) should receive a txt that (\w*) (closed subscriptions|opened subscr
   txt_should_have_been_sent I18n.t("txts.admin.#{template_name}", admin_name: "#{admin_name == 'anon' ? '' : '@'}#{admin_name}"), recipient_number
 end
 
-Then(/^(\w*) should receive a txt( in (Pig Latin|English))? that (subscriptions are closed|the relay is moderated|they are muted|identifies the sender of the anonymous message|they are unsubscribed|I could not be unsubscribed|I am already subscribed|confirms the message was relayed|confirms the direct message was sent|a relay was created|anonymous subscribers cannot send direct messages|I am not an admin|the target could not be found|someone tried to unsubscribe that is not subscribed|the relay is frozen|I am not subscribed|my language has been changed to Pig Latin|my language has been changed to English|the language was not found|the command failed because I am not subscribed)( from (\d+))?$/) do |recipient, language_given, language_name, response_name, source_given, source|
+Then(/^(\w*) should receive a txt( in (Pig Latin|English))? that (subscriptions are closed|the relay is moderated|they are muted|identifies the sender of the anonymous message|they are unsubscribed|I could not be unsubscribed|I am already subscribed|confirms the message was relayed|confirms the direct message was sent|a relay was created|anonymous subscribers cannot send direct messages|I am not an admin|the target could not be found|someone tried to unsubscribe that is not subscribed|the relay is frozen|I am not subscribed|my language has been changed to Pig Latin|my language has been changed to English|the language was not found|the command failed because I am not subscribed|lists the available languages)( from (\d+))?$/) do |recipient, language_given, language_name, response_name, source_given, source|
   recipient_number = recipient == 'I' ? my_number : Subscriber.find_by(name: recipient).number
   locale = language_given ? (language_name == 'Pig Latin' ? :pgl : :en) : :en
 
@@ -159,6 +159,8 @@ Then(/^(\w*) should receive a txt( in (Pig Latin|English))? that (subscriptions 
         I18n.t('txts.language_bounce')
       when 'the command failed because I am not subscribed'
         I18n.t('txts.not_subscribed_command_bounce')
+      when 'lists the available languages'
+        I18n.t('txts.language_list', language_list: "english, igpay atinlay")
       else
         'missing!'
       end

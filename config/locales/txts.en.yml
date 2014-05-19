@@ -12,6 +12,7 @@ en:
     name: "Your name is %{name}. Change it with 'name (new name)'."
 
     language: "Your language is set to English."
+    language_list: "Available languages: %{language_list}. Set your language with: 'lang language_name'"
     language_bounce: "Could not set your language: language not found."
 
     welcome: "Welcome to %{relay_name}, %{subscriber_name}. Cmds: about, unsubscribe, name. Write '@name hello!' to direct txt by name. Any other txt is sent to %{subscriber_count}."

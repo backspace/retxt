@@ -9,6 +9,9 @@ Feature: Support multiple languages
 
   Scenario: Subscriber can change language
     Given I am subscribed
+    When I txt 'lang'
+    Then I should receive a txt that lists the available languages
+
     When I txt 'lang igpay atinlay'
     Then I should receive a txt in Pig Latin that my language has been changed to Pig Latin
 
