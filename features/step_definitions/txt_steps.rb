@@ -41,22 +41,22 @@ Then(/^(I|(\w*)) should receive an? (help|welcome|not-subscribed-bounce-notifica
   end
 
   if non_default_source
-    response_should_include message, number, source
+    txt_should_have_been_sent message, number, source
   else
-    response_should_include message, number
+    txt_should_have_been_sent message, number
   end
 
   I18n.locale = @original_locale
 end
 
 Then(/^I should receive a txt including$/) do |content|
-  response_should_include content
+  txt_should_have_been_sent content
 end
 
 Then(/^(\w*) should receive a txt that (\w*) made (\w*) (not )?an admin$/) do |recipient, actor, actee, negation|
   template_name = "#{negation ? 'un' : ''}adminification"
   recipient_number = Subscriber.find_by(name: recipient).number
-  response_should_include I18n.t("txts.admin.#{template_name}", admin_name: "@#{actor}", target_name: "@#{actee}"), recipient_number
+  txt_should_have_been_sent I18n.t("txts.admin.#{template_name}", admin_name: "@#{actor}", target_name: "@#{actee}"), recipient_number
 end
 
 Then(/^subscribers other than (\w*) should( not)? receive that( ([^\s]*)-timestamped)? message( signed by (.*?))?$/) do |name, negation, timestamp_exists, timestamp, signature_exists, signature|
@@ -87,7 +87,7 @@ Then(/^(the admin|(\w*)) should receive a txt saying anon (un)?subscribed( in (E
     admin = @admin
   end
 
-  response_should_include I18n.t("txts.admin.#{unsubscribed ? 'un' : ''}subscription", name: 'anon', number: my_number, locale: locale), admin.number
+  txt_should_have_been_sent I18n.t("txts.admin.#{unsubscribed ? 'un' : ''}subscription", name: 'anon', number: my_number, locale: locale), admin.number
 end
 
 Then(/^(\w*) should receive a txt that (\w*) (closed subscriptions|opened subscriptions|froze the relay|thawed the relay|moderated the relay|unmoderated the relay)$/) do |recipient, admin_name, action|
@@ -111,7 +111,7 @@ Then(/^(\w*) should receive a txt that (\w*) (closed subscriptions|opened subscr
       'missing!'
     end
 
-  response_should_include I18n.t("txts.admin.#{template_name}", admin_name: "#{admin_name == 'anon' ? '' : '@'}#{admin_name}"), recipient_number
+  txt_should_have_been_sent I18n.t("txts.admin.#{template_name}", admin_name: "#{admin_name == 'anon' ? '' : '@'}#{admin_name}"), recipient_number
 end
 
 Then(/^(\w*) should receive a txt that (subscriptions are closed|the relay is moderated|they are muted|identifies the sender of the anonymous message|they are unsubscribed|I could not be unsubscribed|I am already subscribed|confirms the message was relayed|confirms the direct message was sent|a relay was created|anonymous subscribers cannot send direct messages|I am not an admin|the target could not be found|someone tried to unsubscribe that is not subscribed|the relay is frozen|I am not subscribed)( from (\d+))?$/) do |recipient, response_name, source_given, source|
@@ -156,9 +156,9 @@ Then(/^(\w*) should receive a txt that (subscriptions are closed|the relay is mo
     end
 
   if source_given
-    response_should_include response_text, recipient_number, source
+    txt_should_have_been_sent response_text, recipient_number, source
   else
-    response_should_include response_text, recipient_number
+    txt_should_have_been_sent response_text, recipient_number
   end
 end
 
@@ -184,7 +184,7 @@ Then(/^(\w*) should receive a txt that (\w*) tried to (subscribe|relay a message
       'missing!'
     end
 
-  response_should_include response_text, recipient_number
+  txt_should_have_been_sent response_text, recipient_number
 end
 
 Then(/^(\w*) should receive a txt that (\w*) (voiced|unvoiced|muted|unmuted|renamed the relay to|set the relay timestamp to) ([^\s]*)$/) do |recipient_name, admin_name, action, target_name|
@@ -208,11 +208,11 @@ Then(/^(\w*) should receive a txt that (\w*) (voiced|unvoiced|muted|unmuted|rena
       'missing!'
     end
 
-  response_should_include response_text, recipient_number
+  txt_should_have_been_sent response_text, recipient_number
 end
 
 Then(/^the admin should receive a txt saying Bob unsubscribed$/) do
-  response_should_include I18n.t("txts.admin.unsubscription", name: 'Bob', number: Subscriber.find_by(name: 'Bob').number), @admin.number
+  txt_should_have_been_sent I18n.t("txts.admin.unsubscription", name: 'Bob', number: Subscriber.find_by(name: 'Bob').number), @admin.number
 end
 
 Then(/^Bob should receive '@Alice sez: this message should not go to everyone' from relay A$/) do
@@ -228,7 +228,7 @@ Then(/^Bob should receive a( ([^\s]*)-timestamped)? direct message from Alice sa
   recipient_number = Subscriber.find_by(name: 'Bob').number
   prefix = timestamp_present ? "#{timestamp} " : ''
 
-  response_should_include I18n.t('txts.direct.outgoing', prefix: prefix, sender: '@Alice', message: @txt_content), recipient_number
+  txt_should_have_been_sent I18n.t('txts.direct.outgoing', prefix: prefix, sender: '@Alice', message: @txt_content), recipient_number
 end
 
 Then(/^Colleen should not receive a direct message from Alice saying 'you are kewl'$/) do
@@ -236,14 +236,14 @@ Then(/^Colleen should not receive a direct message from Alice saying 'you are ke
 end
 
 Then(/^I should receive a direct message bounce response because @Francine could not be found$/) do
-  response_should_include I18n.t('txts.direct.missing_target', target_name: '@Francine'), my_number
+  txt_should_have_been_sent I18n.t('txts.direct.missing_target', target_name: '@Francine'), my_number
 end
 
 def subscribers_other_than(subscriber)
   Subscriber.all - [subscriber]
 end
 
-def response_should_include(content, recipient_number = my_number, sender_number = nil)
+def txt_should_have_been_sent(content, recipient_number = my_number, sender_number = nil)
   relay = @recent_relay || Relay.first
   SendsTxts.should have_received(:send_txt).with(from: relay.number || sender_number, to: recipient_number, body: content, originating_txt_id: recent_txt_id)
 end
