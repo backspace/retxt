@@ -8,11 +8,9 @@ Feature: Timestamps
     Then I should receive a timestamp txt
 
     When I txt 'hello' at 13:10
-    Then I should receive a confirmation txt
     And subscribers other than me should receive that 1:10-timestamped message signed by Alice
 
     When I txt '@Bob you are areshum' at 13:15
-    Then I should receive a directconfirmation txt
     And Bob should receive a 1:15-timestamped direct message from Alice saying 'you are areshum'
 
     When I txt '/timestamp'
