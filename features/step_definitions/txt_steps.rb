@@ -220,8 +220,8 @@ Then(/^Bob should receive '@Alice sez: this message should not go to everyone' f
 end
 
 Then(/^(.*) should not receive a message$/) do |name|
-  page = Nokogiri::XML(last_response.body)
-  page.xpath("//Sms[@to='#{Subscriber.find_by(name: name).number}']").should be_empty
+  number = Subscriber.find_by(name: name).number
+  Mocha::Mockery.instance.invocations.select{|invocation| invocation.method_name == :send_txt && invocation.arguments[0][:to] == number}.should be_empty
 end
 
 Then(/^Bob should receive a( ([^\s]*)-timestamped)? direct message from Alice saying '([^\']*)'$/) do |timestamp_present, timestamp, message_content|
@@ -232,7 +232,9 @@ Then(/^Bob should receive a( ([^\s]*)-timestamped)? direct message from Alice sa
 end
 
 Then(/^Colleen should not receive a direct message from Alice saying 'you are kewl'$/) do
-  # FIXME add not-received check
+  recipient_number = Subscriber.find_by(name: 'Colleen').number
+
+  txt_should_not_have_been_sent I18n.t('txts.direct.outgoing', prefix: '', sender: '@Alice', message: @txt_content), recipient_number
 end
 
 Then(/^I should receive a direct message bounce response because @Francine could not be found$/) do
@@ -246,6 +248,11 @@ end
 def txt_should_have_been_sent(content, recipient_number = my_number, sender_number = nil)
   relay = @recent_relay || Relay.first
   SendsTxts.should have_received(:send_txt).with(from: relay.number || sender_number, to: recipient_number, body: content, originating_txt_id: recent_txt_id)
+end
+
+def txt_should_not_have_been_sent(content, recipient_number = my_number, sender_number = nil)
+  relay = @recent_relay || Relay.first
+  SendsTxts.should have_received(:send_txt).with(from: relay.number || sender_number, to: recipient_number, body: content, originating_txt_id: recent_txt_id).never
 end
 
 def recent_txt_id
