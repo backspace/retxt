@@ -133,18 +133,19 @@ end
 Then(/^(\w*) should receive a txt that (\w*) (closed subscriptions|opened subscriptions|froze the relay|thawed the relay)$/) do |recipient, admin_name, action|
   recipient_number = recipient == 'I' ? my_number : Subscriber.find_by(name: recipient).number
 
-  template_name = case action
-                  when 'closed subscriptions'
-                    'close'
-                  when 'opened subscriptions'
-                    'open'
-                  when 'froze the relay'
-                    'freeze'
-                  when 'thawed the relay'
-                    'thaw'
-                  else
-                    'missing!'
-                  end
+  template_name =
+    case action
+    when 'closed subscriptions'
+      'close'
+    when 'opened subscriptions'
+      'open'
+    when 'froze the relay'
+      'freeze'
+    when 'thawed the relay'
+      'thaw'
+    else
+      'missing!'
+    end
 
   response_should_include I18n.t("txts.admin.#{template_name}", admin_name: "@#{admin_name}"), recipient_number
 end
@@ -152,22 +153,23 @@ end
 Then(/^(\w*) should receive a txt that (subscriptions are closed|the relay is moderated|they are muted|identifies the sender of the anonymous message|they are unsubscribed|I could not be unsubscribed)$/) do |recipient, response_name|
   recipient_number = recipient == 'I' ? my_number : Subscriber.find_by(name: recipient).number
 
-  response_text = case response_name
-                  when 'subscriptions are closed'
-                    I18n.t('txts.close')
-                  when 'the relay is moderated'
-                    I18n.t('txts.moderated_fail')
-                  when 'they are muted'
-                    I18n.t('txts.muted_fail')
-                  when 'identifies the sender of the anonymous message'
-                    I18n.t('txts.admin.anon_relay', beginning: "#{@txt_content[0..10]}", absolute_name: Subscriber.find_by(number: my_number).absolute_name)
-                  when 'they are unsubscribed'
-                    I18n.t('txts.goodbye')
-                  when 'I could not be unsubscribed'
-                    I18n.t('txts.not_subscribed_unsubscribe_bounce')
-                  else
-                    'missing!'
-                  end
+  response_text =
+    case response_name
+    when 'subscriptions are closed'
+      I18n.t('txts.close')
+    when 'the relay is moderated'
+      I18n.t('txts.moderated_fail')
+    when 'they are muted'
+      I18n.t('txts.muted_fail')
+    when 'identifies the sender of the anonymous message'
+      I18n.t('txts.admin.anon_relay', beginning: "#{@txt_content[0..10]}", absolute_name: Subscriber.find_by(number: my_number).absolute_name)
+    when 'they are unsubscribed'
+      I18n.t('txts.goodbye')
+    when 'I could not be unsubscribed'
+      I18n.t('txts.not_subscribed_unsubscribe_bounce')
+    else
+      'missing!'
+    end
 
   response_should_include response_text, recipient_number
 end
@@ -176,16 +178,17 @@ Then(/^(\w*) should receive a txt that (\w*) tried to (subscribe|relay a message
   recipient_number = Subscriber.find_by(name: recipient).number
   sender = Subscriber.find_by(name: sender_name)
 
-  response_text = case action
-                  when 'subscribe'
-                    I18n.t('txts.admin.closed_bounce', number: sender.number, message: @txt_content)
-                  when 'relay a message under moderation'
-                    I18n.t('txts.admin.moderated_bounce', subscriber_name: sender.absolute_name, moderated_message: @txt_content)
-                  when 'relay a message while muted'
-                    I18n.t('txts.admin.muted_bounce', mutee_name: sender.addressable_name, muted_message: @txt_content)
-                  else
-                    'missing!'
-                  end
+  response_text =
+    case action
+    when 'subscribe'
+      I18n.t('txts.admin.closed_bounce', number: sender.number, message: @txt_content)
+    when 'relay a message under moderation'
+      I18n.t('txts.admin.moderated_bounce', subscriber_name: sender.absolute_name, moderated_message: @txt_content)
+    when 'relay a message while muted'
+      I18n.t('txts.admin.muted_bounce', mutee_name: sender.addressable_name, muted_message: @txt_content)
+    else
+      'missing!'
+    end
 
   response_should_include response_text, recipient_number
 end
@@ -193,20 +196,21 @@ end
 Then(/^(\w*) should receive a txt that (\w*) (voiced|unvoiced|muted|unmuted|renamed the relay to) (\w*)$/) do |recipient_name, admin_name, action, target_name|
   recipient_number = recipient_name == 'I' ? my_number : Subscriber.find_by(name: recipient_name).number
 
-  response_text = case action
-                  when 'voiced'
-                    I18n.t('txts.admin.voice', admin_name: "@#{admin_name}", target_name: "@#{target_name}")
-                  when 'unvoiced'
-                    I18n.t('txts.admin.unvoice', admin_name: "@#{admin_name}", target_name: "@#{target_name}")
-                  when 'muted'
-                    I18n.t('txts.admin.mute', admin_name: "@#{admin_name}", target_name: "@#{target_name}")
-                  when 'unmuted'
-                    I18n.t('txts.admin.unmute', admin_name: "@#{admin_name}", target_name: "@#{target_name}")
-                  when 'renamed the relay to'
-                    I18n.t('txts.admin.rename', admin_name: 'anon', relay_name: target_name)
-                  else
-                    'missing!'
-                  end
+  response_text =
+    case action
+    when 'voiced'
+      I18n.t('txts.admin.voice', admin_name: "@#{admin_name}", target_name: "@#{target_name}")
+    when 'unvoiced'
+      I18n.t('txts.admin.unvoice', admin_name: "@#{admin_name}", target_name: "@#{target_name}")
+    when 'muted'
+      I18n.t('txts.admin.mute', admin_name: "@#{admin_name}", target_name: "@#{target_name}")
+    when 'unmuted'
+      I18n.t('txts.admin.unmute', admin_name: "@#{admin_name}", target_name: "@#{target_name}")
+    when 'renamed the relay to'
+      I18n.t('txts.admin.rename', admin_name: 'anon', relay_name: target_name)
+    else
+      'missing!'
+    end
 
   response_should_include response_text, recipient_number
 end
