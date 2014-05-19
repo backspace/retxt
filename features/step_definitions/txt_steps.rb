@@ -15,13 +15,13 @@ When(/^I txt '(.*?)'( to relay (.*))?( at (.*))?$/) do |content, non_default_rel
   end
 end
 
-When(/^'(\w*)' txts '([^']*)'( to relay A)?$/) do |name, content, relay_given|
+When(/^(\w*) txts '([^']*)'( to relay A)?$/) do |name, content, relay_given|
   @txt_content = content
   relay = relay_given ? Relay.find_by(name: 'A') : Relay.first
   post '/txts/incoming', Body: content, From: Subscriber.find_by(name: name).number, To: relay.number
 end
 
-Then(/^(I|'(\w*)') should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|no-anon-direct|non-admin|missing-target|moderated|unmoderated|timestamp|not-subscribed-notification|non-admin-attempt|frozen-bounce-notification|not-subscribed-bounce-notification) txt( in Pig Latin)?( from (\d+))?$/) do |subject, name, message_type, in_pig_latin, non_default_source, source|
+Then(/^(I|(\w*)) should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|no-anon-direct|non-admin|missing-target|moderated|unmoderated|timestamp|not-subscribed-notification|non-admin-attempt|frozen-bounce-notification|not-subscribed-bounce-notification) txt( in Pig Latin)?( from (\d+))?$/) do |subject, name, message_type, in_pig_latin, non_default_source, source|
   @original_locale = I18n.locale
 
   I18n.locale = :pgl if in_pig_latin.present?
@@ -41,7 +41,7 @@ Then(/^(I|'(\w*)') should receive an? (already-subscribed|help|welcome|confirmat
   elsif message_type == 'confirmation'
     message = I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
   elsif message_type == 'directconfirmation'
-    message = I18n.t('txts.direct.sent', target_name: '@bob')
+    message = I18n.t('txts.direct.sent', target_name: '@Bob')
   elsif message_type == 'already-subscribed'
     message = I18n.t('txts.already_subscribed_bounce')
   elsif message_type == 'goodbye'
@@ -99,7 +99,7 @@ Then(/^(\w*) should receive a txt that (\w*) made (\w*) (not )?an admin$/) do |r
   response_should_include I18n.t("txts.admin.#{template_name}", admin_name: "@#{actor}", target_name: "@#{actee}"), recipient_number
 end
 
-Then(/^subscribers other than (\w*) should( not)? receive that( ([^\s]*)-timestamped)? message( signed by '(.*?)')?$/) do |name, negation, timestamp_exists, timestamp, signature_exists, signature|
+Then(/^subscribers other than (\w*) should( not)? receive that( ([^\s]*)-timestamped)? message( signed by (.*?))?$/) do |name, negation, timestamp_exists, timestamp, signature_exists, signature|
   prefix = timestamp_exists ? "#{timestamp} " : ''
   txt = "#{prefix}#{signature == 'anon' ? '' : '@'}#{signature} sez: #{@txt_content}"
 
@@ -114,7 +114,7 @@ Then(/^subscribers other than (\w*) should( not)? receive that( ([^\s]*)-timesta
   end
 end
 
-Then(/^(the admin|'(\w*)') should receive a txt saying anon (un)?subscribed( in (English|Pig Latin))?$/) do |recipient, recipient_name, unsubscribed, language_present, language|
+Then(/^(the admin|(\w*)) should receive a txt saying anon (un)?subscribed( in (English|Pig Latin))?$/) do |recipient, recipient_name, unsubscribed, language_present, language|
   if language_present
     locale = language == "English" ? :en : :pgl
   else
@@ -211,12 +211,12 @@ Then(/^(\w*) should receive a txt that (\w*) (voiced|unvoiced|muted|unmuted|rena
   response_should_include response_text, recipient_number
 end
 
-Then(/^the admin should receive a txt saying 'bob' unsubscribed$/) do
-  response_should_include I18n.t("txts.admin.unsubscription", name: 'bob', number: Subscriber.find_by(name: 'bob').number), @admin.number
+Then(/^the admin should receive a txt saying Bob unsubscribed$/) do
+  response_should_include I18n.t("txts.admin.unsubscription", name: 'Bob', number: Subscriber.find_by(name: 'Bob').number), @admin.number
 end
 
-Then(/^bob should receive '@alice sez: this message should not go to everyone' from relay A$/) do
-  SendsTxts.should have_received(:send_txt).with(from: Relay.find_by(name: "A").number, to: Subscriber.find_by(name: "bob").number, body: "@alice sez: this message should not go to everyone", originating_txt_id: recent_txt_id)
+Then(/^Bob should receive '@Alice sez: this message should not go to everyone' from relay A$/) do
+  SendsTxts.should have_received(:send_txt).with(from: Relay.find_by(name: "A").number, to: Subscriber.find_by(name: "Bob").number, body: "@Alice sez: this message should not go to everyone", originating_txt_id: recent_txt_id)
 end
 
 Then(/^(.*) should not receive a message$/) do |name|
@@ -224,19 +224,19 @@ Then(/^(.*) should not receive a message$/) do |name|
   page.xpath("//Sms[@to='#{Subscriber.find_by(name: name).number}']").should be_empty
 end
 
-Then(/^bob should receive a( ([^\s]*)-timestamped)? direct message from alice saying '([^\']*)'$/) do |timestamp_present, timestamp, message_content|
-  recipient_number = Subscriber.find_by(name: 'bob').number
+Then(/^Bob should receive a( ([^\s]*)-timestamped)? direct message from Alice saying '([^\']*)'$/) do |timestamp_present, timestamp, message_content|
+  recipient_number = Subscriber.find_by(name: 'Bob').number
   prefix = timestamp_present ? "#{timestamp} " : ''
 
-  response_should_include I18n.t('txts.direct.outgoing', prefix: prefix, sender: '@alice', message: @txt_content), recipient_number
+  response_should_include I18n.t('txts.direct.outgoing', prefix: prefix, sender: '@Alice', message: @txt_content), recipient_number
 end
 
-Then(/^colleen should not receive a direct message from alice saying 'you are kewl'$/) do
+Then(/^Colleen should not receive a direct message from Alice saying 'you are kewl'$/) do
   # FIXME add not-received check
 end
 
-Then(/^I should receive a direct message bounce response because @francine could not be found$/) do
-  response_should_include I18n.t('txts.direct.missing_target', target_name: '@francine'), my_number
+Then(/^I should receive a direct message bounce response because @Francine could not be found$/) do
+  response_should_include I18n.t('txts.direct.missing_target', target_name: '@Francine'), my_number
 end
 
 def subscribers_other_than(subscriber)

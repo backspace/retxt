@@ -21,7 +21,7 @@ Then(/^I should see that I am subscribed to relay (\w*)$/) do |relay_name|
   page.should have_selector(".relay_#{relay.id}.subscriber_#{subscriber.id}")
 end
 
-Then(/^I should( not)? see that '(\w*)' is subscribed to relay (\w*)$/) do |negation, subscriber_name, relay_name|
+Then(/^I should( not)? see that (\w*) is subscribed to relay (\w*)$/) do |negation, subscriber_name, relay_name|
   relay = Relay.find_by(name: relay_name)
   subscriber = Subscriber.find_by(name: subscriber_name)
 
@@ -30,7 +30,7 @@ Then(/^I should( not)? see that '(\w*)' is subscribed to relay (\w*)$/) do |nega
   page.send(matcher, have_selector(".relay_#{relay.id}.subscriber_#{subscriber.id}"))
 end
 
-Then(/^I should( not)? see that '(\w*)' is (\w*)$/) do |negation, subscriber_name, state|
+Then(/^I should( not)? see that (\w*) is (\w*)$/) do |negation, subscriber_name, state|
   subscriber = Subscriber.find_by(name: subscriber_name)
 
   if negation
@@ -50,7 +50,7 @@ Then(/^I should( not)? see that the relay is (\w*)/) do |negation, state|
   end
 end
 
-Then(/^I should( not)? see that '(\w*)' is an admin$/) do |negation, name|
+Then(/^I should( not)? see that (\w*) is an admin$/) do |negation, name|
   subscriber = Subscriber.find_by(name: name)
 
   matcher = negation ? :should_not : :should

@@ -1,28 +1,28 @@
 Feature: Admin
 
   Scenario: Make a subscriber an admin
-    Given 'alice' is subscribed as an admin
-    And 'bob' is subscribed as an admin
-    And someone is subscribed as 'colleen'
+    Given Alice is subscribed as an admin
+    And Bob is subscribed as an admin
+    And someone is subscribed as Colleen
 
-    When 'alice' txts '/admin @colleen'
-    Then colleen should receive a txt that alice made colleen an admin
-    And alice should receive a txt that alice made colleen an admin
-    And bob should receive a txt that alice made colleen an admin
+    When Alice txts '/admin @Colleen'
+    Then Colleen should receive a txt that Alice made Colleen an admin
+    And Alice should receive a txt that Alice made Colleen an admin
+    And Bob should receive a txt that Alice made Colleen an admin
 
     Given I am signed in as an admin
     When I visit the subscribers list
-    Then I should see that 'colleen' is an admin
+    Then I should see that Colleen is an admin
 
   Scenario: Demote an admin
-    Given 'alice' is subscribed as an admin
-    And 'bob' is subscribed as an admin
-    And 'colleen' is subscribed as an admin
+    Given Alice is subscribed as an admin
+    And Bob is subscribed as an admin
+    And Colleen is subscribed as an admin
 
-    When 'colleen' txts '/unadmin @bob'
-    Then alice should receive a txt that colleen made bob not an admin
-    And colleen should receive a txt that colleen made bob not an admin
+    When Colleen txts '/unadmin @Bob'
+    Then Alice should receive a txt that Colleen made Bob not an admin
+    And Colleen should receive a txt that Colleen made Bob not an admin
 
     Given I am signed in as an admin
     When I visit the subscribers list
-    Then I should not see that 'bob' is an admin
+    Then I should not see that Bob is an admin

@@ -3,11 +3,11 @@ Feature: Freeze and thaw
   Scenario: Prevent relaying when frozen
     Given two other people are subscribed
     And I am subscribed as an admin
-    And 'alice' is subscribed as an admin
+    And Alice is subscribed as an admin
 
-    When 'alice' txts '/freeze'
-    Then I should receive a txt that alice froze the relay
-    And alice should receive a txt that alice froze the relay
+    When Alice txts '/freeze'
+    Then I should receive a txt that Alice froze the relay
+    And Alice should receive a txt that Alice froze the relay
 
     Given I am signed in as an admin
     When I visit the subscribers list
@@ -16,11 +16,11 @@ Feature: Freeze and thaw
     When I txt 'a train derailed'
     Then I should receive a message that the relay is frozen
     And subscribers other than me should not receive that message
-    And 'alice' should receive a frozen-bounce-notification txt
+    And Alice should receive a frozen-bounce-notification txt
 
-    When 'alice' txts '/thaw'
-    Then I should receive a txt that alice thawed the relay
-    And alice should receive a txt that alice thawed the relay
+    When Alice txts '/thaw'
+    Then I should receive a txt that Alice thawed the relay
+    And Alice should receive a txt that Alice thawed the relay
 
     When I visit the subscribers list
     Then I should not see that the relay is frozen

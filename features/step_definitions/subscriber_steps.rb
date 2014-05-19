@@ -10,7 +10,7 @@ def create_relay_with_subscriber(name, subscriber)
   relay.subscriptions << Subscription.create(subscriber: subscriber, relay: relay)
 end
 
-Given(/^I am subscribed( to relay (\w*))?( as an admin)?( as '(\w*)')?( at '(\d*)')?$/) do |non_default_relay, relay_name, admin, name_given, name, number_given, number|
+Given(/^I am subscribed( to relay (\w*))?( as an admin)?( as (\w*))?( at (\d*))?$/) do |non_default_relay, relay_name, admin, name_given, name, number_given, number|
   subscriber = Subscriber.find_or_create_by(number: my_number)
 
   if name_given
@@ -39,7 +39,7 @@ Given(/^two other people are subscribed$/) do
   Subscription.create(subscriber: Subscriber.create(number: '4385551313'), relay: relay)
 end
 
-Given(/^someone is subscribed( to relay (\w*))?( as '(\w*)')?( at '(\d*)')?$/) do |non_default_relay, relay_name, name_given, name, number_given, number|
+Given(/^someone is subscribed( to relay (\w*))?( as (\w*))?( at (\d*))?$/) do |non_default_relay, relay_name, name_given, name, number_given, number|
   subscriber = Subscriber.create(number: Time.now.to_f)
 
   subscriber.update_attribute(:name, name) if name_given
@@ -66,7 +66,7 @@ Given(/^an admin is subscribed$/) do
   Subscription.create(relay: relay, subscriber: @admin)
 end
 
-Given(/^'(\w*)' is subscribed as an admin( in (English|Pig Latin))?$/) do |name, language_present, language|
+Given(/^(\w*) is subscribed as an admin( in (English|Pig Latin))?$/) do |name, language_present, language|
   subscriber = Subscriber.create(number: Time.now.to_f, name: name)
   subscriber.admin = true
 

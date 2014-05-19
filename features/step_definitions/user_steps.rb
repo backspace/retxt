@@ -11,6 +11,6 @@ Given(/^I am signed in as an admin$/) do
   click_button 'Sign in'
 end
 
-Given(/^'user@example\.com' is registered$/) do
+Given(/^user@example\.com is registered$/) do
   User.create(email: 'user@example.com', password: 'abcdefghi', password_confirmation: 'abcdefghi')
 end

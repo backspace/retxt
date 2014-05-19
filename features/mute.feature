@@ -1,24 +1,24 @@
 Feature: Mute
 
   Scenario: Mute a subscriber
-    Given 'alice' is subscribed as an admin
-    And someone is subscribed as 'bob'
-    And 'colleen' is subscribed as an admin
+    Given Alice is subscribed as an admin
+    And someone is subscribed as Bob
+    And Colleen is subscribed as an admin
 
-    When 'alice' txts '/mute @bob'
-    Then alice should receive a txt that alice muted bob
-    And colleen should receive a txt that alice muted bob
+    When Alice txts '/mute @Bob'
+    Then Alice should receive a txt that Alice muted Bob
+    And Colleen should receive a txt that Alice muted Bob
 
-    When 'bob' txts 'I want to relay something'
-    Then bob should receive a txt that they are muted
-    And alice should receive a txt that bob tried to relay a message while muted
+    When Bob txts 'I want to relay something'
+    Then Bob should receive a txt that they are muted
+    And Alice should receive a txt that Bob tried to relay a message while muted
 
     Given I am signed in as an admin
     When I visit the subscribers list
-    Then I should see that 'bob' is muted
+    Then I should see that Bob is muted
 
-    When 'alice' txts '/unmute @bob'
-    Then alice should receive a txt that alice unmuted bob
+    When Alice txts '/unmute @Bob'
+    Then Alice should receive a txt that Alice unmuted Bob
 
     When I visit the subscribers list
-    Then I should not see that 'bob' is muted
+    Then I should not see that Bob is muted

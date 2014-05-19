@@ -14,20 +14,20 @@ Feature: History
     Then I should have sent 2 messages
 
   Scenario: View message history
-    Given I am subscribed as 'alice'
-    And someone is subscribed as 'bob'
-    And someone is subscribed as 'colleen'
+    Given I am subscribed as Alice
+    And someone is subscribed as Bob
+    And someone is subscribed as Colleen
 
     When I txt 'hello everyone'
-    And I txt '@colleen we should hang'
+    And I txt '@Colleen we should hang'
 
     Given I am signed in as an admin
-    When I view the message history for alice
-    Then I should see that alice sent 'hello everyone'
-    And I should see that bob received '@alice sez: hello everyone'
-    And I should see that colleen received '@alice sez: hello everyone'
-    And I should see that alice received a confirmation txt
+    When I view the message history for Alice
+    Then I should see that Alice sent 'hello everyone'
+    And I should see that Bob received '@Alice sez: hello everyone'
+    And I should see that Colleen received '@Alice sez: hello everyone'
+    And I should see that Alice received a confirmation txt
 
-    And I should see that alice sent '@colleen we should hang'
-    And I should see that colleen received '@alice said to you: @colleen we should hang'
-    And I should see that alice received a directconfirmation txt
+    And I should see that Alice sent '@Colleen we should hang'
+    And I should see that Colleen received '@Alice said to you: @Colleen we should hang'
+    And I should see that Alice received a directconfirmation txt
