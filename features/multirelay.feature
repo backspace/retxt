@@ -9,7 +9,7 @@ Feature: Multi-relay
 
 
     When I txt 'this message should not go to everyone' to relay A
-    Then I should receive a confirmation txt
+    Then I should receive a txt that confirms the message was relayed
     And Bob should receive '@Alice sez: this message should not go to everyone' from relay A
     And Colleen should not receive a message
 
@@ -19,7 +19,7 @@ Feature: Multi-relay
     And someone is subscribed to relay A as Bob
     And I txt '/create B'
 
-    Then I should receive a created txt from 123
+    Then I should receive a txt that a relay was created from 123
 
     Given I am signed in as an admin
     When I visit the subscribers list

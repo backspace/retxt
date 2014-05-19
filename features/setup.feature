@@ -13,7 +13,7 @@ Feature: Setup wizard
     Then I should be required to name the relay
 
     When I name the relay
-    Then I should receive a created txt from 123
+    Then I should receive a txt that a relay was created from 123
     And I should see that relay 123 has been created
 
     When I visit the users list

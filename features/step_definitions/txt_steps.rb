@@ -21,7 +21,7 @@ When(/^(\w*) txts '([^']*)'( to relay A)?$/) do |name, content, relay_given|
   post '/txts/incoming', Body: content, From: Subscriber.find_by(name: name).number, To: relay.number
 end
 
-Then(/^(I|(\w*)) should receive an? (already-subscribed|help|welcome|confirmation|directconfirmation|goodbye|created|no-anon-direct|non-admin|missing-target|moderated|unmoderated|timestamp|not-subscribed-notification|non-admin-attempt|frozen-bounce-notification|not-subscribed-bounce-notification) txt( in Pig Latin)?( from (\d+))?$/) do |subject, name, message_type, in_pig_latin, non_default_source, source|
+Then(/^(I|(\w*)) should receive an? (help|welcome|not-subscribed-bounce-notification) txt( in Pig Latin)?( from (\d+))?$/) do |subject, name, message_type, in_pig_latin, non_default_source, source|
   @original_locale = I18n.locale
 
   I18n.locale = :pgl if in_pig_latin.present?
@@ -38,38 +38,6 @@ Then(/^(I|(\w*)) should receive an? (already-subscribed|help|welcome|confirmatio
     message = I18n.t('txts.help', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
   elsif message_type == 'welcome'
     message = I18n.t('txts.welcome', relay_name: Relay.first.name, subscriber_name: Subscriber.first.name_or_anon, subscriber_count: I18n.t('other', count: Relay.first.subscription_count - 1))
-  elsif message_type == 'confirmation'
-    message = I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
-  elsif message_type == 'directconfirmation'
-    message = I18n.t('txts.direct.sent', target_name: '@Bob')
-  elsif message_type == 'already-subscribed'
-    message = I18n.t('txts.already_subscribed_bounce')
-  elsif message_type == 'goodbye'
-    message = 'goodbye'
-  elsif message_type == 'created'
-    message = I18n.t('txts.admin.creation', relay_name: Relay.all.sort_by(&:created_at).last.name, admin_name: Subscriber.first.addressable_name)
-  elsif message_type == 'no-anon-direct'
-    message = I18n.t('txts.direct.anonymous')
-  elsif message_type == 'non-admin'
-    message = I18n.t('txts.non_admin_bounce')
-  elsif message_type == 'missing-target'
-    message = I18n.t('txts.admin.missing_target', target: @txt_content.split(" ").last)
-  elsif message_type == 'moderated'
-    message = I18n.t('txts.admin.moderate', admin_name: addressable_name)
-  elsif message_type == 'unmoderated'
-    message = I18n.t('txts.admin.unmoderate', admin_name: addressable_name)
-  elsif message_type == 'timestamp'
-    content_words = @txt_content.split(" ")
-    timestamp = content_words.length > 1 ? content_words.last : ""
-    message = I18n.t('txts.admin.timestamp_modification', admin_name: addressable_name, timestamp: timestamp)
-  elsif message_type == 'not-subscribed-notification'
-    message = I18n.t('txts.admin.not_subscribed_relay_bounce', number: my_number, message: @txt_content)
-  elsif message_type == 'non-admin-attempt'
-    message = I18n.t('txts.admin.non_admin_bounce', sender_absolute_name: "anon##{my_number}", message: @txt_content)
-  elsif message_type == 'frozen-bounce-notification'
-    message = I18n.t('txts.admin.frozen_bounce', sender_absolute_name: "anon##{my_number}", message: @txt_content)
-  elsif message_type == 'not-subscribed-bounce-notification'
-    message = I18n.t('txts.admin.not_subscribed_unsubscribe_bounce', number: my_number, message: @txt_content)
   end
 
   if non_default_source
@@ -79,14 +47,6 @@ Then(/^(I|(\w*)) should receive an? (already-subscribed|help|welcome|confirmatio
   end
 
   I18n.locale = @original_locale
-end
-
-Then(/^I should receive a message that I am not subscribed$/) do
-  response_should_include I18n.t('txts.not_subscribed_relay_bounce')
-end
-
-Then(/^I should receive a message that the relay is frozen$/) do
-  response_should_include I18n.t('txts.frozen_bounce')
 end
 
 Then(/^I should receive a txt including$/) do |content|
@@ -130,7 +90,7 @@ Then(/^(the admin|(\w*)) should receive a txt saying anon (un)?subscribed( in (E
   response_should_include I18n.t("txts.admin.#{unsubscribed ? 'un' : ''}subscription", name: 'anon', number: my_number, locale: locale), admin.number
 end
 
-Then(/^(\w*) should receive a txt that (\w*) (closed subscriptions|opened subscriptions|froze the relay|thawed the relay)$/) do |recipient, admin_name, action|
+Then(/^(\w*) should receive a txt that (\w*) (closed subscriptions|opened subscriptions|froze the relay|thawed the relay|moderated the relay|unmoderated the relay)$/) do |recipient, admin_name, action|
   recipient_number = recipient == 'I' ? my_number : Subscriber.find_by(name: recipient).number
 
   template_name =
@@ -143,14 +103,18 @@ Then(/^(\w*) should receive a txt that (\w*) (closed subscriptions|opened subscr
       'freeze'
     when 'thawed the relay'
       'thaw'
+    when 'moderated the relay'
+      'moderate'
+    when 'unmoderated the relay'
+      'unmoderate'
     else
       'missing!'
     end
 
-  response_should_include I18n.t("txts.admin.#{template_name}", admin_name: "@#{admin_name}"), recipient_number
+  response_should_include I18n.t("txts.admin.#{template_name}", admin_name: "#{admin_name == 'anon' ? '' : '@'}#{admin_name}"), recipient_number
 end
 
-Then(/^(\w*) should receive a txt that (subscriptions are closed|the relay is moderated|they are muted|identifies the sender of the anonymous message|they are unsubscribed|I could not be unsubscribed)$/) do |recipient, response_name|
+Then(/^(\w*) should receive a txt that (subscriptions are closed|the relay is moderated|they are muted|identifies the sender of the anonymous message|they are unsubscribed|I could not be unsubscribed|I am already subscribed|confirms the message was relayed|confirms the direct message was sent|a relay was created|anonymous subscribers cannot send direct messages|I am not an admin|the target could not be found|someone tried to unsubscribe that is not subscribed|the relay is frozen|I am not subscribed)( from (\d+))?$/) do |recipient, response_name, source_given, source|
   recipient_number = recipient == 'I' ? my_number : Subscriber.find_by(name: recipient).number
 
   response_text =
@@ -167,16 +131,40 @@ Then(/^(\w*) should receive a txt that (subscriptions are closed|the relay is mo
       I18n.t('txts.goodbye')
     when 'I could not be unsubscribed'
       I18n.t('txts.not_subscribed_unsubscribe_bounce')
+    when 'I am already subscribed'
+      I18n.t('txts.already_subscribed_bounce')
+    when 'confirms the message was relayed'
+      I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
+    when 'confirms the direct message was sent'
+      I18n.t('txts.direct.sent', target_name: '@Bob')
+    when 'a relay was created'
+      I18n.t('txts.admin.creation', relay_name: Relay.all.sort_by(&:created_at).last.name, admin_name: Subscriber.first.addressable_name)
+    when 'anonymous subscribers cannot send direct messages'
+      I18n.t('txts.direct.anonymous')
+    when 'I am not an admin'
+      I18n.t('txts.non_admin_bounce')
+    when 'the target could not be found'
+      I18n.t('txts.admin.missing_target', target: @txt_content.split(" ").last)
+    when 'someone tried to unsubscribe that is not subscribed'
+      I18n.t('txts.admin.not_subscribed_unsubscribe_bounce', number: my_number, message: @txt_content)
+    when 'the relay is frozen'
+      I18n.t('txts.frozen_bounce')
+    when 'I am not subscribed'
+      I18n.t('txts.not_subscribed_relay_bounce')
     else
       'missing!'
     end
 
-  response_should_include response_text, recipient_number
+  if source_given
+    response_should_include response_text, recipient_number, source
+  else
+    response_should_include response_text, recipient_number
+  end
 end
 
-Then(/^(\w*) should receive a txt that (\w*) tried to (subscribe|relay a message under moderation|relay a message while muted)$/) do |recipient, sender_name, action|
+Then(/^(\w*) should receive a txt that (\w*) tried to (subscribe|relay a message under moderation|relay a message while muted|relay a message while not subscribed|run an admin command|relay a message while the relay is frozen)$/) do |recipient, sender_name, action|
   recipient_number = Subscriber.find_by(name: recipient).number
-  sender = Subscriber.find_by(name: sender_name)
+  sender = Subscriber.find_by(name: sender_name == 'anon' ? nil : sender_name)
 
   response_text =
     case action
@@ -186,6 +174,12 @@ Then(/^(\w*) should receive a txt that (\w*) tried to (subscribe|relay a message
       I18n.t('txts.admin.moderated_bounce', subscriber_name: sender.absolute_name, moderated_message: @txt_content)
     when 'relay a message while muted'
       I18n.t('txts.admin.muted_bounce', mutee_name: sender.addressable_name, muted_message: @txt_content)
+    when 'relay a message while not subscribed'
+      I18n.t('txts.admin.not_subscribed_relay_bounce', number: my_number, message: @txt_content)
+    when 'run an admin command'
+      I18n.t('txts.admin.non_admin_bounce', sender_absolute_name: "anon##{my_number}", message: @txt_content)
+    when 'relay a message while the relay is frozen'
+      I18n.t('txts.admin.frozen_bounce', sender_absolute_name: "anon##{my_number}", message: @txt_content)
     else
       'missing!'
     end
@@ -193,7 +187,7 @@ Then(/^(\w*) should receive a txt that (\w*) tried to (subscribe|relay a message
   response_should_include response_text, recipient_number
 end
 
-Then(/^(\w*) should receive a txt that (\w*) (voiced|unvoiced|muted|unmuted|renamed the relay to) (\w*)$/) do |recipient_name, admin_name, action, target_name|
+Then(/^(\w*) should receive a txt that (\w*) (voiced|unvoiced|muted|unmuted|renamed the relay to|set the relay timestamp to) ([^\s]*)$/) do |recipient_name, admin_name, action, target_name|
   recipient_number = recipient_name == 'I' ? my_number : Subscriber.find_by(name: recipient_name).number
 
   response_text =
@@ -208,6 +202,8 @@ Then(/^(\w*) should receive a txt that (\w*) (voiced|unvoiced|muted|unmuted|rena
       I18n.t('txts.admin.unmute', admin_name: "@#{admin_name}", target_name: "@#{target_name}")
     when 'renamed the relay to'
       I18n.t('txts.admin.rename', admin_name: 'anon', relay_name: target_name)
+    when 'set the relay timestamp to'
+      I18n.t('txts.admin.timestamp_modification', admin_name: "@#{admin_name}", timestamp: target_name == 'blank' ? '' : target_name)
     else
       'missing!'
     end

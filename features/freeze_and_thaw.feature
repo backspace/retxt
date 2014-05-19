@@ -14,9 +14,9 @@ Feature: Freeze and thaw
     Then I should see that the relay is frozen
 
     When I txt 'a train derailed'
-    Then I should receive a message that the relay is frozen
+    Then I should receive a txt that the relay is frozen
     And subscribers other than me should not receive that message
-    And Alice should receive a frozen-bounce-notification txt
+    And Alice should receive a txt that anon tried to relay a message while the relay is frozen
 
     When Alice txts '/thaw'
     Then I should receive a txt that Alice thawed the relay

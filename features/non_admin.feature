@@ -4,5 +4,5 @@ Feature: Bounce non-admin commands
     Given I am subscribed
     And Alice is subscribed as an admin
     When I txt '/rename Z'
-    Then I should receive a non-admin txt
-    And Alice should receive a non-admin-attempt txt
+    Then I should receive a txt that I am not an admin
+    And Alice should receive a txt that anon tried to run an admin command

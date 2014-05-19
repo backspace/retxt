@@ -15,4 +15,4 @@ Feature: Unsubscribe
     When Alice is subscribed as an admin
     And I txt 'unsubscribe'
     Then I should receive a txt that I could not be unsubscribed
-    And Alice should receive a not-subscribed-bounce-notification txt
+    And Alice should receive a txt that someone tried to unsubscribe that is not subscribed

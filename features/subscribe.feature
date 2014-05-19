@@ -17,7 +17,7 @@ Feature: Subscribe
   Scenario: A subscribed user tries to subscribe
     Given I am subscribed
     When I txt 'subscribe'
-    Then I should receive an already-subscribed txt
+    Then I should receive a txt that I am already subscribed
 
   Scenario: Users subscribe to different relays
     Given I am signed in as an admin

@@ -5,7 +5,7 @@ Feature: Moderation
     And someone is subscribed as Bob at 1234
 
     When I txt '/moderate'
-    Then I should receive a moderated txt
+    Then I should receive a txt that Alice moderated the relay
 
     Given I am signed in as an admin
     When I visit the subscribers list
@@ -24,7 +24,7 @@ Feature: Moderation
     And Dreya is subscribed as an admin
 
     When I txt '/moderate'
-    Then I should receive a moderated txt
+    Then I should receive a txt that Alice moderated the relay
 
     When I txt '/voice @Colleen'
     Then Alice should receive a txt that Alice voiced Colleen
@@ -46,7 +46,7 @@ Feature: Moderation
     Then I should see that the relay is moderated
 
     When I txt '/unmoderate'
-    Then I should receive an unmoderated txt
+    Then I should receive a txt that anon unmoderated the relay
 
     When I visit the subscribers list
     Then I should not see that the relay is moderated

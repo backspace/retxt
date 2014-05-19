@@ -5,7 +5,7 @@ Feature: Timestamps
     And someone is subscribed as Bob at 1234
 
     When I txt '/timestamp %l:%M'
-    Then I should receive a timestamp txt
+    Then I should receive a txt that Alice set the relay timestamp to %l:%M
 
     When I txt 'hello' at 13:10
     And subscribers other than me should receive that 1:10-timestamped message signed by Alice
@@ -14,7 +14,7 @@ Feature: Timestamps
     And Bob should receive a 1:15-timestamped direct message from Alice saying 'you are areshum'
 
     When I txt '/timestamp'
-    Then I should receive a timestamp txt
+    Then I should receive a txt that Alice set the relay timestamp to blank
 
     When I txt 'hello again'
     Then subscribers other than me should receive that message signed by Alice

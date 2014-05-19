@@ -7,7 +7,7 @@ Feature: Direct message
 
 
     When I txt '@Bob you are kewl'
-    Then I should receive a directconfirmation txt
+    Then I should receive a txt that confirms the direct message was sent
     And Bob should receive a direct message from Alice saying 'you are kewl'
     And Colleen should not receive a direct message from Alice saying 'you are kewl'
 
@@ -19,4 +19,4 @@ Feature: Direct message
   Scenario: I cannot direct message when anonymous
     Given I am subscribed
     When I txt '@Pascal gay marry me!'
-    Then I should receive a no-anon-direct txt
+    Then I should receive a txt that anonymous subscribers cannot send direct messages
