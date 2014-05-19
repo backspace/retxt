@@ -114,45 +114,54 @@ Then(/^(\w*) should receive a txt that (\w*) (closed subscriptions|opened subscr
   txt_should_have_been_sent I18n.t("txts.admin.#{template_name}", admin_name: "#{admin_name == 'anon' ? '' : '@'}#{admin_name}"), recipient_number
 end
 
-Then(/^(\w*) should receive a txt that (subscriptions are closed|the relay is moderated|they are muted|identifies the sender of the anonymous message|they are unsubscribed|I could not be unsubscribed|I am already subscribed|confirms the message was relayed|confirms the direct message was sent|a relay was created|anonymous subscribers cannot send direct messages|I am not an admin|the target could not be found|someone tried to unsubscribe that is not subscribed|the relay is frozen|I am not subscribed)( from (\d+))?$/) do |recipient, response_name, source_given, source|
+Then(/^(\w*) should receive a txt( in (Pig Latin|English))? that (subscriptions are closed|the relay is moderated|they are muted|identifies the sender of the anonymous message|they are unsubscribed|I could not be unsubscribed|I am already subscribed|confirms the message was relayed|confirms the direct message was sent|a relay was created|anonymous subscribers cannot send direct messages|I am not an admin|the target could not be found|someone tried to unsubscribe that is not subscribed|the relay is frozen|I am not subscribed|my language has been changed to Pig Latin|my language has been changed to English|the language was not found|the command failed because I am not subscribed)( from (\d+))?$/) do |recipient, language_given, language_name, response_name, source_given, source|
   recipient_number = recipient == 'I' ? my_number : Subscriber.find_by(name: recipient).number
+  locale = language_given ? (language_name == 'Pig Latin' ? :pgl : :en) : :en
 
   response_text =
-    case response_name
-    when 'subscriptions are closed'
-      I18n.t('txts.close')
-    when 'the relay is moderated'
-      I18n.t('txts.moderated_fail')
-    when 'they are muted'
-      I18n.t('txts.muted_fail')
-    when 'identifies the sender of the anonymous message'
-      I18n.t('txts.admin.anon_relay', beginning: "#{@txt_content[0..10]}", absolute_name: Subscriber.find_by(number: my_number).absolute_name)
-    when 'they are unsubscribed'
-      I18n.t('txts.goodbye')
-    when 'I could not be unsubscribed'
-      I18n.t('txts.not_subscribed_unsubscribe_bounce')
-    when 'I am already subscribed'
-      I18n.t('txts.already_subscribed_bounce')
-    when 'confirms the message was relayed'
-      I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
-    when 'confirms the direct message was sent'
-      I18n.t('txts.direct.sent', target_name: '@Bob')
-    when 'a relay was created'
-      I18n.t('txts.admin.creation', relay_name: Relay.all.sort_by(&:created_at).last.name, admin_name: Subscriber.first.addressable_name)
-    when 'anonymous subscribers cannot send direct messages'
-      I18n.t('txts.direct.anonymous')
-    when 'I am not an admin'
-      I18n.t('txts.non_admin_bounce')
-    when 'the target could not be found'
-      I18n.t('txts.admin.missing_target', target: @txt_content.split(" ").last)
-    when 'someone tried to unsubscribe that is not subscribed'
-      I18n.t('txts.admin.not_subscribed_unsubscribe_bounce', number: my_number, message: @txt_content)
-    when 'the relay is frozen'
-      I18n.t('txts.frozen_bounce')
-    when 'I am not subscribed'
-      I18n.t('txts.not_subscribed_relay_bounce')
-    else
-      'missing!'
+    I18n.with_locale(locale) do
+      case response_name
+      when 'subscriptions are closed'
+        I18n.t('txts.close')
+      when 'the relay is moderated'
+        I18n.t('txts.moderated_fail')
+      when 'they are muted'
+        I18n.t('txts.muted_fail')
+      when 'identifies the sender of the anonymous message'
+        I18n.t('txts.admin.anon_relay', beginning: "#{@txt_content[0..10]}", absolute_name: Subscriber.find_by(number: my_number).absolute_name)
+      when 'they are unsubscribed'
+        I18n.t('txts.goodbye')
+      when 'I could not be unsubscribed'
+        I18n.t('txts.not_subscribed_unsubscribe_bounce')
+      when 'I am already subscribed'
+        I18n.t('txts.already_subscribed_bounce')
+      when 'confirms the message was relayed'
+        I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
+      when 'confirms the direct message was sent'
+        I18n.t('txts.direct.sent', target_name: '@Bob')
+      when 'a relay was created'
+        I18n.t('txts.admin.creation', relay_name: Relay.all.sort_by(&:created_at).last.name, admin_name: Subscriber.first.addressable_name)
+      when 'anonymous subscribers cannot send direct messages'
+        I18n.t('txts.direct.anonymous')
+      when 'I am not an admin'
+        I18n.t('txts.non_admin_bounce')
+      when 'the target could not be found'
+        I18n.t('txts.admin.missing_target', target: @txt_content.split(" ").last)
+      when 'someone tried to unsubscribe that is not subscribed'
+        I18n.t('txts.admin.not_subscribed_unsubscribe_bounce', number: my_number, message: @txt_content)
+      when 'the relay is frozen'
+        I18n.t('txts.frozen_bounce')
+      when 'I am not subscribed'
+        I18n.t('txts.not_subscribed_relay_bounce')
+      when 'my language has been changed to Pig Latin', 'my language has been changed to English'
+        I18n.t('txts.language')
+      when 'the language was not found'
+        I18n.t('txts.language_bounce')
+      when 'the command failed because I am not subscribed'
+        I18n.t('txts.not_subscribed_command_bounce')
+      else
+        'missing!'
+      end
     end
 
   if source_given
@@ -162,9 +171,9 @@ Then(/^(\w*) should receive a txt that (subscriptions are closed|the relay is mo
   end
 end
 
-Then(/^(\w*) should receive a txt that (\w*) tried to (subscribe|relay a message under moderation|relay a message while muted|relay a message while not subscribed|run an admin command|relay a message while the relay is frozen)$/) do |recipient, sender_name, action|
+Then(/^(\w*) should receive a txt that (\w*) tried to (subscribe|relay a message under moderation|relay a message while muted|relay a message while not subscribed|run an admin command|relay a message while the relay is frozen|switch to an unknown language|switch languages while not subscribed)$/) do |recipient, sender_name, action|
   recipient_number = Subscriber.find_by(name: recipient).number
-  sender = Subscriber.find_by(name: sender_name == 'anon' ? nil : sender_name)
+  sender = Subscriber.find_by(name: sender_name == 'anon' || sender_name == 'someone' ? nil : sender_name)
 
   response_text =
     case action
@@ -180,6 +189,10 @@ Then(/^(\w*) should receive a txt that (\w*) tried to (subscribe|relay a message
       I18n.t('txts.admin.non_admin_bounce', sender_absolute_name: "anon##{my_number}", message: @txt_content)
     when 'relay a message while the relay is frozen'
       I18n.t('txts.admin.frozen_bounce', sender_absolute_name: "anon##{my_number}", message: @txt_content)
+    when 'switch to an unknown language'
+      I18n.t('txts.admin.language_bounce', sender_absolute_name: sender.absolute_name, message: @txt_content)
+    when 'switch languages while not subscribed'
+      I18n.t('txts.admin.not_subscribed_command_bounce', sender_absolute_name: sender.absolute_name, message: @txt_content)
     else
       'missing!'
     end

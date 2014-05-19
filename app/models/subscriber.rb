@@ -44,4 +44,9 @@ class Subscriber
     self.admin = false
     save
   end
+
+  def update_language(locale)
+    self.locale = locale
+    save
+  end
 end

@@ -1,4 +1,6 @@
 en:
+  language_name: english
+
   commands:
     subscribe: subscribe
     unsubscribe: unsubscribe
@@ -8,6 +10,7 @@ en:
       - help
 
     name: name
+    language: lang
 
     create: create
     who: who

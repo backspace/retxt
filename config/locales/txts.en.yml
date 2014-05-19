@@ -10,6 +10,10 @@ en:
     not_subscribed_relay_bounce: 'Could not relay your message because you are not subscribed.'
     not_subscribed_unsubscribe_bounce: 'Could not unsubscribe you because you are not subscribed.'
     name: "Your name is %{name}. Change it with 'name (new name)'."
+
+    language: "Your language is set to English."
+    language_bounce: "Could not set your language: language not found."
+
     welcome: "Welcome to %{relay_name}, %{subscriber_name}. Cmds: about, unsubscribe, name. Write '@name hello!' to direct txt by name. Any other txt is sent to %{subscriber_count}."
     disclaimer: "This relay is in no way secure! Your txts could be monitored, as could the relay itself. Act accordingly!"
     already_subscribed_bounce: "Could not subscribe you because you are already subscribed."
@@ -19,6 +23,7 @@ en:
     help: "Cmds: about, unsubscribe, name. Write '@name hello!' to direct txt by name. Any other txt is sent to %{subscriber_count}."
 
     unknown_bounce: "Did not understand your command. Messages beginning with a / are reserved for commands to the relay."
+    not_subscribed_command_bounce: "Could not change your settings because you are not subscribed."
 
     admin:
       creation: "%{admin_name} created a new relay called %{relay_name}."
@@ -56,6 +61,8 @@ en:
       not_subscribed_unsubscribe_bounce: "Unsubscribed %{number} tried to unsubscribe: %{message}"
       non_admin_bounce: "%{sender_absolute_name} tried to use an admin command: %{message}"
       frozen_bounce: "%{sender_absolute_name} tried to relay this to the frozen relay: %{message}"
+      language_bounce: "%{sender_absolute_name} failed to set their language: %{message}"
+      not_subscribed_command_bounce: "%{sender_absolute_name} tried to run a command while not subscribed: %{message}"
 
     direct:
       sent: "Your message was sent to %{target_name}"

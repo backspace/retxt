@@ -1,0 +1,2 @@
+class LanguageBounceResponse < SimpleResponse
+end

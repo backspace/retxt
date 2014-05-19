@@ -1,0 +1,2 @@
+class LanguageResponse < SimpleResponse
+end

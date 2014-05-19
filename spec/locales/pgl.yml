@@ -1,7 +1,10 @@
 pgl:
+  language_name: igpay atinlay
+
   commands:
     subscribe: ubscribesay
     help: aboutay
+    language: anglay
 
   subscribers:
     zero: 0 ubscriberssay
@@ -20,6 +23,9 @@ pgl:
     disclaimer: "isclaimerday"
 
     help: "aboutay essagemay inay Igpay Atinlay"
+    language: "ouryay anguagelay ashay eenbay angedchay otay Igpay Atinlay"
+
+    relayed: "ouryay essagemay ashay eenbay elayedray otay %{subscriber count}"
 
     admin:
       subscription: "%{name} ubscribedsay omfray %{number}"
