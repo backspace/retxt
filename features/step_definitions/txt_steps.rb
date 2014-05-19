@@ -248,10 +248,6 @@ def response_should_include(content, recipient_number = my_number, sender_number
   SendsTxts.should have_received(:send_txt).with(from: relay.number || sender_number, to: recipient_number, body: content, originating_txt_id: recent_txt_id)
 end
 
-def response_should_not_include(content)
-  Nokogiri::XML(last_response.body).xpath("//Sms[not(@to)]").text.should_not include(content)
-end
-
 def recent_txt_id
   Txt.where(originating_txt_id: nil).last ? Txt.where(originating_txt_id: nil).last.id.to_s : ''
 end
