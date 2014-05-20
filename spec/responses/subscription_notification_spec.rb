@@ -2,6 +2,9 @@ require_relative '../../app/responses/simple_response'
 require_relative '../../app/responses/subscription_notification'
 require 'command_context'
 
+module I18n; end
+class SendsTxts; end
+
 describe SubscriptionNotification do
   include_context 'command context'
 

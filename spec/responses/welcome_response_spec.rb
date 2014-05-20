@@ -3,6 +3,9 @@ require_relative '../../app/responses/welcome_response'
 
 require 'command_context'
 
+module I18n; end
+class SendsTxts; end
+
 describe WelcomeResponse do
   include_context 'command context'
 

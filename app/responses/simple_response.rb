@@ -1,3 +1,5 @@
+require 'active_support/inflector'
+
 class SimpleResponse
   def initialize(command_context)
     @context = command_context

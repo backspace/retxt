@@ -3,6 +3,9 @@ require_relative '../../app/responses/disclaimer_response'
 
 require 'command_context'
 
+module I18n; end
+class SendsTxts; end
+
 describe DisclaimerResponse do
   include_context 'command context'
 

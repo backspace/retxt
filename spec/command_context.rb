@@ -4,17 +4,10 @@ shared_context 'command context' do
 
   let(:relay) { double('relay', number: '1234', frozen: false, moderated: false).as_null_object }
 
-  let(:i18n) { double('i18n', t: 'response') }
-  let(:sends_txts) { double('sends_txts').as_null_object }
   let(:sender) { double('sender', admin: false, name_or_anon: 'sender', number: '5551313', addressable_name: '@sender', absolute_name: '@sender#5551313', anonymous?: false, locale: :locale) }
   let(:txt) { double('txt', id: 'abc') }
 
   let(:command_context) { double('command_context', sender: sender, relay: relay, arguments: defined?(arguments) ? arguments : '', txt: txt, originating_txt_id: txt.id, application_url: 'url', locale: :locale) }
-
-  before do
-    stub_const('I18n', i18n)
-    stub_const('SendsTxts', sends_txts)
-  end
 
   def sender_is_admin
     sender.stub(:admin).and_return(true)
