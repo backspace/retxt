@@ -33,7 +33,7 @@ class TxtsController < ApplicationController
   end
 
   def store_incoming_message
-    @txt = Txt.create(from: params[:From], body: params[:Body], to: params[:To], service_id: params[:SmsSid])
+    @txt = Txt.create(from: params[:From], body: params[:Body].strip, to: params[:To], service_id: params[:SmsSid])
   end
 
   def application_context
