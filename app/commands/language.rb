@@ -1,8 +1,9 @@
 require_relative 'abstract_command'
+require 'active_support/core_ext/object/blank'
 
 class Language < AbstractCommand
   def execute
-    if arguments
+    if arguments.present?
       if relay.subscribed? sender
         if ChangesLanguages.new(sender, arguments).change_language
           LanguageResponse.new(context).deliver sender
