@@ -2,6 +2,8 @@ require_relative '../../app/commands/moderate'
 require_relative '../../app/commands/modify_relay'
 require 'command_context'
 
+class RelayModificationNotification; end
+
 describe Moderate do
 
   include_context 'command context'

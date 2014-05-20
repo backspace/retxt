@@ -2,6 +2,8 @@ require_relative '../../app/commands/timestamp'
 require_relative '../../app/commands/modify_relay'
 require 'command_context'
 
+class TimestampModificationNotification; end
+
 describe Timestamp do
   include_context 'command context'
 

@@ -2,6 +2,8 @@ require_relative '../../app/commands/mute'
 require_relative '../../app/commands/modify_subscription'
 require 'command_context'
 
+class SubscriptionModificationNotification; end
+
 describe Mute do
 
   include_context 'command context'

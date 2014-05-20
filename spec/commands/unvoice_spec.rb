@@ -2,6 +2,8 @@ require_relative '../../app/commands/unvoice'
 require_relative '../../app/commands/modify_subscription'
 require 'command_context'
 
+class SubscriptionModificationNotification; end
+
 describe Unvoice do
 
   include_context 'command context'

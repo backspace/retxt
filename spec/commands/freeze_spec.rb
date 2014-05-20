@@ -2,6 +2,8 @@ require_relative '../../app/commands/freeze'
 require_relative '../../app/commands/modify_relay'
 require 'command_context'
 
+class RelayModificationNotification; end
+
 describe Freeze do
 
   include_context 'command context'
