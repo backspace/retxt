@@ -30,6 +30,8 @@ end
 group :development, :test do
   gem 'pry'
   gem 'pry-nav'
+  gem 'pry-debugger'
+  gem 'pry-remote'
 
   gem 'foreman'
 end
