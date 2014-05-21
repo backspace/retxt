@@ -26,7 +26,7 @@ pgl:
     help: "aboutay essagemay inay Igpay Atinlay"
     language: "ouryay anguagelay ashay eenbay angedchay otay Igpay Atinlay"
 
-    relayed: "ouryay essagemay ashay eenbay elayedray otay %{subscriber count}"
+    relayed: "ouryay essagemay ashay eenbay elayedray otay %{subscriber_count}"
 
     admin:
       subscription: "%{name} ubscribedsay omfray %{number}"
