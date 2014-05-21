@@ -9,6 +9,6 @@ describe TxtsController do
     Executor.should_receive(:new).with(txt, {application_url: incoming_txts_url}).and_return(executor)
     executor.should_receive(:execute)
 
-    post :incoming
+    post :incoming, Body: ''
   end
 end
