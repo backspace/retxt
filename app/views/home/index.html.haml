@@ -26,7 +26,7 @@
     =txt_pair(t('.relaying.message'), t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: t('.relaying.sender'))
     %p=t '.relaying.recipient_explanation'
     -[t('.relaying.other_receiver_1'), t('.relaying.other_receiver_2')].each do |name|
-      =txt_pair('', RelayedTxtFormatter.new(relay: Relay.new, sender: Subscriber.new(name: t('.relaying.sender')), txt: Txt.new(body: t('.relaying.message'))).format, sender: t('.relaying.sender'), message: t('.relaying.message'), receiver: name)
+      =txt_pair('', RelayedTxtFormatter.new(relay: Relay.new, sender: sender = Subscriber.new(name: t('.relaying.sender')), recipient: sender, txt: Txt.new(body: t('.relaying.message'))).format, sender: t('.relaying.sender'), message: t('.relaying.message'), receiver: name)
   .large-6.small-12.columns
     %h2=t '.etiquette.heading'
     %p
@@ -133,7 +133,7 @@
     -relay_message = t('.timestamping.relayed_message')
     -message = t('.timestamping.direct_message')
     =txt_pair(relay_message, t('txts.relayed', subscriber_count: t('subscribers', count: @subscriber_count)), sender: t('.timestamping.relay_sender'))
-    =txt_pair('', RelayedTxtFormatter.new(relay: relay, sender: relayer, txt: Txt.new(body: t('.timestamping.relayed_message'), created_at: Time.now)).format, receiver: t('.timestamping.direct_sender'))
+    =txt_pair('', RelayedTxtFormatter.new(relay: relay, sender: relayer, recipient: relayer, txt: Txt.new(body: t('.timestamping.relayed_message'), created_at: Time.now)).format, receiver: t('.timestamping.direct_sender'))
     =txt_pair(message, t('txts.direct.sent', target_name: "@#{t('.timestamping.relay_sender')}"), sender: t('.timestamping.direct_sender'))
     =txt_pair('', t('txts.direct.outgoing', prefix: "#{Time.zone.now.strftime(timestamp).strip} ", sender: "@#{t('.timestamping.direct_sender')}", message: message), receiver: t('.timestamping.relay_sender'))
 
