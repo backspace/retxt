@@ -19,6 +19,7 @@ pgl:
     other: "%{count} othersay"
 
   txts:
+    relay_template: "%{time}%{sender} ayssay: %{body}"
     welcome: "elcomeway otay %{relay_name}. yray amenay: %{subscriber_name}. cmdsay: aboutay, unsubscribeay, amenay. artstay txtay way/@ & amenay otay irectday txtay. anyay otheray txtay isay entsay otay %{subscriber_count}"
     disclaimer: "isclaimerday"
 

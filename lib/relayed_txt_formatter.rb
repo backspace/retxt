@@ -2,11 +2,12 @@ class RelayedTxtFormatter
   def initialize(options)
     @relay = options[:relay]
     @sender = options[:sender]
+    @recipient = options[:recipient]
     @txt = options[:txt]
   end
 
   def format
-    "#{timestring}#{@sender.addressable_name} sez: #{@txt.body}"
+    I18n.t('txts.relay_template', time: timestring, sender: @sender.addressable_name, body: @txt.body, locale: @recipient.locale)
   end
 
   def timestring

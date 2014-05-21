@@ -61,11 +61,11 @@ end
 
 Then(/^subscribers other than (\w*) should( not)? receive that( ([^\s]*)-timestamped)? message( signed by (.*?))?$/) do |name, negation, timestamp_exists, timestamp, signature_exists, signature|
   prefix = timestamp_exists ? "#{timestamp} " : ''
-  txt = "#{prefix}#{signature == 'anon' ? '' : '@'}#{signature} sez: #{@txt_content}"
-
   subject = name == 'me' ? Subscriber.find_by(number: my_number) : Subscriber.find_by(name: name)
 
   subscribers_other_than(subject).each do |subscriber|
+    txt = I18n.t('txts.relay_template', time: prefix, sender: subject.addressable_name, body: @txt_content, locale: subscriber.locale)
+
     if negation
       SendsTxts.should have_received(:send_txt).with(to: subscriber.number, body: txt, from: Relay.first.number, originating_txt_id: recent_txt_id).never
     else

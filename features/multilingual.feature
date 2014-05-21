@@ -9,6 +9,9 @@ Feature: Support multiple languages
 
   Scenario: Subscriber can change language
     Given I am subscribed
+    And Alice is subscribed in English
+    And Bob is subscribed in Pig Latin
+
     When I txt 'lang'
     Then I should receive a txt that lists the available languages
 
@@ -17,6 +20,7 @@ Feature: Support multiple languages
 
     When I txt 'ellohay everyoneay'
     Then I should receive a txt in Pig Latin that confirms the message was relayed
+    And subscribers other than me should receive that message signed by anon
 
     When I txt 'anglay en'
     Then I should receive a txt in English that my language has been changed to English

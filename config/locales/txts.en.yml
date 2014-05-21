@@ -1,5 +1,6 @@
 en:
   txts:
+    relay_template: "%{time}%{sender} says: %{body}"
     relayed: "Your message was sent to %{subscriber_count}."
     frozen_bounce: 'Could not relay your message because the relay is frozen.'
     moderated_fail: "Forwarded your message to admins because the relay is moderated."

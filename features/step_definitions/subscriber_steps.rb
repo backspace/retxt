@@ -66,9 +66,9 @@ Given(/^an admin is subscribed$/) do
   Subscription.create(relay: relay, subscriber: @admin)
 end
 
-Given(/^(\w*) is subscribed as an admin( in (English|Pig Latin))?$/) do |name, language_present, language|
+Given(/^(\w*) is subscribed( as an admin)?( in (English|Pig Latin))?$/) do |name, admin_present, language_present, language|
   subscriber = Subscriber.create(number: Time.now.to_f, name: name)
-  subscriber.admin = true
+  subscriber.admin = true if admin_present
 
   if language_present
     subscriber.locale = language == 'English' ? :en : :pgl
