@@ -28,6 +28,11 @@ Admin-only commands:
 * `/delete`
 * `/admin`
 * `/unadmin`
+* `/moderate`
+* `/unmoderate`
+* `/voice`
+* `/unvoice`
+* `/timestamp`
 
 Messages beginning with `@` will be sent to the subscriber with that name.
 
