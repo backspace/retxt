@@ -47,6 +47,11 @@
 
 %section.row
   .large-6.small-12.columns
+    %h2=t '.language.heading'
+    =txt_pair(t('commands.language'), t('txts.language_list', language_list: 'english'))
+    =txt_pair(t('.language.full_name'), t('txts.language'))
+    =txt_pair(t('.language.short_name'), t('txts.language'))
+  .large-6.small-12.columns
     %h2=t '.direct_messaging.heading'
     -message = t('.direct_messaging.message', target_name: t('.direct_messaging.target_name'))
     =txt_pair(message, t('txts.direct.sent', target_name: "@#{t('.direct_messaging.target_name')}"))

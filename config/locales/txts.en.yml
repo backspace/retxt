@@ -16,13 +16,13 @@ en:
     language_list: "Available languages: %{language_list}. Set your language with: 'lang language_name'"
     language_bounce: "Could not set your language: language not found."
 
-    welcome: "Welcome to %{relay_name}, %{subscriber_name}. Cmds: about, unsubscribe, name. Write '@name hello!' to direct txt by name. Any other txt is sent to %{subscriber_count}."
+    welcome: "Welcome to %{relay_name}, %{subscriber_name}. Cmds: about, unsubscribe, name, lang. Write '@name hello!' to direct txt by name. Any other txt is sent to %{subscriber_count}."
     disclaimer: "This relay is in no way secure! Your txts could be monitored, as could the relay itself. Act accordingly!"
     already_subscribed_bounce: "Could not subscribe you because you are already subscribed."
 
     goodbye: "You are now unsubscribed."
 
-    help: "Cmds: about, unsubscribe, name. Write '@name hello!' to direct txt by name. Any other txt is sent to %{subscriber_count}."
+    help: "Cmds: about, unsubscribe, name, lang. Write '@name hello!' to direct txt by name. Any other txt is sent to %{subscriber_count}."
 
     unknown_bounce: "Did not understand your command. Messages beginning with a / are reserved for commands to the relay."
     not_subscribed_command_bounce: "Could not change your settings because you are not subscribed."

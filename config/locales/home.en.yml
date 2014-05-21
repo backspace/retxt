@@ -42,6 +42,11 @@ en:
         heading: Names
         new_name: bob
 
+      language:
+        heading: Language
+        full_name: lang english
+        short_name: lang en
+
       direct_messaging:
         heading: Direct messaging
         target_name: alice

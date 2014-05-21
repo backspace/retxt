@@ -10,6 +10,7 @@ retxt is a text message relay initially developed for emergency communication am
 * `about`
 * `unsubscribe`
 * `name (optional name)`
+* `lang`
 
 Admin-only commands:
 
