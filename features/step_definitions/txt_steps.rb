@@ -273,5 +273,5 @@ def txt_should_not_have_been_sent(content, recipient_number = my_number, sender_
 end
 
 def recent_txt_id
-  Txt.where(originating_txt_id: nil).last ? Txt.where(originating_txt_id: nil).last.id.to_s : ''
+  Txt.where(originating_txt_id: nil).last ? Txt.where(originating_txt_id: nil).asc(:created_at).last.id.to_s : ''
 end
