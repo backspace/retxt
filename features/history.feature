@@ -24,8 +24,8 @@ Feature: History
     Given I am signed in as an admin
     When I view the message history for Alice
     Then I should see that Alice sent 'hello everyone'
-    And I should see that Bob received '@Alice sez: hello everyone'
-    And I should see that Colleen received '@Alice sez: hello everyone'
+    And I should see that Bob received '@Alice says: hello everyone'
+    And I should see that Colleen received '@Alice says: hello everyone'
     And I should see that Alice received a confirmation txt
 
     And I should see that Alice sent '@Colleen we should hang'

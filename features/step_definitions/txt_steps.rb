@@ -230,8 +230,10 @@ Then(/^the admin should receive a txt saying Bob unsubscribed$/) do
   txt_should_have_been_sent I18n.t("txts.admin.unsubscription", name: 'Bob', number: Subscriber.find_by(name: 'Bob').number), @admin.number
 end
 
-Then(/^Bob should receive '@Alice sez: this message should not go to everyone' from relay A$/) do
-  SendsTxts.should have_received(:send_txt).with(from: Relay.find_by(name: "A").number, to: Subscriber.find_by(name: "Bob").number, body: "@Alice sez: this message should not go to everyone", originating_txt_id: recent_txt_id)
+# FIXME lessen coupling to relay template
+
+Then(/^Bob should receive '@Alice says: this message should not go to everyone' from relay A$/) do
+  SendsTxts.should have_received(:send_txt).with(from: Relay.find_by(name: "A").number, to: Subscriber.find_by(name: "Bob").number, body: "@Alice says: this message should not go to everyone", originating_txt_id: recent_txt_id)
 end
 
 Then(/^(.*) should not receive a message$/) do |name|

@@ -10,7 +10,7 @@ Feature: Multi-relay
 
     When I txt 'this message should not go to everyone' to relay A
     Then I should receive a txt that confirms the message was relayed
-    And Bob should receive '@Alice sez: this message should not go to everyone' from relay A
+    And Bob should receive '@Alice says: this message should not go to everyone' from relay A
     And Colleen should not receive a message
 
   Scenario: Create a relay
