@@ -22,7 +22,7 @@ en:
 
     goodbye: "You are now unsubscribed."
 
-    help: "Cmds: about, unsubscribe, name, lang. Write '@name hello!' to direct txt by name. Any other txt is sent to %{subscriber_count}."
+    help: "Cmds: about, unsubscribe, name, lang. 'about cmd' for more detailed help on cmd. '@name hello!' direct txts by name. Any other txt is sent to %{subscriber_count}."
 
     unknown_bounce: "Did not understand your command. Messages beginning with a / are reserved for commands to the relay."
     not_subscribed_command_bounce: "Could not change your settings because you are not subscribed."
