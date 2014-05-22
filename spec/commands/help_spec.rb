@@ -12,4 +12,16 @@ describe Help do
     expect_response_to_sender 'HelpResponse'
     execute
   end
+
+  context 'when sender is an admin' do
+    before do
+      sender_is_admin
+    end
+
+    it 'replies with the regular and admin help messages' do
+      expect_response_to_sender 'HelpResponse'
+      expect_response_to_sender 'AdminHelpResponse'
+      execute
+    end
+  end
 end

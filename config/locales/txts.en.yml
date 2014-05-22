@@ -66,6 +66,22 @@ en:
       language_bounce: "%{sender_absolute_name} failed to set their language: %{message}"
       not_subscribed_command_bounce: "%{sender_absolute_name} tried to run a command while not subscribed: %{message}"
 
+      help: |
+        Admin commands:
+
+        /who
+
+        /admin /unadmin
+        /mute /unmute
+        /voice /unvoice
+
+        /moderate /unmoderate
+        /close /open
+        /freeze /thaw
+        /clear
+        /timestamp
+        /create /delete
+
     direct:
       sent: "Your message was sent to %{target_name}"
       outgoing: "%{prefix}%{sender} said to you: %{message}"
