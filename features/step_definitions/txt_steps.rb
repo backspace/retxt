@@ -21,7 +21,7 @@ When(/^(\w*) txts '([^']*)'( to relay A)?$/) do |name, content, relay_given|
   post '/txts/incoming', Body: content, From: Subscriber.find_by(name: name).number, To: relay.number
 end
 
-Then(/^(I|(\w*)) should receive an? (admin help|help|welcome|not-subscribed-bounce-notification) txt( in Pig Latin)?( from (\d+))?$/) do |subject, name, message_type, in_pig_latin, non_default_source, source|
+Then(/^(I|(\w*)) should receive an? (help|welcome|not-subscribed-bounce-notification) txt( in Pig Latin)?( from (\d+))?$/) do |subject, name, message_type, in_pig_latin, non_default_source, source|
   @original_locale = I18n.locale
 
   I18n.locale = :pgl if in_pig_latin.present?
@@ -36,8 +36,6 @@ Then(/^(I|(\w*)) should receive an? (admin help|help|welcome|not-subscribed-boun
 
   if message_type == 'help'
     message = I18n.t('txts.help', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
-  elsif message_type == 'admin help'
-    message = I18n.t('txts.admin.help')
   elsif message_type == 'welcome'
     message = I18n.t('txts.welcome', relay_name: Relay.first.name, subscriber_name: Subscriber.first.name_or_anon, subscriber_count: I18n.t('other', count: Relay.first.subscription_count - 1))
   end
@@ -49,6 +47,20 @@ Then(/^(I|(\w*)) should receive an? (admin help|help|welcome|not-subscribed-boun
   end
 
   I18n.locale = @original_locale
+end
+
+Then(/^I should receive an? (\w*) help txt$/) do |command|
+  message =
+    case command
+    when 'unknown'
+      I18n.t('txts.command_help.unknown', command: @txt_content.split.last)
+    when 'admin'
+      I18n.t('txts.admin.help')
+    else
+      I18n.t("txts.command_help.#{command}")
+    end
+
+  txt_should_have_been_sent message, @my_number
 end
 
 Then(/^I should receive a txt including$/) do |content|

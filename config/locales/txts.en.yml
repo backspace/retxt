@@ -27,6 +27,45 @@ en:
     unknown_bounce: "Did not understand your command. Messages beginning with a / are reserved for commands to the relay."
     not_subscribed_command_bounce: "Could not change your settings because you are not subscribed."
 
+    command_help:
+      subscribe: "'subscribe' adds you to the relay. You can set your name while subscribing with 'subscribe yourname'."
+      unsubscribe: "'unsubscribe' removes you from the relay. Due to technical limitations, you must send START to be able to receive messages again."
+
+      help: "'help' returns a list of commands. 'help command' returns help for a specific command."
+
+      name: "'name' concerns the name shown when you relay a message. 'name' shows your current name, 'name newname' changes it."
+      language: "'lang' lists the available languages. 'lang languagename' sets your language."
+
+      create: "'/create relayname' creates a new relay. You will receive a reply from a new relay number."
+      who: "'/who' lists who is subscribed. Admins are marked with *."
+
+      freeze: "'/freeze' blocks all attempts at relaying a message. Admins are notified of relay attempts. Reverse with '/thaw'."
+      thaw: "'/thaw' restores relaying when a relay has been frozen with '/freeze'."
+
+      mute: "'/mute @name' prevents @name from being able to relay messages. Adimns are notified of relay attempts. Reverse with '/unmute @name'"
+      unmute: "'/unmute @name' restores permission to relay to @name after an admin ran '/mute @name'."
+
+      close: "'/close' closes the relay to new subscriptions. Admins are notified of attempts to subscribe."
+      open: "'/open' opens the relay to subscriptions after an admin has run '/close'."
+
+      rename: "'/rename relayname' changes the name of the relay."
+
+      clear: "'/clear' removes all non-admin subscribers of a relay."
+      delete: "'/delete' deletes this relay. Afterward it will no longer respond to messages!"
+
+      admin: "'/admin @name' promotes @name to be a relay admin. All admins are notified."
+      unadmin: "'/unadmin @name' demotes @name from being an admin. All admins are notified."
+
+      moderate: "'/moderate' permits relaying messages only from admins and subscribers with 'voice'. Give voice with '/voice @name'. Admins are notified of relay attempts."
+      unmoderate: "'/unmoderate' allows all non-muted subscribers to relay messages."
+
+      voice: "'/voice @name' allows @name to relay messages when a relay has been moderated with '/moderate'."
+      unvoice: "'/unvoice @name' prevents @name from relaying messages when a relay has been moderated with '/moderate'."
+
+      timestamp: "'/timestamp %l:%M' will prefix all relayed and direct messages with a time they were sent. See strftime.org for formats. '/timestamp' removes timestamp."
+
+      unknown: "No help exists for '%{command}'."
+
     admin:
       creation: "%{admin_name} created a new relay called %{relay_name}."
       subscription: "%{name} at %{number} subscribed."

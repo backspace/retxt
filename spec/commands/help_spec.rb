@@ -1,6 +1,9 @@
 require_relative '../../app/commands/help'
 require 'command_context'
 
+require_relative '../../app/responses/simple_response'
+require_relative '../../app/responses/command_help_response'
+
 describe Help do
   include_context 'command context'
 
@@ -21,6 +24,15 @@ describe Help do
     it 'replies with the regular and admin help messages' do
       expect_response_to_sender 'HelpResponse'
       expect_response_to_sender 'AdminHelpResponse'
+      execute
+    end
+  end
+
+  context 'when there is a command argument' do
+    let(:arguments) { 'command' }
+
+    it 'replies with help for the command' do
+      expect_response_to_sender 'CommandHelpResponse'
       execute
     end
   end
