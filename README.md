@@ -19,7 +19,6 @@ Admin-only commands:
 * `/open`
 * `/close`
 * `/who`
-* `/clear`
 * `/delete`
 * `/mute`
 * `/unmute`
