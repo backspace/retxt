@@ -21,3 +21,17 @@ Feature: Setup wizard
 
     When I visit the subscribers list
     Then I should see myself
+
+  Scenario: Set up with an existing number
+    When I visit the site
+    Then I should be required to create an account
+
+    When I create an account
+    Then I should be required to enter my name and phone number
+
+    When I enter my name and phone number
+    Then I should be required to name the relay
+
+    When I name the relay and give it the number 2345
+    Then I should receive a txt that a relay was created from 2345
+    And I should see that relay 2345 has been created

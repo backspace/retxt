@@ -25,8 +25,22 @@ class SetupController < ApplicationController
       @subscriber.save
       model = @subscriber
     when :name_relay
-      Create.new(CommandContext.new(relay: Relay.new(number: Subscriber.first.number), sender: Subscriber.first, application_url: incoming_txts_url, arguments: params[:relay][:name], originating_txt: OpenStruct.new(id: nil))).execute
-      model = Relay.first
+      if params[:relay][:number].present?
+        @relay = Relay.create(relay_params)
+        Subscription.create(relay: @relay, subscriber: Subscriber.first)
+
+        context = creation_context
+        context.relay = @relay
+        CreationNotification.new(context).deliver @relay.admins
+
+        model = @relay
+      else
+        context = creation_context
+        context.relay = Relay.new(number: Subscriber.first.number)
+        Create.new(context).execute
+        @relay = Relay.first
+        model = @relay
+      end
     end
 
     render_wizard model
@@ -35,5 +49,13 @@ class SetupController < ApplicationController
   private
   def subscriber_params
     params.require(:subscriber).permit(:number, :name)
+  end
+
+  def relay_params
+    params.require(:relay).permit(:name, :number)
+  end
+
+  def creation_context
+    CommandContext.new(sender: Subscriber.first, application_url: incoming_txts_url, arguments: params[:relay][:name], originating_txt: OpenStruct.new(id: nil))
   end
 end

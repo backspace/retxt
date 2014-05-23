@@ -28,12 +28,13 @@ Then(/^I should be required to name the relay$/) do
   expect(page).to have_text('name for the relay')
 end
 
-When(/^I name the relay$/) do
+When(/^I name the relay( and give it the number (\d+))?$/) do |number_given, number|
   fill_in 'relay[name]', with: 'arelay'
+  fill_in 'relay[number]', with: number if number_given
 
   click_button 'Save'
 end
 
-Then(/^I should see that relay (\d+) has been created$/) do |arg1|
-  expect(page).to have_text('at the phone number 123')
+Then(/^I should see that relay (\d+) has been created$/) do |number|
+  expect(page).to have_text("at the phone number #{number}")
 end

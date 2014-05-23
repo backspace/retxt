@@ -4,4 +4,6 @@
     %p=t '.choose_a_name'
     =form_for @relay, url: wizard_path, method: :put do |f|
       =f.text_field :name
+      %p=t '.enter_number_if_exists'
+      =f.text_field :number
       =f.submit t('setup.save_button')

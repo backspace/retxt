@@ -8,6 +8,7 @@ en:
       number: Number
     name_relay:
       choose_a_name: Choose a name for the relay.
+      enter_number_if_exists: If you already have a number in your Twilio account you want to run a relay from, enter it below in the format displayed on its properties page.
     buy_relay_number:
       heading: Success!
       phone_number: "A new relay has been set up at the phone number %{phone_number}. You should have received a text message from it."
