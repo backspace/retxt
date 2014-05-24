@@ -3,8 +3,7 @@ require_relative 'abstract_command'
 class Create < AbstractCommand
   def execute
     if sender.admin
-      new_relay_area_code = ExtractsAreaCodes.new(relay.number).extract_area_code
-      new_relay_number = BuysNumbers.buy_number(new_relay_area_code, application_url)
+      new_relay_number = BuysSimilarNumbers.new(relay.number, application_url).buy_similar_number
       new_relay = Relay.create(name: arguments, number: new_relay_number)
       Subscription.create(relay: new_relay, subscriber: sender)
 
