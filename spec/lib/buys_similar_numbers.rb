@@ -9,7 +9,7 @@ describe BuysSimilarNumbers do
 
   it 'feeds extracted area code to BuysNumbers' do
     ExtractsAreaCodes.should_receive(:new).with(number).and_return(double(:extrator, extract_area_code: :area_code))
-    BuysNumbers.should_receive(:buy_number).with(:area_code, :url).and_return(:new_number)
+    BuysNumbers.should_receive(:buy_number).with(:area_code, 'CA', :url).and_return(:new_number)
 
     BuysSimilarNumbers.new(number, sms_url).buy_similar_number.should eq(:new_number)
   end
