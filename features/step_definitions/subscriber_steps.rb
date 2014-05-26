@@ -5,7 +5,7 @@ end
 def create_relay_with_subscriber(name, subscriber)
   relay = Relay.find_or_create_by(name: name)
 
-  relay.update_attribute(:number, Time.now.to_f) unless relay.number.present?
+  relay.update_attribute(:number, "+1514555000#{Relay.count}") unless relay.number.present?
 
   relay.subscriptions << Subscription.create(subscriber: subscriber, relay: relay)
 end
