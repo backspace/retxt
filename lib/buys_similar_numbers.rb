@@ -5,8 +5,9 @@ class BuysSimilarNumbers
   end
 
   def buy_similar_number
-    new_area_code = ExtractsAreaCodes.new(@number).extract_area_code
-    BuysNumbers.buy_number(new_area_code, 'CA', url)
+    parser = ParsesNumbers.new(existing_number)
+    parser.parse
+    BuysNumbers.buy_number(parser.area_code, parser.country, url)
   end
 
   private

@@ -1,0 +1,2 @@
+class UnsupportedNumberException < Exception
+end
