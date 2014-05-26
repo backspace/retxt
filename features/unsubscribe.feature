@@ -2,10 +2,10 @@ Feature: Unsubscribe
 
   Scenario: A user unsubscribes
     Given someone is subscribed to relay A as Bob
-    And an admin is subscribed
+    And I am subscribed to relay A as an admin
     When Bob txts 'unsubscribe' to relay A
     Then Bob should receive a txt that they are unsubscribed
-    And the admin should receive a txt saying Bob unsubscribed
+    And I should receive a txt saying Bob unsubscribed
 
     Given I am signed in as an admin
     When I visit the subscribers list

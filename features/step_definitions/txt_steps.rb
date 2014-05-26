@@ -11,7 +11,9 @@ When(/^I txt '(.*?)'( to relay (.*))?( at (.*))?$/) do |content, non_default_rel
     @recent_relay = Relay.find_by(name: relay_name)
     post '/txts/incoming', Body: content, From: my_number, To: @recent_relay.number
   else
-    post '/txts/incoming', Body: content, From: my_number
+    relay = Relay.first
+    relay = Relay.create unless relay
+    post '/txts/incoming', Body: content, From: my_number, To: relay.number
   end
 end
 
@@ -240,8 +242,8 @@ Then(/^(\w*) should receive a txt that (\w*) (voiced|unvoiced|muted|unmuted|rena
   txt_should_have_been_sent response_text, recipient_number
 end
 
-Then(/^the admin should receive a txt saying Bob unsubscribed$/) do
-  txt_should_have_been_sent I18n.t("txts.admin.unsubscription", name: 'Bob', number: Subscriber.find_by(name: 'Bob').number), @admin.number
+Then(/^I should receive a txt saying Bob unsubscribed$/) do
+  txt_should_have_been_sent I18n.t("txts.admin.unsubscription", name: 'Bob', number: Subscriber.find_by(name: 'Bob').number), @my_number
 end
 
 # FIXME lessen coupling to relay template

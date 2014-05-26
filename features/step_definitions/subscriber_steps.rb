@@ -22,21 +22,13 @@ Given(/^I am subscribed( to relay (\w*))?( as an admin)?( as (\w*))?( at (\d*))?
     @my_number = number
   end
 
-  if non_default_relay
-    create_relay_with_subscriber(relay_name, subscriber)
-  else
-    relay = Relay.first || Relay.create
-    Subscription.create(relay: relay, subscriber: subscriber)
-  end
-
+  create_relay_with_subscriber(relay_name, subscriber)
   subscriber.update_attribute(:admin, true) if admin
 end
 
 Given(/^two other people are subscribed$/) do
-  relay = Relay.first || Relay.create
-
-  Subscription.create(subscriber: Subscriber.create(number: '5145551313'), relay: relay)
-  Subscription.create(subscriber: Subscriber.create(number: '4385551313'), relay: relay)
+  create_relay_with_subscriber(nil, Subscriber.create(number: '5145551313'))
+  create_relay_with_subscriber(nil, Subscriber.create(number: '4385551313'))
 end
 
 Given(/^someone is subscribed( to relay (\w*))?( as (\w*))?( at (\d*))?$/) do |non_default_relay, relay_name, name_given, name, number_given, number|
@@ -48,12 +40,7 @@ Given(/^someone is subscribed( to relay (\w*))?( as (\w*))?( at (\d*))?$/) do |n
     subscriber.update_attribute(:number, number)
   end
 
-  if non_default_relay
-    create_relay_with_subscriber(relay_name, subscriber)
-  else
-    relay = Relay.first || Relay.create
-    Subscription.create(relay: relay, subscriber: subscriber)
-  end
+  create_relay_with_subscriber(relay_name, subscriber)
 end
 
 Given(/^an admin is subscribed$/) do
@@ -61,9 +48,7 @@ Given(/^an admin is subscribed$/) do
   @admin.admin = true
   @admin.save
 
-  relay = Relay.first || Relay.create
-
-  Subscription.create(relay: relay, subscriber: @admin)
+  create_relay_with_subscriber(nil, @admin)
 end
 
 Given(/^(\w*) is subscribed( as an admin)?( in (English|Pig Latin))?$/) do |name, admin_present, language_present, language|
@@ -76,7 +61,5 @@ Given(/^(\w*) is subscribed( as an admin)?( in (English|Pig Latin))?$/) do |name
 
   subscriber.save
 
-  relay = Relay.first || Relay.create
-
-  Subscription.create(relay: relay, subscriber: subscriber)
+  create_relay_with_subscriber(nil, subscriber)
 end
