@@ -9,8 +9,9 @@ Feature: Setup wizard
     When I create an account
     Then I should be required to enter my name and phone number
 
-    When I enter my name and phone number
-    Then I should be required to name the relay
+    When I enter my name and phone number +15145551313
+    Then I should see that my number is from area code 514 in Canada
+    And I should be required to name the relay
 
     When I name the relay
     Then I should receive a txt that a relay was created from 123
@@ -29,8 +30,9 @@ Feature: Setup wizard
     When I create an account
     Then I should be required to enter my name and phone number
 
-    When I enter my name and phone number
-    Then I should be required to name the relay
+    When I enter my name and phone number +358020071000
+    Then I should see that my number is from Finland
+    And I should be required to name the relay
 
     When I name the relay and give it the number 2345
     Then I should receive a txt that a relay was created from 2345

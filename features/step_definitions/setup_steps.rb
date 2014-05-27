@@ -18,10 +18,17 @@ Then(/^I should be required to enter my name and phone number$/) do
   expect(page).to have_text('your name and phone number')
 end
 
-When(/^I enter my name and phone number$/) do
+When(/^I enter my name and phone number( ([^\s]*))?$/) do |number_given, number|
   fill_in 'subscriber[name]', with: 'alice'
-  fill_in 'subscriber[number]', with: my_number
+  fill_in 'subscriber[number]', with: number || my_number
   click_button 'Save'
+end
+
+Then(/^I should see that my number is from( area code (\d+) in)? (\w*)/) do |area_code_given, area_code, country|
+  @me = Subscriber.first
+
+  expect(page).to have_text(country)
+  expect(page).to have_text('514') if area_code_given
 end
 
 Then(/^I should be required to name the relay$/) do

@@ -18,6 +18,7 @@ gem 'twilio-ruby'
 
 gem 'global_phone'
 gem 'dialable'
+gem 'countries'
 
 group :test do
   gem 'rspec-rails'

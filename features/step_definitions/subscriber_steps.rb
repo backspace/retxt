@@ -1,5 +1,9 @@
 def my_number
-  @my_number ||= '2045551313'
+  if defined? @me
+    @me.number
+  else
+    '+12045551313'
+  end
 end
 
 def create_relay_with_subscriber(name, subscriber)
@@ -24,6 +28,7 @@ Given(/^I am subscribed( to relay (\w*))?( as an admin)?( as (\w*))?( at (\d*))?
 
   create_relay_with_subscriber(relay_name, subscriber)
   subscriber.update_attribute(:admin, true) if admin
+  @me = subscriber
 end
 
 Given(/^two other people are subscribed$/) do

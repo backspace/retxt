@@ -3,7 +3,7 @@ When(/^I visit the subscribers list$/) do
 end
 
 Then(/^I should( not)? see myself$/) do |negation|
-  page.send(negation ? :should_not : :should, have_content(my_number))
+  page.send(negation ? :should_not : :should, have_content(Subscriber.first.number))
 end
 
 Then(/^I should have sent (\d+) messages?$/) do |message_count|

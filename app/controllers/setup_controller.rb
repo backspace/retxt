@@ -10,6 +10,10 @@ class SetupController < ApplicationController
       @subscriber = Subscriber.new
     when :name_relay
       @relay = Relay.new
+      parser = ParsesNumbers.new(Subscriber.first.number)
+      parser.parse
+      @country = Country.new(parser.country).name
+      @area_code = parser.area_code
     when :buy_relay_number
       @relay = Relay.first
     end

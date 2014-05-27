@@ -62,7 +62,7 @@ Then(/^I should receive an? (\w*) help txt$/) do |command|
       I18n.t("txts.command_help.#{command}")
     end
 
-  txt_should_have_been_sent message, @my_number
+  txt_should_have_been_sent message, my_number
 end
 
 Then(/^I should receive a txt including$/) do |content|
@@ -243,7 +243,7 @@ Then(/^(\w*) should receive a txt that (\w*) (voiced|unvoiced|muted|unmuted|rena
 end
 
 Then(/^I should receive a txt saying Bob unsubscribed$/) do
-  txt_should_have_been_sent I18n.t("txts.admin.unsubscription", name: 'Bob', number: Subscriber.find_by(name: 'Bob').number), @my_number
+  txt_should_have_been_sent I18n.t("txts.admin.unsubscription", name: 'Bob', number: Subscriber.find_by(name: 'Bob').number), my_number
 end
 
 # FIXME lessen coupling to relay template

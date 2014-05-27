@@ -4,6 +4,11 @@
     %p=t '.choose_a_name'
     =form_for @relay, url: wizard_path, method: :put do |f|
       =f.text_field :name
-      %p=t '.enter_number_if_exists'
+      %p
+        -if @area_code
+          =t '.phone_number_country_with_area_code', country: @country, area_code: @area_code
+        -else
+          =t '.phone_number_country', country: @country
+        =t '.enter_number_if_exists'
       =f.text_field :number
       =f.submit t('setup.save_button')
