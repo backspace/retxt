@@ -55,7 +55,7 @@ The application is currently dependent on Twilio, though the service is sufficie
 
     git push heroku master
 
-Once the push is complete, visit https://your-relay-name.herokuapp.com/ to complete setup. You will be asked to create an account that can administer the relay (very rudimentary for now) and give a phone number, from a which a relay with the same area code will be created. The number costs $1/month from Twilio.
+Once the push is complete, visit https://your-relay-name.herokuapp.com/ to complete setup. You will be asked to create an account that can administer the relay (very rudimentary for now) and give a phone number, from a which a relay with the same area code will be created. The number costs $1/month from Twilio (in Canada and the US; check other prices [here](https://www.twilio.com/sms/pricing)).
 
 You will receive a message from the new relay. Read up at https://your-relay-name.herokuapp.com/ to learn the supported commands.
 
@@ -85,7 +85,7 @@ Open the tunnel and run the server:
 
     foreman start -f Procfile.dev
 
-Once you see the `web` output from Foreman showing that `WEBrick` is ready, access the setup interface at http://$RETXT_SUBDOMAIN.ngrok.com/. You will create an account and specify your phone number and the application will create a relay. **It costs $1!**
+Once you see the `web` output from Foreman showing that `WEBrick` is ready, access the setup interface at http://$RETXT_SUBDOMAIN.ngrok.com/. You will create an account and specify your phone number and the application will create a relay. **It costs $1!** (in Canada and the US; check other prices [here](https://www.twilio.com/sms/pricing))
 
 From then on, you need only run the latter `foreman` command to work in development.
 
