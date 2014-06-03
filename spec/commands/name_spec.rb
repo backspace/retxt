@@ -13,11 +13,11 @@ describe Name do
 
   context 'when the sender is subscribed' do
     before do
-      relay.stub(:subscribed?).with(sender).and_return(true)
+      allow(relay).to receive(:subscribed?).with(sender).and_return(true)
     end
 
     it 'changes the sender name and sends a confirmation' do
-      ChangesNames.should_receive(:change_name).with(sender, arguments)
+      expect(ChangesNames).to receive(:change_name).with(sender, arguments)
       expect_response_to_sender 'NameResponse'
       execute
     end

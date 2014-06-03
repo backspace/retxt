@@ -8,7 +8,7 @@ describe ExtractsAreaCodes do
   context 'with a valid number' do
     let(:number) { '+12125551212' }
 
-    it { should eq('212') }
+    it { is_expected.to eq('212') }
   end
 
   context 'with a number that is too short' do

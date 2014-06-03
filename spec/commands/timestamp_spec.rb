@@ -17,11 +17,11 @@ describe Timestamp do
     modify_relay = double('modify relay')
     modifier = :timestamp!
 
-    Timestamp.any_instance.stub(:modifier).and_return(modifier)
+    allow_any_instance_of(Timestamp).to receive(:modifier).and_return(modifier)
 
-    TimestampModificationNotification.should_receive(:new).with(command_context).and_return(notification = double)
-    ModifyRelay.should_receive(:new).with(command_context, modifier: modifier, success_response: notification).and_return(modify_relay)
-    modify_relay.should_receive(:execute)
+    expect(TimestampModificationNotification).to receive(:new).with(command_context).and_return(notification = double)
+    expect(ModifyRelay).to receive(:new).with(command_context, modifier: modifier, success_response: notification).and_return(modify_relay)
+    expect(modify_relay).to receive(:execute)
 
     execute
   end

@@ -29,25 +29,25 @@ describe ModifySubscription do
       let(:target) { double('target') }
 
       before do
-        finds_subscribers.stub(:find).with(arguments).and_return(target)
+        allow(finds_subscribers).to receive(:find).with(arguments).and_return(target)
       end
 
       context 'and is subscribed' do
         let(:subscription) { double('subscription').as_null_object }
 
         before do
-          relay.stub(:subscription_for).with(target).and_return(subscription)
+          allow(relay).to receive(:subscription_for).with(target).and_return(subscription)
         end
 
         it 'calls the modifier with the subscription and delivers the response' do
-          modifier.should_receive(:call).with(subscription)
-          success_response.should_receive(:deliver).with(relay.admins)
+          expect(modifier).to receive(:call).with(subscription)
+          expect(success_response).to receive(:deliver).with(relay.admins)
           execute
         end
       end
 
       before do
-        relay.stub(:subscription_for).with(target).and_return(nil)
+        allow(relay).to receive(:subscription_for).with(target).and_return(nil)
       end
 
       it 'replies with the unsubscribed target message' do
@@ -57,7 +57,7 @@ describe ModifySubscription do
     end
 
     before do
-      finds_subscribers.stub(:find).with(arguments).and_return(nil)
+      allow(finds_subscribers).to receive(:find).with(arguments).and_return(nil)
     end
 
     it 'replies with the missing target message' do

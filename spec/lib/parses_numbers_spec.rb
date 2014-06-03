@@ -15,46 +15,46 @@ describe ParsesNumbers do
 
     context 'when the territory is not US' do
       it 'parses the number' do
-        GlobalPhone.should_receive(:parse).with(number).and_return(double(:number, territory: double(:territory, name: 'XX')))
+        expect(GlobalPhone).to receive(:parse).with(number).and_return(double(:number, territory: double(:territory, name: 'XX')))
 
         parser.parse
-        parser.country.should eq('XX')
-        parser.area_code.should be_nil
+        expect(parser.country).to eq('XX')
+        expect(parser.area_code).to be_nil
       end
     end
 
     context 'when the territory is US' do
       before do
-        GlobalPhone.should_receive(:parse).with(number).and_return(double(:global_number, territory: double(:territory, name: 'US')))
+        expect(GlobalPhone).to receive(:parse).with(number).and_return(double(:global_number, territory: double(:territory, name: 'US')))
       end
 
       context 'and Dialable places it in the US' do
         before do
-          Dialable::NANP.should_receive(:parse).with(number).and_return(double(:dialable_number, country: 'US', areacode: :us_area_code))
+          expect(Dialable::NANP).to receive(:parse).with(number).and_return(double(:dialable_number, country: 'US', areacode: :us_area_code))
         end
 
         it 'parses a number with an area code' do
           parser.parse
-          parser.country.should eq('US')
-          parser.area_code.should eq(:us_area_code)
+          expect(parser.country).to eq('US')
+          expect(parser.area_code).to eq(:us_area_code)
         end
       end
 
       context 'and Dialable places it in Canada' do
         before do
-          Dialable::NANP.should_receive(:parse).with(number).and_return(double(:dialable_number, country: 'CANADA', areacode: :canada_area_code))
+          expect(Dialable::NANP).to receive(:parse).with(number).and_return(double(:dialable_number, country: 'CANADA', areacode: :canada_area_code))
         end
 
         it 'parses a number with an area code' do
           parser.parse
-          parser.country.should eq('CA')
-          parser.area_code.should eq(:canada_area_code)
+          expect(parser.country).to eq('CA')
+          expect(parser.area_code).to eq(:canada_area_code)
         end
       end
 
       context 'and Dialable places it outside US/CA' do
         before do
-          Dialable::NANP.should_receive(:parse).with(number).and_return(double(:dialable_number, country: 'XX'))
+          expect(Dialable::NANP).to receive(:parse).with(number).and_return(double(:dialable_number, country: 'XX'))
         end
 
         it 'raises an exception' do
@@ -73,50 +73,50 @@ describe ParsesNumbers do
 
     it 'parses a number from Canada' do
       parser = parser_for("+15145551313")
-      parser.country.should eq("CA")
-      parser.area_code.should eq("514")
+      expect(parser.country).to eq("CA")
+      expect(parser.area_code).to eq("514")
     end
 
     it 'parses a number from the US' do
       parser = parser_for("+14150000000")
-      parser.country.should eq("US")
-      parser.area_code.should eq("415")
+      expect(parser.country).to eq("US")
+      expect(parser.area_code).to eq("415")
     end
 
     it 'parses a number from Austria' do
       parser = parser_for("+43 316 45678")
-      parser.country.should eq("AT")
-      parser.area_code.should be_nil
+      expect(parser.country).to eq("AT")
+      expect(parser.area_code).to be_nil
     end
 
     it 'parses a number from China' do
       parser = parser_for("+861069445464")
-      parser.country.should eq("CN")
-      parser.area_code.should be_nil
+      expect(parser.country).to eq("CN")
+      expect(parser.area_code).to be_nil
     end
 
     it 'parses a number from France' do
       parser = parser_for("+33687712345")
-      parser.country.should eq("FR")
-      parser.area_code.should be_nil
+      expect(parser.country).to eq("FR")
+      expect(parser.area_code).to be_nil
     end
 
     it 'parses a number from Nigeria' do
       parser = parser_for("+23480312345")
-      parser.country.should eq("NG")
-      parser.area_code.should be_nil
+      expect(parser.country).to eq("NG")
+      expect(parser.area_code).to be_nil
     end
 
     it 'parses a number from the United Kingdom' do
       parser = parser_for("+447700954321")
-      parser.country.should eq("GB")
-      parser.area_code.should be_nil
+      expect(parser.country).to eq("GB")
+      expect(parser.area_code).to be_nil
     end
 
     it 'parses a number from Venezuela' do
       parser = parser_for("+582954167216")
-      parser.country.should eq("VE")
-      parser.area_code.should be_nil
+      expect(parser.country).to eq("VE")
+      expect(parser.area_code).to be_nil
     end
 
     it 'throws an error for a number from Montserrat' do

@@ -19,20 +19,20 @@ describe Create do
     end
 
     it 'buys a number from the relay area code, creates a relay, and notifies admins' do
-      BuysSimilarNumbers.should_receive(:new).with(relay.number, command_context.application_url).and_return(double('buyer', buy_similar_number: new_relay_number))
+      expect(BuysSimilarNumbers).to receive(:new).with(relay.number, command_context.application_url).and_return(double('buyer', buy_similar_number: new_relay_number))
 
       relay_repository = double('relay repository')
       stub_const('Relay', relay_repository)
       relay = double('relay', name: arguments)
 
-      relay_repository.should_receive(:create).with(name: arguments, number: new_relay_number).and_return(relay)
+      expect(relay_repository).to receive(:create).with(name: arguments, number: new_relay_number).and_return(relay)
 
       subscription_repository = double('subscription repository')
       stub_const('Subscription', subscription_repository)
 
-      subscription_repository.should_receive(:create).with(relay: relay, subscriber: sender)
+      expect(subscription_repository).to receive(:create).with(relay: relay, subscriber: sender)
 
-      relay.should_receive(:admins).and_return(new_relay_admins = double)
+      expect(relay).to receive(:admins).and_return(new_relay_admins = double)
       expect_notification_of new_relay_admins, 'CreationNotification'
 
       execute

@@ -15,13 +15,13 @@ describe DirectMessage do
 
   context 'when the sender exists' do
     before do
-      relay.stub(:subscribed?).with(sender).and_return(true)
+      allow(relay).to receive(:subscribed?).with(sender).and_return(true)
     end
 
     context 'and is not anonymous' do
       before do
-        sender.stub(:anonymous?).and_return(false)
-        sender.stub(:addressable_name).and_return("@sender")
+        allow(sender).to receive(:anonymous?).and_return(false)
+        allow(sender).to receive(:addressable_name).and_return("@sender")
       end
 
       context 'and the target exists' do
@@ -29,7 +29,7 @@ describe DirectMessage do
         let(:timestamp) { double(:formatter, format: 'timestamp ') }
 
         before do
-          FindsSubscribers.stub(:find).with('@user').and_return(target)
+          allow(FindsSubscribers).to receive(:find).with('@user').and_return(target)
         end
 
         it 'sends the message and replies' do
@@ -42,7 +42,7 @@ describe DirectMessage do
 
       context 'and the target does not exist' do
         before do
-          FindsSubscribers.stub(:find).with('@user').and_return(nil)
+          allow(FindsSubscribers).to receive(:find).with('@user').and_return(nil)
         end
 
         it 'sends the failed message' do
@@ -55,7 +55,7 @@ describe DirectMessage do
 
     context 'and is anonymous' do
       before do
-        sender.stub(:anonymous?).and_return(true)
+        allow(sender).to receive(:anonymous?).and_return(true)
       end
 
       it 'forbids the message' do

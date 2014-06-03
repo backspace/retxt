@@ -10,7 +10,7 @@ shared_context 'command context' do
   let(:command_context) { double('command_context', sender: sender, relay: relay, arguments: defined?(arguments) ? arguments : '', txt: txt, originating_txt_id: txt.id, application_url: 'url', locale: :locale) }
 
   def sender_is_admin
-    sender.stub(:admin).and_return(true)
+    allow(sender).to receive(:admin).and_return(true)
   end
 
   def expect_response_to_sender(klass)
@@ -20,7 +20,7 @@ shared_context 'command context' do
   def expect_response_to(target, klass)
     response_class = double(klass)
     stub_const(klass, response_class)
-    response_class.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(target)})
+    expect(response_class).to receive(:new).with(command_context).and_return(double.tap{|mock| expect(mock).to receive(:deliver).with(target)})
   end
 
   def expect_notification_of_admins(klass)
@@ -30,6 +30,6 @@ shared_context 'command context' do
   def expect_notification_of(target, klass)
     response_class = double(klass)
     stub_const(klass, response_class)
-    response_class.should_receive(:new).with(command_context).and_return(double.tap{|mock| mock.should_receive(:deliver).with(target)})
+    expect(response_class).to receive(:new).with(command_context).and_return(double.tap{|mock| expect(mock).to receive(:deliver).with(target)})
   end
 end

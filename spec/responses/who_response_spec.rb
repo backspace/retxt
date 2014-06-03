@@ -17,6 +17,6 @@ describe WhoResponse do
 
   it 'generates a who response' do
     response = WhoResponse.new(double(:context, relay: relay))
-    response.body.should include("@admin* 2\nmuted (muted) 3\nanon 1\nvoiced (voiced) 4")
+    expect(response.body).to include("@admin* 2\nmuted (muted) 3\nanon 1\nvoiced (voiced) 4")
   end
 end

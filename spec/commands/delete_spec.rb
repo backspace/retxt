@@ -16,7 +16,7 @@ describe Delete do
 
     it 'notifies admins and deletes the relay' do
       expect_notification_of_admins 'DeletionNotification'
-      DeletesRelays.should_receive(:delete_relay).with(relay: relay)
+      expect(DeletesRelays).to receive(:delete_relay).with(relay: relay)
 
       execute
     end
@@ -24,7 +24,7 @@ describe Delete do
 
   context 'from a non-admin' do
     it 'does not delete the relay and responds with the non-admin message' do
-      relay.should_not_receive(:delete)
+      expect(relay).not_to receive(:delete)
       expect_response_to_sender 'NonAdminBounceResponse'
       expect_notification_of_admins 'NonAdminBounceNotification'
       execute

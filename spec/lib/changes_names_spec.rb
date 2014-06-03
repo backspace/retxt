@@ -8,7 +8,7 @@ describe ChangesNames do
     it "changes the subscriber's name" do
       ChangesNames.change_name(subscriber, new_name)
       subscriber.reload
-      subscriber.name.should == new_name
+      expect(subscriber.name).to eq(new_name)
     end
 
     context 'when a subscriber with the new name exists' do
@@ -17,7 +17,7 @@ describe ChangesNames do
       it "changes the subscriber's name to an incremented copy of the name" do
         ChangesNames.change_name(subscriber, new_name)
         subscriber.reload
-        subscriber.name.should == "#{new_name}1"
+        expect(subscriber.name).to eq("#{new_name}1")
       end
 
       context 'and a subscriber with the incremented name exists' do
@@ -26,7 +26,7 @@ describe ChangesNames do
         it "changes the subscriber's name to an incremented copy of the name" do
           ChangesNames.change_name(subscriber, new_name)
           subscriber.reload
-          subscriber.name.should == "#{new_name}2"
+          expect(subscriber.name).to eq("#{new_name}2")
         end
       end
     end
@@ -37,7 +37,7 @@ describe ChangesNames do
       it 'keeps the same name' do
         ChangesNames.change_name(subscriber, new_name)
         subscriber.reload
-        subscriber.name.should == new_name
+        expect(subscriber.name).to eq(new_name)
       end
     end
   end

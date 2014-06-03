@@ -15,12 +15,12 @@ describe Clear do
 
     it 'clears the relay' do
       nonadmin = double('nonadmin')
-      relay.stub(:non_admins).and_return([nonadmin])
+      allow(relay).to receive(:non_admins).and_return([nonadmin])
 
       subscription = double('subscription')
-      relay.stub(:subscription_for).with(nonadmin).and_return(subscription)
+      allow(relay).to receive(:subscription_for).with(nonadmin).and_return(subscription)
 
-      subscription.should_receive(:destroy)
+      expect(subscription).to receive(:destroy)
 
       expect_notification_of_admins 'ClearNotification'
 

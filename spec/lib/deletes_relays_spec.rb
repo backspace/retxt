@@ -20,13 +20,13 @@ describe DeletesRelays do
   let(:sms) { double('sms') }
 
   before do
-    client.stub(:account).and_return(account)
-    account.stub(:incoming_phone_numbers).and_return(incoming_phone_numbers)
-    incoming_phone_numbers.stub(:list).and_return(phone_number_list)
-    phone_number_list.stub(:first).and_return(phone_number)
+    allow(client).to receive(:account).and_return(account)
+    allow(account).to receive(:incoming_phone_numbers).and_return(incoming_phone_numbers)
+    allow(incoming_phone_numbers).to receive(:list).and_return(phone_number_list)
+    allow(phone_number_list).to receive(:first).and_return(phone_number)
 
-    account.stub(:sms).and_return(sms)
-    sms.stub(:messages).and_return(messages)
+    allow(account).to receive(:sms).and_return(sms)
+    allow(sms).to receive(:messages).and_return(messages)
   end
 
   def call_method
@@ -34,12 +34,12 @@ describe DeletesRelays do
   end
 
   it 'should trigger API calls to delete the relay number' do
-    phone_number.should_receive :delete
+    expect(phone_number).to receive :delete
     call_method
   end
 
   it 'should destroy the relay' do
-    relay.should_receive :destroy
+    expect(relay).to receive :destroy
     call_method
   end
 end

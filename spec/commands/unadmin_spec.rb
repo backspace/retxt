@@ -24,18 +24,18 @@ describe Unadmin do
       let(:unadminee) { double('unadminee').as_null_object }
 
       before do
-        finds_subscribers.stub(:find).with(arguments).and_return(unadminee)
+        allow(finds_subscribers).to receive(:find).with(arguments).and_return(unadminee)
       end
 
       it 'makes the unadminee an non-admin and notifies admins' do
-        unadminee.should_receive(:unadmin!)
+        expect(unadminee).to receive(:unadmin!)
         expect_notification_of_admins 'UnadminificationNotification'
         execute
       end
     end
 
     before do
-      finds_subscribers.stub(:find).with(arguments).and_return(nil)
+      allow(finds_subscribers).to receive(:find).with(arguments).and_return(nil)
     end
 
     it 'repiles with the missing target message' do

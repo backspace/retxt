@@ -11,7 +11,7 @@ describe Subscribe do
   let(:subscriptionRepository) { double('subscription repository') }
 
   before do
-    relay.stub(:closed).and_return(false)
+    allow(relay).to receive(:closed).and_return(false)
   end
 
   def execute
@@ -20,14 +20,14 @@ describe Subscribe do
 
   context 'when the sender is not subscribed' do
     before do
-      relay.stub(:subscribed?).with(sender).and_return(false)
-      sender.stub(:persisted?).and_return(false)
+      allow(relay).to receive(:subscribed?).with(sender).and_return(false)
+      allow(sender).to receive(:persisted?).and_return(false)
     end
 
     it 'subscribes the sender and notifies admins' do
       subscriber = double('subscriber', name_or_anon: 'anon')
-      subscriberRepository.should_receive(:create).with(number: sender.number, locale: command_context.locale).and_return(subscriber)
-      subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: subscriber)
+      expect(subscriberRepository).to receive(:create).with(number: sender.number, locale: command_context.locale).and_return(subscriber)
+      expect(subscriptionRepository).to receive(:create).with(relay: relay, subscriber: subscriber)
 
 
       expect_response_to_sender 'WelcomeResponse'
@@ -42,11 +42,11 @@ describe Subscribe do
 
       it 'subscribes the sender, changes their name, and notifies admins' do
         subscriber = double('subscriber', name_or_anon: 'anon')
-        subscriberRepository.should_receive(:create).with(number: sender.number, locale: command_context.locale).and_return(subscriber)
-        subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: subscriber)
+        expect(subscriberRepository).to receive(:create).with(number: sender.number, locale: command_context.locale).and_return(subscriber)
+        expect(subscriptionRepository).to receive(:create).with(relay: relay, subscriber: subscriber)
 
-        ChangesNames.should_receive(:change_name).with(subscriber, arguments)
-        subscriber.stub(:name_or_anon).and_return(arguments)
+        expect(ChangesNames).to receive(:change_name).with(subscriber, arguments)
+        allow(subscriber).to receive(:name_or_anon).and_return(arguments)
 
         expect_response_to_sender 'WelcomeResponse'
         expect_response_to_sender 'DisclaimerResponse'
@@ -58,7 +58,7 @@ describe Subscribe do
 
     context 'when the relay is closed' do
       before do
-        relay.stub(:closed).and_return(true)
+        allow(relay).to receive(:closed).and_return(true)
       end
 
       it 'bounces the sender and notifies admins' do
@@ -71,15 +71,15 @@ describe Subscribe do
 
     context 'when the sender is a subscriber to another relay' do
       before do
-        sender.stub(:persisted?).and_return(true)
-        sender.stub(:name_or_anon).and_return('anon')
+        allow(sender).to receive(:persisted?).and_return(true)
+        allow(sender).to receive(:name_or_anon).and_return('anon')
       end
 
       it 'sets the subscriber locale, creates a subscription, and notifies admins' do
-        sender.should_receive(:locale=).with(command_context.locale)
-        sender.should_receive(:save)
+        expect(sender).to receive(:locale=).with(command_context.locale)
+        expect(sender).to receive(:save)
 
-        subscriptionRepository.should_receive(:create).with(relay: relay, subscriber: sender)
+        expect(subscriptionRepository).to receive(:create).with(relay: relay, subscriber: sender)
 
         expect_response_to_sender 'WelcomeResponse'
         expect_response_to_sender 'DisclaimerResponse'
@@ -92,7 +92,7 @@ describe Subscribe do
 
   context 'when the sender is already subscribed' do
     before do
-      relay.stub(:subscribed?).with(sender).and_return(true)
+      allow(relay).to receive(:subscribed?).with(sender).and_return(true)
     end
 
     it 'sends the already-subscribed message' do

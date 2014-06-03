@@ -14,10 +14,10 @@ describe Freeze do
 
   it 'delegates to ModifyRelay' do
     modifier = double('modifier')
-    RelayModificationNotification.should_receive(:new).with(command_context, 'freeze').and_return(notification = double)
-    ModifyRelay.should_receive(:new).with(command_context, modifier: :freeze, success_response: notification).and_return(modifier)
+    expect(RelayModificationNotification).to receive(:new).with(command_context, 'freeze').and_return(notification = double)
+    expect(ModifyRelay).to receive(:new).with(command_context, modifier: :freeze, success_response: notification).and_return(modifier)
 
-    modifier.should_receive(:execute)
+    expect(modifier).to receive(:execute)
 
     execute
   end

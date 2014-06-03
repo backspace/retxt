@@ -9,7 +9,7 @@ describe Splitter do
     let(:message) { "something short" }
 
     it 'returns a list containing only the short string' do
-      result.should == [message]
+      expect(result).to eq([message])
     end
   end
 
@@ -18,7 +18,7 @@ describe Splitter do
     let(:message) { line*18 }
 
     it 'returns a list containing the message split at a newline' do
-      result.should == [(line*16).chop, (line*2).chop]
+      expect(result).to eq([(line*16).chop, (line*2).chop])
     end
   end
 end

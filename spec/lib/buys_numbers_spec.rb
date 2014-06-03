@@ -15,31 +15,31 @@ describe BuysNumbers do
   let(:other_phone_number) { double(phone_number: '5551212') }
 
   before do
-    client.stub(:account).and_return(account)
-    account.stub(:available_phone_numbers).and_return(available_phone_numbers)
-    available_phone_numbers.stub(:get).and_return(client_country)
-    client_country.stub(:local).and_return(local)
-    local.stub(:list).and_return([chosen_phone_number, other_phone_number])
+    allow(client).to receive(:account).and_return(account)
+    allow(account).to receive(:available_phone_numbers).and_return(available_phone_numbers)
+    allow(available_phone_numbers).to receive(:get).and_return(client_country)
+    allow(client_country).to receive(:local).and_return(local)
+    allow(local).to receive(:list).and_return([chosen_phone_number, other_phone_number])
 
-    account.stub(:incoming_phone_numbers).and_return(incoming_phone_numbers)
-    incoming_phone_numbers.stub(:create)
+    allow(account).to receive(:incoming_phone_numbers).and_return(incoming_phone_numbers)
+    allow(incoming_phone_numbers).to receive(:create)
   end
 
   it 'should trigger API calls to find a number' do
-    available_phone_numbers.should_receive(:get).with(country)
-    local.should_receive(:list).with(area_code: '514')
+    expect(available_phone_numbers).to receive(:get).with(country)
+    expect(local).to receive(:list).with(area_code: '514')
 
     BuysNumbers.buy_number('514', country, nil, client)
   end
 
   it 'should buy a number and configure it' do
     sms_url = double('url')
-    incoming_phone_numbers.should_receive(:create).with(phone_number: chosen_phone_number.phone_number, sms_url: sms_url)
+    expect(incoming_phone_numbers).to receive(:create).with(phone_number: chosen_phone_number.phone_number, sms_url: sms_url)
 
     BuysNumbers.buy_number('514', country, sms_url, client)
   end
 
   it 'should return the first phone number' do
-    BuysNumbers.buy_number('514', country, nil, client).should eq(chosen_phone_number.phone_number)
+    expect(BuysNumbers.buy_number('514', country, nil, client)).to eq(chosen_phone_number.phone_number)
   end
 end

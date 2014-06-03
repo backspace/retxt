@@ -19,12 +19,12 @@ describe Unvoice do
 
     modifier = double('modifier')
 
-    Unvoice.any_instance.stub(:modifier).and_return(modifier)
+    allow_any_instance_of(Unvoice).to receive(:modifier).and_return(modifier)
 
-    SubscriptionModificationNotification.should_receive(:new).with(command_context, 'unvoice').and_return(notification = double)
+    expect(SubscriptionModificationNotification).to receive(:new).with(command_context, 'unvoice').and_return(notification = double)
 
-    ModifySubscription.should_receive(:new).with(command_context, modifier: modifier, success_response: notification).and_return(modify_subscription)
-    modify_subscription.should_receive(:execute)
+    expect(ModifySubscription).to receive(:new).with(command_context, modifier: modifier, success_response: notification).and_return(modify_subscription)
+    expect(modify_subscription).to receive(:execute)
 
     execute
   end

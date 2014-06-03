@@ -20,8 +20,8 @@ describe ModifyRelay do
     end
 
     it 'modifies the relay and delivers the success response' do
-      relay.should_receive(modifier)
-      success_response.should_receive(:deliver).with(relay.admins)
+      expect(relay).to receive(modifier)
+      expect(success_response).to receive(:deliver).with(relay.admins)
       execute
     end
 
@@ -29,8 +29,8 @@ describe ModifyRelay do
       let(:arguments) { 'an argument' }
 
       it 'modifies the relay with the arguments and delivers the success response' do
-        relay.should_receive(modifier).with(arguments)
-        success_response.should_receive(:deliver).with(relay.admins)
+        expect(relay).to receive(modifier).with(arguments)
+        expect(success_response).to receive(:deliver).with(relay.admins)
         execute
       end
     end
@@ -39,7 +39,7 @@ describe ModifyRelay do
   context 'from a non-admin' do
 
     it 'does not modify the relay and replies with the non-admin response' do
-      relay.should_not_receive(modifier)
+      expect(relay).not_to receive(modifier)
       expect_response_to_sender 'NonAdminBounceResponse'
       expect_notification_of_admins 'NonAdminBounceNotification'
       execute

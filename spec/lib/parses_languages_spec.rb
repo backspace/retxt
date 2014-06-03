@@ -9,34 +9,34 @@ describe ParsesLanguages do
   subject { parser.parse }
 
   before do
-    I18n.should_receive(:available_locales).and_return([:one, :two])
+    expect(I18n).to receive(:available_locales).and_return([:one, :two])
   end
 
   context 'when the language name matches an existing language' do
     before do
-      I18n.should_receive(:t).with('language_name', locale: :one).and_return('onelang')
-      I18n.should_receive(:t).with('language_name', locale: :two).and_return('Language')
+      expect(I18n).to receive(:t).with('language_name', locale: :one).and_return('onelang')
+      expect(I18n).to receive(:t).with('language_name', locale: :two).and_return('Language')
     end
 
-    it { should eq(:two) }
+    it { is_expected.to eq(:two) }
   end
 
   context 'when the language name matches a prefix of an existing language' do
     before do
-      I18n.should_receive(:t).with('language_name', locale: :one).and_return('onelang')
-      I18n.should_receive(:t).with('language_name', locale: :two).and_return('languagelongname')
+      expect(I18n).to receive(:t).with('language_name', locale: :one).and_return('onelang')
+      expect(I18n).to receive(:t).with('language_name', locale: :two).and_return('languagelongname')
     end
 
-    it { should eq(:two) }
+    it { is_expected.to eq(:two) }
   end
 
   context 'when the language name matches a prefix of an existing language' do
     before do
-      I18n.should_receive(:t).with('language_name', locale: :one).and_return('onelang')
-      I18n.should_receive(:t).with('language_name', locale: :two).and_return('twolang')
+      expect(I18n).to receive(:t).with('language_name', locale: :one).and_return('onelang')
+      expect(I18n).to receive(:t).with('language_name', locale: :two).and_return('twolang')
     end
 
-    it { should be false }
+    it { is_expected.to be false }
   end
 
 end

@@ -24,18 +24,18 @@ describe Admin do
       let(:adminee) { double('adminee').as_null_object }
 
       before do
-        finds_subscribers.stub(:find).with(arguments).and_return(adminee)
+        allow(finds_subscribers).to receive(:find).with(arguments).and_return(adminee)
       end
 
       it 'makes the adminee an admin and notifies admins' do
-        adminee.should_receive(:admin!)
+        expect(adminee).to receive(:admin!)
         expect_notification_of_admins 'AdminificationNotification'
         execute
       end
     end
 
     before do
-      finds_subscribers.stub(:find).with(arguments).and_return(nil)
+      allow(finds_subscribers).to receive(:find).with(arguments).and_return(nil)
     end
 
     it 'repiles with the missing target message' do

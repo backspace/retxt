@@ -12,25 +12,25 @@ describe ChangesLanguages do
 
   context 'when the language is recognised' do
     before do
-      ParsesLanguages.should_receive(:new).with(language).and_return language_parser
-      language_parser.should_receive(:parse).and_return :language
+      expect(ParsesLanguages).to receive(:new).with(language).and_return language_parser
+      expect(language_parser).to receive(:parse).and_return :language
     end
 
     it 'sets the subscriber language' do
-      subscriber.should_receive(:update_language).with(:language)
+      expect(subscriber).to receive(:update_language).with(:language)
 
-      language_changer.change_language.should be true
+      expect(language_changer.change_language).to be true
     end
   end
 
   context 'when the language is not recognised' do
     before do
-      ParsesLanguages.should_receive(:new).with(language).and_return language_parser
-      language_parser.should_receive(:parse).and_return false
+      expect(ParsesLanguages).to receive(:new).with(language).and_return language_parser
+      expect(language_parser).to receive(:parse).and_return false
     end
 
     it 'returns false' do
-      language_changer.change_language.should be false
+      expect(language_changer.change_language).to be false
     end
   end
 end

@@ -18,7 +18,7 @@ describe Rename do
     end
 
     it 'renames the relay and responds' do
-      relay.should_receive(:rename).with(arguments)
+      expect(relay).to receive(:rename).with(arguments)
       expect_notification_of_admins 'RenameNotification'
       execute
     end
@@ -26,7 +26,7 @@ describe Rename do
 
   context 'from a non-admin' do
     it 'does not rename the relay and bounces' do
-      relay.should_not_receive(:rename)
+      expect(relay).not_to receive(:rename)
       expect_response_to_sender 'NonAdminBounceResponse'
       expect_notification_of_admins 'NonAdminBounceNotification'
       execute

@@ -9,8 +9,8 @@ describe TimestampFormatter do
     let(:timestamp) { double(:string, "present?" => true) }
 
     it 'calls the time formatter and appends a space' do
-      created_at.should_receive(:strftime).with(timestamp).and_return '  result'
-      TimestampFormatter.new(relay: relay, txt: txt).format.should == 'result '
+      expect(created_at).to receive(:strftime).with(timestamp).and_return '  result'
+      expect(TimestampFormatter.new(relay: relay, txt: txt).format).to eq('result ')
     end
   end
 
@@ -18,7 +18,7 @@ describe TimestampFormatter do
     let(:timestamp) { double(:blank, "present?" => false) }
 
     it 'calls the time formatter and returns blank' do
-      TimestampFormatter.new(relay: relay, txt: txt).format.should == ''
+      expect(TimestampFormatter.new(relay: relay, txt: txt).format).to eq('')
     end
   end
 end

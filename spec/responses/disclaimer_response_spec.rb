@@ -12,8 +12,8 @@ describe DisclaimerResponse do
   it 'delivers a disclaimer response' do
     response = DisclaimerResponse.new(command_context)
 
-    I18n.should_receive(:t).with('txts.disclaimer', locale: sender.locale).and_return('disclaimer')
-    SendsTxts.should_receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer', originating_txt_id: command_context.originating_txt_id)
+    expect(I18n).to receive(:t).with('txts.disclaimer', locale: sender.locale).and_return('disclaimer')
+    expect(SendsTxts).to receive(:send_txt).with(to: sender.number, from: relay.number, body: 'disclaimer', originating_txt_id: command_context.originating_txt_id)
 
     response.deliver(sender)
   end

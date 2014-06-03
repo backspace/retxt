@@ -24,21 +24,21 @@ describe Executor do
   let(:command_context) { CommandContext.new(sender: subscriber, relay: relay, originating_txt: txt, arguments: arguments, locale: subscriber.locale) }
 
   def send_message(message)
-    Subscriber.stub(:find_or_create_by).with(number: subscriber.number).and_return(subscriber)
-    Relay.stub(:find_or_create_by).with(number: relay.number).and_return(relay)
+    allow(Subscriber).to receive(:find_or_create_by).with(number: subscriber.number).and_return(subscriber)
+    allow(Relay).to receive(:find_or_create_by).with(number: relay.number).and_return(relay)
     Executor.new(txt).execute
   end
 
   it 'executes the parsed command' do
     command_class = double(:command)
     parser = double(:parser)
-    ParsesCommands.should_receive(:new).with(message, command_context).and_return(parser)
-    parser.should_receive(:parse).and_return(command_class)
+    expect(ParsesCommands).to receive(:new).with(message, command_context).and_return(parser)
+    expect(parser).to receive(:parse).and_return(command_class)
 
-    parser.should_receive(:locale).and_return(:locale)
+    expect(parser).to receive(:locale).and_return(:locale)
 
     command = double(:command)
-    command_class.should_receive(:new).with(command_context.tap{|context| context.locale = :locale }).and_return(command)
+    expect(command_class).to receive(:new).with(command_context.tap{|context| context.locale = :locale }).and_return(command)
     # FIXME disabled for temporary locale hack
     # command.should_receive(:execute)
 

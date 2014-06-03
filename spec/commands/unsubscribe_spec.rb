@@ -12,14 +12,14 @@ describe Unsubscribe do
 
   context 'when the sender is subscribed' do
     before do
-      relay.stub(:subscribed?).with(sender).and_return(true)
+      allow(relay).to receive(:subscribed?).with(sender).and_return(true)
     end
 
     it 'deletes the subscription and notifies admins' do
       subscription = double('subscription')
-      relay.stub(:subscription_for).with(sender).and_return(subscription)
+      allow(relay).to receive(:subscription_for).with(sender).and_return(subscription)
 
-      subscription.should_receive(:destroy)
+      expect(subscription).to receive(:destroy)
 
       expect_response_to_sender 'UnsubscribeResponse'
       expect_notification_of_admins 'UnsubscriptionNotification'
@@ -29,7 +29,7 @@ describe Unsubscribe do
 
   context 'whon the sender is not subscribed' do
     before do
-      relay.stub(:subscribed?).with(sender).and_return(false)
+      allow(relay).to receive(:subscribed?).with(sender).and_return(false)
     end
 
     it 'sends the not subscribed message' do

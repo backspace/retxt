@@ -8,13 +8,13 @@ describe BuysSimilarNumbers do
   let(:sms_url) { :url }
 
   it 'feeds extracted area code to BuysNumbers' do
-    ParsesNumbers.should_receive(:new).with(number).and_return(parser = double(:parser))
-    parser.should_receive(:parse)
-    parser.should_receive(:area_code).and_return(:area_code)
-    parser.should_receive(:country).and_return(:country)
+    expect(ParsesNumbers).to receive(:new).with(number).and_return(parser = double(:parser))
+    expect(parser).to receive(:parse)
+    expect(parser).to receive(:area_code).and_return(:area_code)
+    expect(parser).to receive(:country).and_return(:country)
 
-    BuysNumbers.should_receive(:buy_number).with(:area_code, :country, :url).and_return(:new_number)
+    expect(BuysNumbers).to receive(:buy_number).with(:area_code, :country, :url).and_return(:new_number)
 
-    BuysSimilarNumbers.new(number, sms_url).buy_similar_number.should eq(:new_number)
+    expect(BuysSimilarNumbers.new(number, sms_url).buy_similar_number).to eq(:new_number)
   end
 end

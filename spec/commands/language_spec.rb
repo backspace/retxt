@@ -13,18 +13,18 @@ describe Language do
 
   context 'when the sender is subscribed' do
     before do
-      relay.stub(:subscribed?).with(sender).and_return true
+      allow(relay).to receive(:subscribed?).with(sender).and_return true
     end
 
     let(:language_changer) { double }
 
     before do
-      ChangesLanguages.should_receive(:new).with(sender, arguments).and_return(language_changer)
+      expect(ChangesLanguages).to receive(:new).with(sender, arguments).and_return(language_changer)
     end
 
     context 'when the language not is successfully changed' do
       before do
-        language_changer.should_receive(:change_language).and_return(true)
+        expect(language_changer).to receive(:change_language).and_return(true)
       end
 
       it 'sends a confirmation' do
@@ -35,7 +35,7 @@ describe Language do
 
     context 'when the language is successfully changed' do
       before do
-        language_changer.should_receive(:change_language).and_return(false)
+        expect(language_changer).to receive(:change_language).and_return(false)
       end
 
       it 'sends a language bounce response and notifies admins' do
@@ -48,7 +48,7 @@ describe Language do
 
   context 'when the sender is not subscribed' do
     before do
-      relay.stub(:subscribed?).with(sender).and_return false
+      allow(relay).to receive(:subscribed?).with(sender).and_return false
     end
 
     it 'sends a not-subscribed command bounce and notifies admins' do
@@ -63,7 +63,7 @@ describe Language do
 
     before do
       # why must this be here?
-      relay.stub(:subscribed?).with(sender).and_return false
+      allow(relay).to receive(:subscribed?).with(sender).and_return false
     end
 
     it 'sends the language list response' do

@@ -21,9 +21,9 @@ describe RelayCommand do
     let(:formatted_txt) { '@sender sez: the formatted result' }
 
     before do
-      relay.stub(:subscribed?).with(sender).and_return(true)
-      relay.stub(:subscribers).and_return(subscribers)
-      relay.stub(:subscription_for).with(sender).and_return(subscription)
+      allow(relay).to receive(:subscribed?).with(sender).and_return(true)
+      allow(relay).to receive(:subscribers).and_return(subscribers)
+      allow(relay).to receive(:subscription_for).with(sender).and_return(subscription)
     end
 
     it 'relays the message and notifies the sender' do
@@ -34,7 +34,7 @@ describe RelayCommand do
 
     context 'and anonymous' do
       before do
-        sender.stub(:anonymous?).and_return(true)
+        allow(sender).to receive(:anonymous?).and_return(true)
       end
 
       it 'relays the message, notifies the sender, and identifies the anon to admins' do
@@ -47,7 +47,7 @@ describe RelayCommand do
 
     context 'to a relay that is frozen' do
       before do
-        relay.stub(:frozen).and_return(true)
+        allow(relay).to receive(:frozen).and_return(true)
       end
 
       it 'responds that the relay is frozen' do
@@ -59,7 +59,7 @@ describe RelayCommand do
 
     context 'to a relay that is moderated' do
       before do
-        relay.stub(:moderated).and_return(true)
+        allow(relay).to receive(:moderated).and_return(true)
       end
 
       it 'responds that the relay is moderated and notifies admins' do
@@ -70,7 +70,7 @@ describe RelayCommand do
 
       context 'from a subscriber that is an admin' do
         before do
-          sender.stub(:admin).and_return(true)
+          allow(sender).to receive(:admin).and_return(true)
         end
 
         it 'relays the message' do
@@ -82,7 +82,7 @@ describe RelayCommand do
 
       context 'from a sender who is voiced' do
         before do
-          subscription.stub(:voiced).and_return(true)
+          allow(subscription).to receive(:voiced).and_return(true)
         end
 
         it 'relays the message' do
@@ -95,7 +95,7 @@ describe RelayCommand do
 
     context 'when the sender is muted' do
       before do
-        subscription.stub(:muted).and_return(true)
+        allow(subscription).to receive(:muted).and_return(true)
       end
 
       it 'notifies admins and responds that the sender is muted' do
@@ -109,7 +109,7 @@ describe RelayCommand do
   context 'from a sender who is not subscribed' do
 
     before do
-      relay.stub(:subscribed?).with(sender).and_return(false)
+      allow(relay).to receive(:subscribed?).with(sender).and_return(false)
     end
 
     it 'responds that the sender is not subscribed' do

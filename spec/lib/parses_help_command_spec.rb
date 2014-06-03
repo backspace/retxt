@@ -10,27 +10,27 @@ describe ParsesHelpCommand do
   end
 
   it 'parses an existing command' do
-    I18n.should_receive(:t).with('commands', locale: locale).and_return({:command => 'command'})
-    parse('command').should eq(:command)
+    expect(I18n).to receive(:t).with('commands', locale: locale).and_return({:command => 'command'})
+    expect(parse('command')).to eq(:command)
   end
 
   it 'parses a command with different names' do
-    I18n.should_receive(:t).with('commands', locale: locale).and_return({:command => ['one', 'two']})
-    parse('two').should eq(:command)
+    expect(I18n).to receive(:t).with('commands', locale: locale).and_return({:command => ['one', 'two']})
+    expect(parse('two')).to eq(:command)
   end
 
   it 'ignores case' do
-    I18n.should_receive(:t).with('commands', locale: locale).and_return({:command => 'command'})
-    parse('CommanD').should eq(:command)
+    expect(I18n).to receive(:t).with('commands', locale: locale).and_return({:command => 'command'})
+    expect(parse('CommanD')).to eq(:command)
   end
 
   it 'ignores a leading slash' do
-    I18n.should_receive(:t).with('commands', locale: locale).and_return({:command => 'command'})
-    parse('/command').should eq(:command)
+    expect(I18n).to receive(:t).with('commands', locale: locale).and_return({:command => 'command'})
+    expect(parse('/command')).to eq(:command)
   end
 
   it 'returns nil for an unknown command' do
-    I18n.should_receive(:t).with('commands', locale: locale).and_return({})
-    parse('command').should be_nil
+    expect(I18n).to receive(:t).with('commands', locale: locale).and_return({})
+    expect(parse('command')).to be_nil
   end
 end

@@ -19,13 +19,13 @@ describe ParsesCommands do
 
     it 'returns the direct message command' do
       stub_const('DirectMessage', double('DirectMessage'))
-      should eq(DirectMessage)
+      is_expected.to eq(DirectMessage)
     end
   end
 
   describe 'with a single locale' do
     before do
-      I18n.should_receive(:available_locales).and_return([:one])
+      expect(I18n).to receive(:available_locales).and_return([:one])
     end
 
     describe 'with a simple command' do
@@ -33,25 +33,25 @@ describe ParsesCommands do
 
       it 'parses a given command' do
         stub_const('Command', double('Command'))
-        I18n.should_receive(:t).with('commands', locale: :one).and_return({:command => 'command'})
-        should eq(Command)
+        expect(I18n).to receive(:t).with('commands', locale: :one).and_return({:command => 'command'})
+        is_expected.to eq(Command)
       end
 
       it 'parses a command whose class is different' do
         stub_const('Cmd', double('Cmd'))
-        I18n.should_receive(:t).with('commands', locale: :one).and_return({:cmd => 'command'})
-        should eq(Cmd)
+        expect(I18n).to receive(:t).with('commands', locale: :one).and_return({:cmd => 'command'})
+        is_expected.to eq(Cmd)
       end
 
       it 'parses a command with multiple versions' do
         stub_const('Command', double('Command'))
-        I18n.should_receive(:t).with('commands', locale: :one).and_return({:command => ['x', 'command']})
-        should eq(Command)
+        expect(I18n).to receive(:t).with('commands', locale: :one).and_return({:command => ['x', 'command']})
+        is_expected.to eq(Command)
       end
 
       it 'returns the RelayCommand when no command matches' do
-        I18n.should_receive(:t).with('commands', locale: :one).and_return({})
-        should eq(RelayCommand)
+        expect(I18n).to receive(:t).with('commands', locale: :one).and_return({})
+        is_expected.to eq(RelayCommand)
       end
     end
 
@@ -60,8 +60,8 @@ describe ParsesCommands do
 
       it 'returns the unknown command' do
         stub_const('Unknown', double('Unknown'))
-        I18n.should_receive(:t).with('commands', locale: :one).and_return({})
-        should eq(Unknown)
+        expect(I18n).to receive(:t).with('commands', locale: :one).and_return({})
+        is_expected.to eq(Unknown)
       end
 
       describe 'and a structure requiring a slash' do
@@ -69,8 +69,8 @@ describe ParsesCommands do
 
         it 'parses the command' do
           stub_const('Command', double('Command'))
-          I18n.should_receive(:t).with('commands', locale: :one).and_return({:command => 'command'})
-          should eq(Command)
+          expect(I18n).to receive(:t).with('commands', locale: :one).and_return({:command => 'command'})
+          is_expected.to eq(Command)
         end
       end
     end
@@ -79,15 +79,15 @@ describe ParsesCommands do
       let(:command) { 'a' }
 
       it 'returns the RelayCommand' do
-        I18n.should_receive(:t).with('commands', locale: :one).and_return({:abc => 'abc'})
-        should eq(RelayCommand)
+        expect(I18n).to receive(:t).with('commands', locale: :one).and_return({:abc => 'abc'})
+        is_expected.to eq(RelayCommand)
       end
     end
   end
 
   describe 'with multiple locales' do
     before do
-      I18n.should_receive(:available_locales).and_return([:one, :two])
+      expect(I18n).to receive(:available_locales).and_return([:one, :two])
     end
 
     describe 'with a locale-setting command' do
@@ -96,11 +96,11 @@ describe ParsesCommands do
 
       it 'parses the command and stores the locale' do
         stub_const('Command', double(:Command))
-        I18n.should_receive(:t).with('commands', locale: :one).and_return({:command => 'onecommand'})
-        I18n.should_receive(:t).with('commands', locale: :two).and_return({:command => 'twocommand'})
+        expect(I18n).to receive(:t).with('commands', locale: :one).and_return({:command => 'onecommand'})
+        expect(I18n).to receive(:t).with('commands', locale: :two).and_return({:command => 'twocommand'})
 
-        should eq(Command)
-        parser.locale.should eq(:two)
+        is_expected.to eq(Command)
+        expect(parser.locale).to eq(:two)
       end
     end
   end

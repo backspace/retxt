@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe TxtsController do
+describe TxtsController, :type => :controller do
   it "delegates to Executor" do
     txt = double
-    Txt.stub(:create).and_return(txt)
+    allow(Txt).to receive(:create).and_return(txt)
 
     executor = double
-    Executor.should_receive(:new).with(txt, {application_url: incoming_txts_url}).and_return(executor)
-    executor.should_receive(:execute)
+    expect(Executor).to receive(:new).with(txt, {application_url: incoming_txts_url}).and_return(executor)
+    expect(executor).to receive(:execute)
 
     post :incoming, Body: ''
   end

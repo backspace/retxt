@@ -6,15 +6,15 @@ describe FindsSubscribers do
     let!(:subscriber) { Subscriber.create(name: name) }
 
     it "finds the subscriber by name" do
-      FindsSubscribers.find("alice").should eq(subscriber)
+      expect(FindsSubscribers.find("alice")).to eq(subscriber)
     end
 
     it "finds the subscriber with an addressable name" do
-      FindsSubscribers.find("@alice").should eq(subscriber)
+      expect(FindsSubscribers.find("@alice")).to eq(subscriber)
     end
 
     it "finds the subscriber regardless of whitespace" do
-      FindsSubscribers.find("  @alice  ").should eq(subscriber)
+      expect(FindsSubscribers.find("  @alice  ")).to eq(subscriber)
     end
   end
 
@@ -23,11 +23,11 @@ describe FindsSubscribers do
     let!(:subscriber) { Subscriber.create(number: number) }
 
     it "finds the subscriber by number" do
-      FindsSubscribers.find(number).should eq(subscriber)
+      expect(FindsSubscribers.find(number)).to eq(subscriber)
     end
 
     it "finds the subscriber by portion of number" do
-      FindsSubscribers.find("5551313").should eq(subscriber)
+      expect(FindsSubscribers.find("5551313")).to eq(subscriber)
     end
   end
 
@@ -36,7 +36,7 @@ describe FindsSubscribers do
     let!(:subscriber) { Subscriber.create(number: number) }
 
     it "finds the subscriber by number" do
-      FindsSubscribers.find(number).should eq(subscriber)
+      expect(FindsSubscribers.find(number)).to eq(subscriber)
     end
   end
 end
