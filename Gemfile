@@ -21,7 +21,7 @@ gem 'dialable'
 gem 'countries'
 
 group :test do
-  gem 'rspec-rails', '2.99'
+  gem 'rspec-rails', '3'
   gem 'mocha', require: false
   gem 'bourne'
   gem 'cucumber-rails', require: false
