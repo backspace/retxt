@@ -36,7 +36,7 @@ describe ParsesLanguages do
       I18n.should_receive(:t).with('language_name', locale: :two).and_return('twolang')
     end
 
-    it { should be_false }
+    it { should be false }
   end
 
 end

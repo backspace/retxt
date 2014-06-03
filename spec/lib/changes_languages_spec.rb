@@ -19,7 +19,7 @@ describe ChangesLanguages do
     it 'sets the subscriber language' do
       subscriber.should_receive(:update_language).with(:language)
 
-      language_changer.change_language.should be_true
+      language_changer.change_language.should be true
     end
   end
 
@@ -30,7 +30,7 @@ describe ChangesLanguages do
     end
 
     it 'returns false' do
-      language_changer.change_language.should be_false
+      language_changer.change_language.should be false
     end
   end
 end
