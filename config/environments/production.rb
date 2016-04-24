@@ -70,6 +70,4 @@ ReTxt::Application.configure do
   config.force_ssl = true
 
   config.eager_load = true
-
-  config.secret_key = ENV['DEVISE_SECRET_KEY'] if Rails.env.production?
 end
