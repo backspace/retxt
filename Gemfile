@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.1.1'
+ruby '2.3.0'
 
 gem 'rails', '~> 4.1'
 gem 'unicorn'
@@ -34,7 +34,6 @@ end
 group :development, :test do
   gem 'pry'
   gem 'pry-nav'
-  gem 'pry-debugger'
   gem 'pry-remote'
 
   gem 'foreman'
