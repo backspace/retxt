@@ -6,8 +6,8 @@ gem 'rails', '~> 4.1'
 gem 'unicorn'
 
 gem 'mongoid', '5.1.1'
-gem 'mongoid-paranoia', github: 'simi/mongoid-paranoia'
-gem 'mongoid-versioning', github: 'simi/mongoid-versioning'
+gem 'mongoid_paranoia'
+gem 'mongoid-versioning'
 gem 'mongoid-app_settings'
 
 gem 'devise'
