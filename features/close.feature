@@ -2,12 +2,12 @@ Feature: Close
 
   Scenario: Close subscriptions
     Given Alice is subscribed as an admin
-    And someone is subscribed to relay X as Bob at 1337
 
     When Alice txts '/close'
     Then Alice should receive a txt that Alice closed subscriptions
 
-    When Bob txts 'subscribe'
+    When someone is subscribed to relay X as Bob at 1337
+    And Bob txts 'subscribe'
     Then Bob should receive a txt that subscriptions are closed
     And Alice should receive a txt that Bob tried to subscribe
 
