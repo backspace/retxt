@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
-ruby '2.1.1'
+ruby '2.3.0'
 
 gem 'rails', '~> 4.1'
 gem 'unicorn'
 
-gem 'mongoid', '~> 4.0.0.beta1'
-gem 'mongoid-paranoia', github: 'simi/mongoid-paranoia'
-gem 'mongoid-versioning', github: 'simi/mongoid-versioning'
+gem 'mongoid', '5.1.1'
+gem 'mongoid_paranoia'
+gem 'mongoid-versioning'
 gem 'mongoid-app_settings'
 
 gem 'devise'
@@ -26,7 +26,7 @@ group :test do
   gem 'bourne'
   gem 'cucumber-rails', require: false
   gem 'poltergeist'
-  gem 'database_cleaner'
+  gem 'database_cleaner', '1.5.3'
   gem 'timecop'
   gem 'terminal-table'
 end
@@ -34,7 +34,6 @@ end
 group :development, :test do
   gem 'pry'
   gem 'pry-nav'
-  gem 'pry-debugger'
   gem 'pry-remote'
 
   gem 'foreman'
