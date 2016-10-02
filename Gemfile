@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.3.0'
 
-gem 'rails', '~> 4.1'
+gem 'rails', '4.1.16'
 gem 'unicorn'
 
 gem 'mongoid', '5.1.1'
