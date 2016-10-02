@@ -51,4 +51,3 @@ gem 'haml'
 
 
 gem 'rails_12factor', group: :production
-gem 'newrelic_rpm'
