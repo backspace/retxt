@@ -19,6 +19,7 @@ en:
     welcome: "Welcome to %{relay_name}, %{subscriber_name}. Cmds: about, unsubscribe, name, lang. Write '@name hello!' to direct txt by name. Any other txt is sent to %{subscriber_count}."
     disclaimer: "This relay is in no way secure! Your txts could be monitored, as could the relay itself. Act accordingly!"
     already_subscribed_bounce: "Could not subscribe you because you are already subscribed."
+    invite: "You have been invited to join the %{relay_name} relay. To subscribe, reply 'subscribe yourname' (name optional)."
 
     goodbye: "You are now unsubscribed."
 
@@ -94,6 +95,8 @@ en:
       open: "%{admin_name} opened subscriptions."
       timestamp_modification: "%{admin_name} set the timestamp to %{timestamp}. Relayed messages will be timestamped in that ppattern."
 
+      invite: "%{admin_name} invited %{number}."
+
       anon_relay: "The relayed message beginning \"%{beginning}...\" came from %{absolute_name}."
       closed_bounce: "%{number} tried to subscribe: %{message}"
       moderated_bounce: "%{subscriber_name} tried to say: %{moderated_message}"
@@ -113,6 +116,7 @@ en:
         /admin /unadmin
         /mute /unmute
         /voice /unvoice
+        /invite
 
         /moderate /unmoderate
         /close /open

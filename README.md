@@ -32,6 +32,7 @@ Admin-only commands:
 * `/voice`
 * `/unvoice`
 * `/timestamp`
+* `/invite`
 
 Messages beginning with `@` will be sent to the subscriber with that name.
 
