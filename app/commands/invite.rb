@@ -13,7 +13,7 @@ class Invite < AbstractCommand
         AlreadySubscribedInviteBounceResponse.new(context).deliver sender
       else
         if relay.invited? arguments
-          AdminInviteBounceResponse.new(context).deliver(sender)
+          AlreadyInvitedInviteBounceResponse.new(context).deliver(sender)
         else
           InviteResponse.new(context).deliver(Subscriber.new(number: arguments))
           AdminInviteResponse.new(context).deliver(sender)

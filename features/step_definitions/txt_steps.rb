@@ -251,7 +251,7 @@ Then(/^Alice should receive a txt that (\d+) was invited$/) do |number|
 end
 
 Then(/^Alice should receive a txt that (\d+) was already invited$/) do |number|
-  txt_should_have_been_sent I18n.t("txts.admin.invite_bounce", admin_name: "Alice", number: number), Subscriber.find_by(name: 'Alice').number
+  txt_should_have_been_sent I18n.t("txts.admin.already_invited_invite_bounce_response", admin_name: "Alice", number: number), Subscriber.find_by(name: 'Alice').number
 end
 
 Then(/^Alice should receive a txt that (\d+) was already subscribed$/) do |number|

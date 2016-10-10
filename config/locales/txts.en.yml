@@ -96,7 +96,7 @@ en:
       timestamp_modification: "%{admin_name} set the timestamp to %{timestamp}. Relayed messages will be timestamped in that ppattern."
 
       invite: "%{admin_name} invited %{number}."
-      invite_bounce: "Tried to invite %{number} but they have already been invited."
+      already_invited_invite_bounce_response: "Tried to invite %{number} but they have already been invited."
       already_subscribed_invite_bounce: "Tried to invite %{number} but they are already subscribed."
 
       anon_relay: "The relayed message beginning \"%{beginning}...\" came from %{absolute_name}."

@@ -46,7 +46,7 @@ describe Invite do
         end
 
         it 'does not invite the number and tells the admin that' do
-          expect_response_to_sender 'AdminInviteBounceResponse'
+          expect_response_to_sender 'AlreadyInvitedInviteBounceResponse'
           execute
         end
       end
