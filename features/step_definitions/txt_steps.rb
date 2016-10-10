@@ -250,6 +250,10 @@ Then(/^Alice should receive a txt that (\d+) was invited$/) do |number|
   txt_should_have_been_sent I18n.t("txts.admin.invite", admin_name: "Alice", number: number), Subscriber.find_by(name: 'Alice').number
 end
 
+Then(/^Alice should receive a txt that (\d+) was already invited$/) do |number|
+  txt_should_have_been_sent I18n.t("txts.admin.invite_bounce", admin_name: "Alice", number: number), Subscriber.find_by(name: 'Alice').number
+end
+
 Then(/^(\d+) should receive an invitation$/) do |number|
   txt_should_have_been_sent I18n.t('txts.invite', relay_name: ''), number
 end

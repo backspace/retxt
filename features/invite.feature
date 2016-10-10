@@ -5,3 +5,6 @@ Feature: Invite
     When Alice txts '/invite 1919'
     Then Alice should receive a txt that 1919 was invited
     And 1919 should receive an invitation
+
+    When Alice txts '/invite 1919'
+    Then Alice should receive a txt that 1919 was already invited
