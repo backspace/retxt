@@ -8,12 +8,17 @@ class Invite < AbstractCommand
   end
 
   def execute
-    if relay.invited? arguments
-      AdminInviteBounceResponse.new(context).deliver(sender)
+    if sender.admin
+      if relay.invited? arguments
+        AdminInviteBounceResponse.new(context).deliver(sender)
+      else
+        InviteResponse.new(context).deliver(Subscriber.new(number: arguments))
+        AdminInviteResponse.new(context).deliver(sender)
+        @invitation_repository.create(relay: relay, number: arguments)
+      end
     else
-      InviteResponse.new(context).deliver(Subscriber.new(number: arguments))
-      AdminInviteResponse.new(context).deliver(sender)
-      @invitation_repository.create(relay: relay, number: arguments)
+      NonAdminBounceResponse.new(context).deliver sender
+      NonAdminBounceNotification.new(context).deliver relay.admins
     end
   end
 end
