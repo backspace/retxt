@@ -21,6 +21,10 @@ class Relay
     subscription_for(subscriber).present?
   end
 
+  def number_subscribed?(number)
+    subscriptions.map(&:subscriber).map(&:number).include? number
+  end
+
   def subscription_for(subscriber)
     subscriptions.where(subscriber: subscriber).first
   end

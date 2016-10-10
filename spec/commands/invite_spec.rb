@@ -19,30 +19,46 @@ describe Invite do
       sender_is_admin
     end
 
-    context 'when the number has never been invited' do
-
+    context 'when the number is not already subscribed' do
       before do
-        allow(relay).to receive(:invited?).with(invited_number).and_return(false)
-        allow(Subscriber).to receive(:new).with(hash_including(number: invited_number)).and_return(new_subscriber)
+        allow(relay).to receive(:number_subscribed?).with(invited_number).and_return(false)
       end
 
-      it 'invites the number' do
-        expect_response_to new_subscriber, 'InviteResponse'
-        expect_response_to_sender 'AdminInviteResponse'
+      context 'when the number has never been invited' do
+        before do
+          allow(relay).to receive(:invited?).with(invited_number).and_return(false)
+          allow(Subscriber).to receive(:new).with(hash_including(number: invited_number)).and_return(new_subscriber)
+        end
 
-        expect(invitation_repository).to receive(:create).with(number: invited_number, relay: relay)
+        it 'invites the number' do
+          expect_response_to new_subscriber, 'InviteResponse'
+          expect_response_to_sender 'AdminInviteResponse'
 
-        execute
+          expect(invitation_repository).to receive(:create).with(number: invited_number, relay: relay)
+
+          execute
+        end
+      end
+
+      context 'when the number has been invited' do
+        before do
+          allow(relay).to receive(:invited?).with(invited_number).and_return(true)
+        end
+
+        it 'does not invite the number and tells the admin that' do
+          expect_response_to_sender 'AdminInviteBounceResponse'
+          execute
+        end
       end
     end
 
-    context 'when the number has been invited' do
+    context 'when the number is already subscribed' do
       before do
-        allow(relay).to receive(:invited?).with(invited_number).and_return(true)
+        allow(relay).to receive(:number_subscribed?).with(invited_number).and_return(true)
       end
 
       it 'does not invite the number and tells the admin that' do
-        expect_response_to_sender 'AdminInviteBounceResponse'
+        expect_response_to_sender 'AlreadySubscribedInviteBounceResponse'
         execute
       end
     end
