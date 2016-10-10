@@ -14,6 +14,8 @@ class Relay
 
   has_many :subscriptions, dependent: :delete
 
+  default_scope ->{ order(created_at: :asc) }
+
   def subscribed?(subscriber)
     subscription_for(subscriber).present?
   end
