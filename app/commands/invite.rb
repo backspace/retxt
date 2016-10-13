@@ -9,22 +9,25 @@ class Invite < AbstractCommand
   end
 
   def execute
-    if sender.admin
-      if relay.number_subscribed? @invitee_number
-        AlreadySubscribedInviteBounceResponse.new(context).deliver sender
-      else
-        if relay.invited? @invitee_number
-          AlreadyInvitedInviteBounceResponse.new(context).deliver(sender)
-        else
-          # FIXME what happens if it’s an invalid number?
-          InviteResponse.new(context).deliver(Subscriber.new(number: @invitee_number))
-          AdminInviteResponse.new(context).deliver(sender)
-          @invitation_repository.create(relay: relay, number: @invitee_number)
-        end
-      end
-    else
+    unless sender.admin
       NonAdminBounceResponse.new(context).deliver sender
       NonAdminBounceNotification.new(context).deliver relay.admins
+      return
     end
+
+    if relay.number_subscribed? @invitee_number
+      AlreadySubscribedInviteBounceResponse.new(context).deliver sender
+      return
+    end
+
+    if relay.invited? @invitee_number
+      AlreadyInvitedInviteBounceResponse.new(context).deliver(sender)
+      return
+    end
+
+    # FIXME what happens if it’s an invalid number?
+    InviteResponse.new(context).deliver(Subscriber.new(number: @invitee_number))
+    AdminInviteResponse.new(context).deliver(sender)
+    @invitation_repository.create(relay: relay, number: @invitee_number)
   end
 end
