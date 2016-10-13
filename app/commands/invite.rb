@@ -16,6 +16,7 @@ class Invite < AbstractCommand
         if relay.invited? @invitee_number
           AlreadyInvitedInviteBounceResponse.new(context).deliver(sender)
         else
+          # FIXME what happens if it’s an invalid number?
           InviteResponse.new(context).deliver(Subscriber.new(number: @invitee_number))
           AdminInviteResponse.new(context).deliver(sender)
           @invitation_repository.create(relay: relay, number: @invitee_number)
