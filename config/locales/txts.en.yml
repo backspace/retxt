@@ -80,7 +80,7 @@ en:
       mute: "%{admin_name} muted %{target_name}. They can no longer relay messages."
       unmute: "%{admin_name} unmuted %{target_name}. They can again relay messages."
       voice: "%{admin_name} voiced %{target_name}. They can relay messages during moderation."
-      unvoice: "%{admin_name} unvoiced %{target_name}. They canno longer relay messages during moderation."
+      unvoice: "%{admin_name} unvoiced %{target_name}. They can no longer relay messages during moderation."
 
       missing_target: "Your command failed because %{target} could not be found."
 

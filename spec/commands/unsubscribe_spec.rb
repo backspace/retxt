@@ -27,7 +27,7 @@ describe Unsubscribe do
     end
   end
 
-  context 'whon the sender is not subscribed' do
+  context 'when the sender is not subscribed' do
     before do
       allow(relay).to receive(:subscribed?).with(sender).and_return(false)
     end
