@@ -65,6 +65,8 @@ en:
 
       timestamp: "'/timestamp %l:%M' will prefix all relayed and direct messages with a time they were sent. See strftime.org for formats. '/timestamp' removes timestamp."
 
+      invite: "'/invite ####' will invite someone at a phone number to join the relay."
+
       unknown: "No help exists for '%{command}'."
 
     admin:
