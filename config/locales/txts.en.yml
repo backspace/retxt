@@ -19,7 +19,7 @@ en:
     welcome: "Welcome to %{relay_name}, %{subscriber_name}. Cmds: about, unsubscribe, name, lang. Write '@name hello!' to direct txt by name. Any other txt is sent to %{subscriber_count}."
     disclaimer: "This relay is in no way secure! Your txts could be monitored, as could the relay itself. Act accordingly!"
     already_subscribed_bounce: "Could not subscribe you because you are already subscribed."
-    invite: "You have been invited to join the %{relay_name} relay. To subscribe, reply 'subscribe yourname' (name optional)."
+    invite: "You have been invited to join the %{relay_name} relay. To subscribe, reply 'subscribe yourname' (no quotes, name optional)."
 
     goodbye: "You are now unsubscribed."
 
