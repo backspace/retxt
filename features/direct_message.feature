@@ -6,7 +6,7 @@ Feature: Direct message
     And someone is subscribed as Colleen
 
 
-    When I txt '@Bob you are kewl'
+    When I txt '@bob you are kewl'
     Then I should receive a txt that confirms the direct message was sent
     And Bob should receive a direct message from Alice saying 'you are kewl'
     And Colleen should not receive a direct message from Alice saying 'you are kewl'

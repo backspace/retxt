@@ -31,6 +31,16 @@ describe ChangesNames do
       end
     end
 
+    context 'and a subscriber with a different-case version of the name exists' do
+      let!(:upcase_subscriber) { Subscriber.create(name: new_name.upcase) }
+
+      it "changes the subscriber’s name to an incremented copy of the name" do
+        ChangesNames.change_name(subscriber, new_name)
+        subscriber.reload
+        expect(subscriber.name).to eq("#{new_name}1")
+      end
+    end
+
     context 'when the subscriber tries to change to the same name' do
       let(:new_name) { 'francine' }
 

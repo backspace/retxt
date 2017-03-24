@@ -13,8 +13,8 @@ Feature: Names
     When I txt 'name Leguin'
     Then I should receive a txt saying my name is Leguin
 
-  Scenario: I change my name to an existing name
-    Given someone is subscribed as Test
+  Scenario: I change my name to an existing name, case-insensitive
+    Given someone is subscribed as test
     And I am subscribed
 
     When I txt 'name Test'

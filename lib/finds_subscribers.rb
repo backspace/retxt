@@ -11,7 +11,9 @@ class FindsSubscribers
         identifier = identifier[1..-1]
       end
 
-      Subscriber.where(name: identifier).first
+      identifier.downcase!
+
+      Subscriber.all.select{|s| s.name && s.name.downcase == identifier}.first
     end
   end
 end

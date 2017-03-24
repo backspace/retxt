@@ -154,7 +154,7 @@ Then(/^(\w*) should receive a txt( in (Pig Latin|English))? that (subscriptions 
       when 'confirms the message was relayed'
         I18n.t('txts.relayed', subscriber_count: I18n.t('subscribers', count: Relay.first.subscriptions.count - 1))
       when 'confirms the direct message was sent'
-        I18n.t('txts.direct.sent', target_name: '@Bob')
+        I18n.t('txts.direct.sent', target_name: '@bob')
       when 'a relay was created'
         I18n.t('txts.admin.creation', relay_name: Relay.all.sort_by(&:created_at).last.name, admin_name: Subscriber.first.addressable_name)
       when 'anonymous subscribers cannot send direct messages'

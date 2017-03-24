@@ -4,6 +4,7 @@ describe FindsSubscribers do
   context 'with a named subscriber' do
     let(:name) { 'alice' }
     let!(:subscriber) { Subscriber.create(name: name) }
+    let!(:blank_subscriber) { Subscriber.create() }
 
     it "finds the subscriber by name" do
       expect(FindsSubscribers.find("alice")).to eq(subscriber)
@@ -15,6 +16,10 @@ describe FindsSubscribers do
 
     it "finds the subscriber regardless of whitespace" do
       expect(FindsSubscribers.find("  @alice  ")).to eq(subscriber)
+    end
+
+    it "finds the subscriber regardless of capitalisation" do
+      expect(FindsSubscribers.find("@ALICe")).to eq(subscriber)
     end
   end
 

@@ -7,8 +7,13 @@ class ChangesNames
 
   private
   def self.get_unique_name(name)
-    while Subscriber.where(name: name).present?
+    # It’s apparently impossible to query Mongo case-insensitively
+    downcase_name = name.downcase
+    downcase_existing_names = Subscriber.pluck(:name).compact.map(&:downcase)
+
+    while downcase_existing_names.include? downcase_name
       name = name.sub(/(\d)*$/) { |s| s.to_i + 1}
+      downcase_name = name.downcase
     end
 
     name
