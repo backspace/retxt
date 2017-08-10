@@ -23,7 +23,6 @@ gem 'countries'
 group :test do
   gem 'rspec-rails', '3'
   gem 'mocha', require: false
-  gem 'bourne'
   gem 'cucumber-rails', require: false
   gem 'poltergeist'
   gem 'database_cleaner', '1.5.3'
