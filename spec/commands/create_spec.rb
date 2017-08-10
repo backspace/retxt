@@ -37,6 +37,31 @@ describe Create do
 
       execute
     end
+
+    context 'with an area code' do
+      let(:arguments) { 'otherareacodename 500' }
+
+      it 'buys a similar-ish number but from a different area code' do
+        expect(BuysSimilarNumbers).to receive(:new).with(relay.number, command_context.application_url, '500').and_return(double('buyer', buy_similar_number: new_relay_number))
+
+        # FIXME This duplication seems suspect when the above is all that changed
+        relay_repository = double('relay repository')
+        stub_const('Relay', relay_repository)
+        relay = double('relay', name: arguments)
+
+        expect(relay_repository).to receive(:create).with(name: arguments, number: new_relay_number).and_return(relay)
+
+        subscription_repository = double('subscription repository')
+        stub_const('Subscription', subscription_repository)
+
+        expect(subscription_repository).to receive(:create).with(relay: relay, subscriber: sender)
+
+        expect(relay).to receive(:admins).and_return(new_relay_admins = double)
+        expect_notification_of new_relay_admins, 'CreationNotification'
+
+        execute
+      end
+    end
   end
 
   it 'replies with the non-admin message' do

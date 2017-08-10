@@ -27,3 +27,13 @@ Feature: Multi-relay
     Then I should see that relay B has number 123
     And I should see that Alice is subscribed to relay B
     But I should not see that Bob is subscribed to relay B
+
+  Scenario: Create a relay with a specified area code
+    Given the number buyer will buy number 123
+    And I am subscribed to relay A as an admin as Alice
+
+    And someone is subscribed to relay A as Bob
+    And Alice txts '/create B 500'
+
+    Then Alice should receive a txt that a relay was created from 123
+    And the number buyer should have bought a number from area code 500
