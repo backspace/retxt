@@ -1,8 +1,6 @@
 language: ruby
 cache: bundler
 script:
-  - bundle exec rspec
-  - bundle exec cucumber
   - bundle exec rake :test_with_coveralls
 rvm:
   - 2.3.0
