@@ -49,5 +49,6 @@ gem 'zurb-foundation', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'haml'
 
+gem 'coveralls', require: false
 
 gem 'rails_12factor', group: :production
