@@ -27,3 +27,17 @@ Feature: Multi-relay
     Then I should see that relay B has number 123
     And I should see that Alice is subscribed to relay B
     But I should not see that Bob is subscribed to relay B
+
+  Scenario: Delete a relay
+    Given Alice is subscribed as an admin
+    And Bob is subscribed as an admin
+    And the relay deleter deletes relays
+
+    And Alice txts '/delete'
+
+    Then Alice should receive a txt that the relay will be deleted by Alice
+    And Bob should receive a txt that the relay will be deleted by Alice
+
+    Given I am signed in as an admin
+    When I visit the subscribers list
+    Then I should see that there is no relay

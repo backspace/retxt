@@ -57,3 +57,7 @@ Then(/^I should( not)? see that (\w*) is an admin$/) do |negation, name|
 
   page.send(matcher, have_selector("#subscriber_#{subscriber.id}.admin"))
 end
+
+Then(/^I should see that there is no relay$/) do
+  page.should_not have_css("th.relay")
+end
