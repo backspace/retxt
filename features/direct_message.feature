@@ -4,12 +4,14 @@ Feature: Direct message
     Given I am subscribed as Alice
     And someone is subscribed as Bob
     And someone is subscribed as Colleen
+    And Jorty is subscribed as an admin
 
 
     When I txt '@bob you are kewl'
     Then I should receive a txt that confirms the direct message was sent
     And Bob should receive a direct message from Alice saying 'you are kewl'
     And Colleen should not receive a direct message from Alice saying 'you are kewl'
+    And Jorty should receive a copy of the direct message from Alice to Bob saying 'you are kewl'
 
   Scenario: I direct message a non-existent subscriber
     Given I am subscribed as Alice

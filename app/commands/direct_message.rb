@@ -10,6 +10,7 @@ class DirectMessage < AbstractCommand
 
         if target_subscriber
           OutgoingDirectMessageResponse.new(context).deliver(target_subscriber)
+          OutgoingDirectMessageCopyNotification.new(context).deliver(relay.admins)
           SentDirectMessageResponse.new(context).deliver(sender)
         else
           MissingDirectMessageTargetBounceResponse.new(context).deliver(sender)

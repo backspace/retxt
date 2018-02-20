@@ -126,6 +126,7 @@ en:
     direct:
       sent: "Your message was sent to %{target_name}"
       outgoing: "%{prefix}%{sender} said to you: %{message}"
+      copy: "%{prefix}%{sender} DMed: %{message}"
       missing_target: "Your message was not sent because %{target_name} could not be found."
       anonymous: "You cannot send a message when you are anonymous. change your name with 'name yourname'."
 
