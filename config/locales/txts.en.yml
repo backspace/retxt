@@ -66,6 +66,8 @@ en:
 
       unknown: "No help exists for '%{command}'."
 
+      bang: "Confusing!"
+
     admin:
       creation: "%{admin_name} created a new relay called %{relay_name}."
       subscription: "%{name} at %{number} subscribed."
