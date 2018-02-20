@@ -27,38 +27,4 @@ describe SendsTxts do
 
     SendsTxts.send_txt(client: client, from: from, to: to, body: body, originating_txt_id: oid)
   end
-
-  it "truncates long txts" do
-    long_message = "0"*161
-    truncated_message = double('truncated')
-    expect(long_message).to receive(:truncate).with(160).and_return(truncated_message)
-    expect(messages).to receive(:create).with(from: from, to: to, body: truncated_message)
-    expect(Txt).to receive(:create).with(from: from, to: to, body: truncated_message, originating_txt_id: oid)
-
-    SendsTxts.send_txt(client: client, from: from, to: to, body: long_message, originating_txt_id: oid)
-  end
-
-  context 'sending possibly-longer txts' do
-    let(:splitter) { double('splitter') }
-
-    before do
-      allow(Splitter).to receive(:new).and_return(splitter)
-    end
-
-    it "sends txts" do
-      expect(SendsTxts).to receive(:send_txt).with(from: from, to: to, body: body, originating_txt_id: oid)
-      allow(splitter).to receive(:split).and_return([body])
-      SendsTxts.send_txts(from: from, to: to, body: body, originating_txt_id: oid)
-    end
-
-    it "breaks up a long txt into many and sends them" do
-      first_txt, second_txt = double('first_txt'), double('second_txt')
-      allow(splitter).to receive(:split).and_return([first_txt, second_txt])
-
-      expect(SendsTxts).to receive(:send_txt).with(from: from, to: to, body: first_txt, originating_txt_id: oid)
-      expect(SendsTxts).to receive(:send_txt).with(from: from, to: to, body: second_txt, originating_txt_id: oid)
-
-      SendsTxts.send_txts(from: from, to: to, body: body, originating_txt_id: oid)
-    end
-  end
 end
