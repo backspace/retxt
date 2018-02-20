@@ -131,3 +131,4 @@ en:
       anonymous: "You cannot send a message when you are anonymous. change your name with 'name yourname'."
 
     bang: "A RESPONSE"
+    bang_bounce: "Those codes were unrecognised!"

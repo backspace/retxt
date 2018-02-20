@@ -29,6 +29,10 @@ Then(/^I should receive a txt with links for meeting M$/) do
   txt_should_have_been_sent "A RESPONSE", @me.number
 end
 
+Then(/^I should receive a txt that the codes were not recognised$/) do
+  txt_should_have_been_sent I18n.t('txts.bang_bounce'), @me.number
+end
+
 Then(/^Jorty should receive a copy of the direct message from Alice to Bob saying 'you are kewl'$/) do
   recipient_number = Subscriber.find_by(name: 'Jorty').number
 

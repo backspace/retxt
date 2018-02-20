@@ -6,6 +6,8 @@ class Bang < AbstractCommand
 
     if meeting
       BangResponse.new(context).deliver sender
+    else
+      BangBounceResponse.new(context).deliver sender
     end
   end
 

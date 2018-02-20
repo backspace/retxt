@@ -1,0 +1,2 @@
+class BangBounceResponse < SimpleResponse
+end
