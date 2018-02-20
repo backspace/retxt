@@ -11,6 +11,8 @@ class Subscriber
 
   field :locale, type: String
 
+  field :code, type: String
+
   has_many :subscriptions
 
   def name_or_anon

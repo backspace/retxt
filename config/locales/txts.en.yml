@@ -126,3 +126,5 @@ en:
       outgoing: "%{prefix}%{sender} said to you: %{message}"
       missing_target: "Your message was not sent because %{target_name} could not be found."
       anonymous: "You cannot send a message when you are anonymous. change your name with 'name yourname'."
+
+    bang: "A RESPONSE"
