@@ -9,7 +9,7 @@ en:
       - about
       - help
 
-    name: name
+    # name: name
     language: lang
 
     create: create

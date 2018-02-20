@@ -7,8 +7,8 @@ Feature: Get help
 
   Scenario: User requests command help
     Given I am subscribed
-    When I txt 'help name'
-    Then I should receive a name help txt
+    # When I txt 'help name'
+    # Then I should receive a name help txt
 
     When I txt 'help /mute'
     Then I should receive a mute help txt
