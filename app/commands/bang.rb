@@ -2,7 +2,7 @@ require_relative 'abstract_command'
 
 class Bang < AbstractCommand
   def execute
-    meeting = Meeting.all.to_a.find{|meeting| meeting.code == code}
+    meeting = Meeting.all.to_a.find{|meeting| meeting.full_code == code}
 
     if meeting
       BangResponse.new(context).deliver sender

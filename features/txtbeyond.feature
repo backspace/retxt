@@ -7,7 +7,7 @@ Feature: txtbeyond
 
     And a meeting M is scheduled between US, GX, GY
 
-    When I txt '!123234345'
+    When I txt '!M123234345'
     Then I should receive a txt with links for meeting M
 
     When I txt '!111'
