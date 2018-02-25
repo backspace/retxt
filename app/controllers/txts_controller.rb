@@ -16,6 +16,22 @@ class TxtsController < ApplicationController
     render nothing: true
   end
 
+  def trigger
+    now = Time.now
+
+    fake_context = CommandContext.new(relay: Relay.first, originating_txt: FakeTxt.new(''))
+
+    meetings = Meeting.all.select{|m| (Meeting::START + m.offset.minutes) < now}
+
+    meetings.each do |meeting|
+      meeting.subscribers.each do |subscriber|
+        NotifyMeeting.new(fake_context).execute(meeting, subscriber)
+      end
+    end
+
+    render nothing: true
+  end
+
   private
   def validate_twilio_request
     # https://github.com/twilio/twilio-ruby/wiki/RequestValidator
@@ -40,3 +56,5 @@ class TxtsController < ApplicationController
     {application_url: incoming_txts_url}
   end
 end
+
+FakeTxt = Struct.new("FakeTxt", :id)

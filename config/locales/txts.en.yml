@@ -132,3 +132,5 @@ en:
 
     bang: "A RESPONSE"
     bang_bounce: "Those codes were unrecognised!"
+
+    notify_meeting: "A meeting?!?!?"

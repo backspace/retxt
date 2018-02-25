@@ -1,0 +1,2 @@
+class NotifyMeetingResponse < SimpleResponse
+end

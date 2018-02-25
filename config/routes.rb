@@ -9,6 +9,7 @@ ReTxt::Application.routes.draw do
 
   resources :txts do
     post 'incoming', on: :collection
+    post 'trigger', on: :collection
   end
 
   resources :setup
