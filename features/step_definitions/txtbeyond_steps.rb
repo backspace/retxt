@@ -93,3 +93,7 @@ end
 Then(/^I should receive a txt that the answer was incorrect$/) do
   txt_should_have_been_sent I18n.t('txts.answer_incorrect_bounce')
 end
+
+Then(/^I should receive a txt that the meeting was not found$/) do
+  txt_should_have_been_sent I18n.t('txts.answer_meeting_bounce')
+end

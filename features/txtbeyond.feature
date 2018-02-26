@@ -60,3 +60,6 @@ Feature: txtbeyond
 
     When I txt '!M shartle'
     Then I should receive a txt that the answer was incorrect
+
+    When I txt '!X whatever'
+    Then I should receive a txt that the meeting was not found

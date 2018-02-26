@@ -1,0 +1,2 @@
+class AnswerMeetingBounceResponse < SimpleResponse
+end

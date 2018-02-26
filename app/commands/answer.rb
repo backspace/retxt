@@ -2,15 +2,19 @@ require_relative 'abstract_command'
 
 class Answer < AbstractCommand
   def execute
-    meeting = Meeting.find_by(code: code)
+    meeting = Meeting.where(code: code).first
 
-    context.txt.body =~ /\s(.*)/
-    given_answer = $1
+    if meeting
+      context.txt.body =~ /\s(.*)/
+      given_answer = $1
 
-    if given_answer == meeting.answer
-      AnswerResponse.new(context).deliver sender
+      if given_answer == meeting.answer
+        AnswerResponse.new(context).deliver sender
+      else
+        AnswerIncorrectBounceResponse.new(context).deliver sender
+      end
     else
-      AnswerIncorrectBounceResponse.new(context).deliver sender
+      AnswerMeetingBounceResponse.new(context).deliver sender
     end
   end
 
