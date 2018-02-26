@@ -13,7 +13,16 @@ class DirectMessage < AbstractCommand
           OutgoingDirectMessageCopyNotification.new(context).deliver(relay.admins)
           SentDirectMessageResponse.new(context).deliver(sender)
         else
-          MissingDirectMessageTargetBounceResponse.new(context).deliver(sender)
+          meeting_group_name = target[1..-1]
+          meeting = Meeting.where(code: meeting_group_name).first
+
+          if meeting
+            @context.meeting = meeting
+            OutgoingGroupMessageResponse.new(context).deliver(meeting.subscribers - [sender] + relay.admins)
+            SentGroupMessageResponse.new(context).deliver(sender)
+          else
+            MissingDirectMessageTargetBounceResponse.new(context).deliver(sender)
+          end
         end
       end
     end

@@ -35,3 +35,17 @@ Feature: txtbeyond
     When the txts are sent
 
     And GX should have only received 1 message
+
+  Scenario: I txt the meeting group
+    Given I am subscribed as US
+    And someone is subscribed as GX
+    And someone is subscribed as GY
+    And Jorty is subscribed as an admin
+
+    And a meeting M at Centennial is scheduled between US, GX, GY
+
+    When I txt '@M hello'
+    Then I should receive a confirmation that my message was sent to meeting group M
+    And GX should receive '@US said to meeting group @M: hello'
+    And GY should receive '@US said to meeting group @M: hello'
+    And Jorty should receive '@US said to meeting group @M: hello'

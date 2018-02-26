@@ -62,3 +62,12 @@ Then(/^(\w*) should have only received (\d+) message$/) do |subscriber_name, cou
     .map(&:arguments).map(&:first)
     .select{|arguments| arguments[:to] == recipient_number}.length.should eq(count.to_i)
 end
+
+Then(/^I should receive a confirmation that my message was sent to meeting group (\w*)$/) do |meeting_code|
+  txt_should_have_been_sent I18n.t('txts.group.sent', meeting_code: meeting_code)
+end
+
+Then(/^(\w*) should receive '(.*)'$/) do |recipient_name, message_content|
+  recipient_number = Subscriber.find_by(name: recipient_name).number
+  txt_should_have_been_sent message_content, recipient_number
+end
