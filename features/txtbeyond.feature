@@ -1,18 +1,5 @@
 Feature: txtbeyond
 
-  Scenario: I txt the codes of the assembled teams
-    Given I am subscribed as US with code 123
-    And someone is subscribed as GX with code 234
-    And someone is subscribed as GY with code 345
-
-    And a meeting M at Centennial is scheduled between US, GX, GY
-
-    When I txt '!M123234345'
-    Then I should receive a txt with links for a meeting M at Centennial
-
-    When I txt '!111'
-    Then I should receive a txt that the codes were not recognised
-
   Scenario: Scheduled messages get sent out
     Given someone is subscribed as GX
     And someone is subscribed as GY
@@ -49,3 +36,16 @@ Feature: txtbeyond
     And GX should receive '@US said to meeting group @M: hello'
     And GY should receive '@US said to meeting group @M: hello'
     And Jorty should receive '@US said to meeting group @M: hello'
+
+  Scenario: I txt the codes of the assembled teams
+    Given I am subscribed as US with code 123
+    And someone is subscribed as GX with code 234
+    And someone is subscribed as GY with code 345
+
+    And a meeting M at Centennial is scheduled between US, GX, GY
+
+    When I txt '!M123234345'
+    Then I should receive a txt with links for a meeting M at Centennial
+
+    When I txt '!111'
+    Then I should receive a txt that the codes were not recognised
