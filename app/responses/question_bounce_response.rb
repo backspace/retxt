@@ -1,0 +1,2 @@
+class QuestionBounceResponse < SimpleResponse
+end

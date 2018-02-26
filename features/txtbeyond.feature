@@ -44,10 +44,10 @@ Feature: txtbeyond
 
     And a meeting M at Centennial is scheduled between US, GX, GY
 
-    When I txt '!M123234345'
+    When I txt '?M123234345'
     Then I should receive a txt with links for a meeting M at Centennial
 
-    When I txt '!111'
+    When I txt '?111'
     Then I should receive a txt that the codes were not recognised
 
   Scenario: I txt the answer for the meeting
@@ -55,8 +55,8 @@ Feature: txtbeyond
     And someone is subscribed as GX
     And a meeting M at Centennial with answer jortle is scheduled between US, GX
 
-    When I txt '&M jortle'
+    When I txt '!M jortle'
     Then I should receive a txt with a portion of the final answer
 
-    When I txt '&M shartle'
+    When I txt '!M shartle'
     Then I should receive a txt that the answer was incorrect

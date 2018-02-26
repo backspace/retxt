@@ -1,2 +1,0 @@
-class BangResponse < SimpleResponse
-end

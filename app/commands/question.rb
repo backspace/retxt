@@ -1,13 +1,13 @@
 require_relative 'abstract_command'
 
-class Bang < AbstractCommand
+class Question < AbstractCommand
   def execute
     meeting = Meeting.all.to_a.find{|meeting| meeting.full_code == code}
 
     if meeting
-      BangResponse.new(context).deliver sender
+      QuestionResponse.new(context).deliver sender
     else
-      BangBounceResponse.new(context).deliver sender
+      QuestionBounceResponse.new(context).deliver sender
     end
   end
 
