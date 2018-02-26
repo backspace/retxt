@@ -20,7 +20,7 @@ gem 'global_phone'
 gem 'dialable'
 gem 'countries'
 
-group :test do
+# group :test do
   gem 'rspec-rails', '3'
   gem 'mocha', require: false
   gem 'bourne'
@@ -29,7 +29,7 @@ group :test do
   gem 'database_cleaner', '1.5.3'
   gem 'timecop'
   gem 'terminal-table'
-end
+# end
 
 group :development, :test do
   gem 'pry'
