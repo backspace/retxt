@@ -19,14 +19,14 @@ Feature: txtbeyond
     And someone is subscribed as GA
     And someone is subscribed as GB
 
-    And a meeting XY at Leatherdale is scheduled at offset 15 between GX, GY
+    And a GY-chosen meeting XY at Leatherdale is scheduled at offset 15 between GX, GY
     And a meeting AB at Ashdown is scheduled at offset 20 between GA, GB
 
     And it is offset 18
 
     When the txts are sent
     Then GX should receive a message about the meeting at Leatherdale
-    And GY should receive a message about the meeting at Leatherdale
+    And GY should receive a chosen message about the meeting at Leatherdale
 
     And GA should not receive a message
     And GB should not receive a message

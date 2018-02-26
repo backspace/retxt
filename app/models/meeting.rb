@@ -11,6 +11,8 @@ class Meeting
 
   has_and_belongs_to_many :subscribers, inverse_of: nil
 
+  belongs_to :chosen, class_name: "Subscriber"
+
   def full_code
     "#{code}#{subscribers.map(&:code).join}"
   end

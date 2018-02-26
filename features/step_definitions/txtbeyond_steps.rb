@@ -15,10 +15,15 @@ Given(/^someone is subscribed as (\w*) with code (\d+)$/) do |name, code|
   create_relay_with_subscriber(nil, subscriber)
 end
 
-Given(/^a meeting (\w*) at (\w*) is scheduled( at offset (\d+))? between (.*)$/) do |code, region, offset_container, offset, subscriber_names|
+Given(/^a ((\w*)-chosen )?meeting (\w*) at (\w*) is scheduled( at offset (\d+))? between (.*)$/) do |chosen_container, chosen, code, region, offset_container, offset, subscriber_names|
   subscribers = subscriber_names.split(", ").map{|name| Subscriber.find_by(name: name)}
 
-  Meeting.create(subscribers: subscribers, code: code, offset: offset || 0, region: region)
+  meeting = Meeting.create(subscribers: subscribers, code: code, offset: offset || 0, region: region)
+
+  if chosen_container
+    meeting.chosen = Subscriber.find_by(name: chosen)
+    meeting.save
+  end
 end
 
 Given(/^it is offset (\d+)$/) do |offset|
@@ -43,7 +48,7 @@ Then(/^Jorty should receive a copy of the direct message from Alice to Bob sayin
   txt_should_have_been_sent I18n.t('txts.direct.copy', prefix: '', sender: '@Alice', message: '@bob you are kewl'), recipient_number
 end
 
-Then(/^(\w*) should receive a message about the meeting at (\w*)$/) do |subscriber_name, region|
+Then(/^(\w*) should receive a (chosen )?message about the meeting at (\w*)$/) do |subscriber_name, chosen, region|
   subscriber = Subscriber.find_by(name: subscriber_name)
   recipient_number = subscriber.number
 
@@ -53,7 +58,11 @@ Then(/^(\w*) should receive a message about the meeting at (\w*)$/) do |subscrib
   others = meeting.subscribers - [subscriber]
   others_string = others.map(&:addressable_name).to_sentence
 
-  txt_should_have_been_sent I18n.t('txts.notify_meeting', others: others_string, region: meeting.region), recipient_number
+  if chosen
+    txt_should_have_been_sent I18n.t('txts.notify_chosen_meeting', others: others_string, region: meeting.region), recipient_number
+  else
+    txt_should_have_been_sent I18n.t('txts.notify_meeting', others: others_string, region: meeting.region), recipient_number
+  end
 end
 
 Then(/^(\w*) should have only received (\d+) message$/) do |subscriber_name, count|

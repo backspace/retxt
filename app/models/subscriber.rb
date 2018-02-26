@@ -14,6 +14,7 @@ class Subscriber
   field :code, type: String
 
   has_many :subscriptions
+  has_many :choosings, class_name: "Meeting", inverse_of: :chosen
 
   def name_or_anon
     name.present? ? name : 'anon'

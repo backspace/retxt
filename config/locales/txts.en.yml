@@ -134,7 +134,8 @@ en:
     bang_bounce: "Those codes were unrecognised!"
 
     notify_meeting: "Meet %{others} at %{region}."
+    notify_chosen_meeting: "Meet %{others} at %{region}. CHOSEN"
 
     group:
       sent: "Your message was sent to @%{meeting_code}"
-      outgoing: "%{sender} said to meeting group @%{meeting_code}: %{message}" 
+      outgoing: "%{sender} said to meeting group @%{meeting_code}: %{message}"
