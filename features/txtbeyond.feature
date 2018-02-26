@@ -30,3 +30,8 @@ Feature: txtbeyond
 
     And GA should not receive a message
     And GB should not receive a message
+
+    Given it is offset 22
+    When the txts are sent
+    
+    And GX should have only received 1 message

@@ -51,3 +51,10 @@ Then(/^(\w*) should receive a message about meeting (\w*)$/) do |subscriber_name
 
   txt_should_have_been_sent I18n.t('txts.notify_meeting'), recipient_number
 end
+
+Then(/^(\w*) should have only received (\d+) message$/) do |subscriber_name, count|
+  recipient_number = Subscriber.find_by(name: subscriber_name).number
+  Mocha::Mockery.instance.invocations.select{|invocation| invocation.method_name == :send_txt }
+    .map(&:arguments).map(&:first)
+    .select{|arguments| arguments[:to] == recipient_number}.length.should eq(count.to_i)
+end

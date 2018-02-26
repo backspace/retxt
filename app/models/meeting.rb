@@ -6,6 +6,7 @@ class Meeting
 
   field :code, type: String
   field :offset, type: Integer
+  field :messaged, type: Boolean, default: false
 
   has_and_belongs_to_many :subscribers, inverse_of: nil
 

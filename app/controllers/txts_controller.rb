@@ -21,12 +21,15 @@ class TxtsController < ApplicationController
 
     fake_context = CommandContext.new(relay: Relay.first, originating_txt: FakeTxt.new(''))
 
-    meetings = Meeting.all.select{|m| (Meeting::START + m.offset.minutes) < now}
+    meetings = Meeting.where(messaged: false).select{|m| (Meeting::START + m.offset.minutes) < now}
 
     meetings.each do |meeting|
       meeting.subscribers.each do |subscriber|
         NotifyMeeting.new(fake_context).execute(meeting, subscriber)
       end
+
+      meeting.messaged = true
+      meeting.save
     end
 
     render nothing: true
