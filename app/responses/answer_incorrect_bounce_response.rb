@@ -1,0 +1,2 @@
+class AnswerIncorrectBounceResponse < SimpleResponse
+end

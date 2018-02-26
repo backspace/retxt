@@ -8,6 +8,7 @@ class Meeting
   field :offset, type: Integer
   field :messaged, type: Boolean, default: false
   field :region, type: String
+  field :answer, type: String
 
   has_and_belongs_to_many :subscribers, inverse_of: nil
 

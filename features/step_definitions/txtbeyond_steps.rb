@@ -15,13 +15,18 @@ Given(/^someone is subscribed as (\w*) with code (\d+)$/) do |name, code|
   create_relay_with_subscriber(nil, subscriber)
 end
 
-Given(/^a ((\w*)-chosen )?meeting (\w*) at (\w*) is scheduled( at offset (\d+))? between (.*)$/) do |chosen_container, chosen, code, region, offset_container, offset, subscriber_names|
+Given(/^a ((\w*)-chosen )?meeting (\w*) at (\w*)( with answer (\w*))? is scheduled( at offset (\d+))? between (.*)$/) do |chosen_container, chosen, code, region, answer_container, answer, offset_container, offset, subscriber_names|
   subscribers = subscriber_names.split(", ").map{|name| Subscriber.find_by(name: name)}
 
   meeting = Meeting.create(subscribers: subscribers, code: code, offset: offset || 0, region: region)
 
   if chosen_container
     meeting.chosen = Subscriber.find_by(name: chosen)
+    meeting.save
+  end
+
+  if answer_container
+    meeting.answer = answer
     meeting.save
   end
 end
@@ -79,4 +84,12 @@ end
 Then(/^(\w*) should receive '(.*)'$/) do |recipient_name, message_content|
   recipient_number = Subscriber.find_by(name: recipient_name).number
   txt_should_have_been_sent message_content, recipient_number
+end
+
+Then(/^I should receive a txt with a portion of the final answer$/) do
+  txt_should_have_been_sent I18n.t('txts.answer')
+end
+
+Then(/^I should receive a txt that the answer was incorrect$/) do
+  txt_should_have_been_sent I18n.t('txts.answer_incorrect_bounce')
 end

@@ -1,0 +1,2 @@
+class AnswerResponse < SimpleResponse
+end

@@ -32,6 +32,10 @@ class ParsesCommands
     command.start_with? "!"
   end
 
+  def command_is_anded?
+    command.start_with? "&"
+  end
+
   def slashless_command
     @slashless_command ||= command[1..-1]
   end
@@ -41,6 +45,8 @@ class ParsesCommands
       'direct_message'
     elsif command_is_banged?
       'bang'
+    elsif command_is_anded?
+      'answer'
     else
       I18n.available_locales.each do |locale|
         @matching_command = find_matching_command(select_locale_setting_keys(command_hash_in_locale(locale)))
