@@ -4,6 +4,7 @@ class CommandContext
   attr_accessor :originating_txt
   attr_accessor :arguments
   attr_accessor :application_url
+  attr_accessor :meeting
 
   attr_accessor :locale
 
@@ -14,6 +15,8 @@ class CommandContext
     @arguments = options[:arguments]
     @application_url = options[:application_url]
     @locale = options[:locale]
+
+    @meeting = options[:meeting]
   end
 
   def txt

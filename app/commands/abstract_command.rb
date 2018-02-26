@@ -23,4 +23,8 @@ class AbstractCommand
   def application_url
     @context.application_url
   end
+
+  def meeting
+    @context.meeting
+  end
 end

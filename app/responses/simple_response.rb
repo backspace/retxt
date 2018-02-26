@@ -35,6 +35,10 @@ class SimpleResponse
     @context.arguments
   end
 
+  def meeting
+    @context.meeting
+  end
+
   def origin_of_txt
     relay.number
   end
