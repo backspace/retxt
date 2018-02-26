@@ -144,4 +144,4 @@ test:
 production:
   clients:
     default:
-      uri: <%= ENV['MONGOLAB_URI'] %>
+      uri: <%= ENV['MONGODB_URI'] %>
