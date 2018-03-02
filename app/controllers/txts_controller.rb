@@ -18,7 +18,8 @@ class TxtsController < ApplicationController
 
   def trigger
     now = Time.now
-    start = Relay.first.start
+    relay = Relay.first
+    start = relay.start
 
     meetings = Meeting.where(messaged: false).select{|m| (start + m.offset.minutes) < now}
 
@@ -33,6 +34,21 @@ class TxtsController < ApplicationController
 
       meeting.messaged = true
       meeting.save
+    end
+
+    broadcasts = Broadcast.where(messaged: false).select{|b| (start + b.offset.minutes) < now}
+
+    broadcasts.each do |broadcast|
+      relay.subscribers.each do |subscriber|
+        SendsTxts.send_txt(
+          from: relay.number,
+          to: subscriber.number,
+          body: broadcast.content
+        )
+      end
+
+      broadcast.messaged = true
+      broadcast.save
     end
 
     render nothing: true

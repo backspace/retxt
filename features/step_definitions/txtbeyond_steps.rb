@@ -68,6 +68,10 @@ Given(/^a ((\w*)-chosen )?meeting (\w*) at (\w*)( with answer (\w*))? is schedul
   end
 end
 
+Given(/^a message 'hello there' from beyond is scheduled at offset (\d+)$/) do |offset|
+  Broadcast.create(offset: offset.to_i, content: '@beyond says hello there')
+end
+
 Given(/^it is offset (\d+)$/) do |offset|
   Timecop.freeze Relay.first.start + offset.to_i.minutes
 end
@@ -111,7 +115,7 @@ Then(/^(\w*) should receive a (chosen )?message about the meeting at (\w*)$/) do
   end
 end
 
-Then(/^(\w*) should have only received (\d+) message$/) do |subscriber_name, count|
+Then(/^(\w*) should have only received (\d+) messages?$/) do |subscriber_name, count|
   recipient_number = Subscriber.find_by(name: subscriber_name).number
   Mocha::Mockery.instance.invocations.select{|invocation| invocation.method_name == :send_txt }
     .map(&:arguments).map(&:first)
@@ -129,6 +133,11 @@ end
 Then(/^(\w*) should receive '(.*)'$/) do |recipient_name, message_content|
   recipient_number = Subscriber.find_by(name: recipient_name).number
   txt_should_have_been_sent message_content, recipient_number
+end
+
+Then(/^(\w*) should receive '(.*)' with no origin$/) do |recipient_name, message_content|
+  recipient_number = Subscriber.find_by(name: recipient_name).number
+  txt_should_have_been_sent_no_origin message_content, recipient_number
 end
 
 Then(/^I should receive a txt with a portion of the final answer$/) do

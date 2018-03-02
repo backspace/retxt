@@ -283,6 +283,11 @@ def txt_should_have_been_sent(content, recipient_number = my_number, sender_numb
   SendsTxts.should have_received(:send_txt).with(from: sender_number || relay.number, to: recipient_number, body: content, originating_txt_id: recent_txt_id)
 end
 
+def txt_should_have_been_sent_no_origin(content, recipient_number = my_number, sender_number = nil)
+  relay = @recent_relay || Relay.first
+  SendsTxts.should have_received(:send_txt).with(from: sender_number || relay.number, to: recipient_number, body: content)
+end
+
 def txt_should_not_have_been_sent(content, recipient_number = my_number, sender_number = nil)
   relay = @recent_relay || Relay.first
   SendsTxts.should have_received(:send_txt).with(from: relay.number || sender_number, to: recipient_number, body: content, originating_txt_id: recent_txt_id).never

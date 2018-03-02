@@ -5,9 +5,12 @@ Feature: txtbeyond
     And team GY is GYA
     And team GA is GAA
     And team GB is GBA
+    And team GC is GCA
 
     And a GYA-chosen meeting XY at Leatherdale is scheduled at offset 15 between GX, GY
     And a meeting AB at Ashdown is scheduled at offset 20 between GA, GB
+
+    And a message 'hello there' from beyond is scheduled at offset 21
 
     And it is offset 18
 
@@ -22,8 +25,14 @@ Feature: txtbeyond
     Given it is offset 22
     When the txts are sent
 
-    And GXA should have only received 1 message
-    And GXB should have only received 1 message
+    Then GAA should receive '@beyond says hello there' with no origin
+
+    And GXA should have only received 2 messages
+    And GXB should have only received 2 messages
+
+    Given it is offset 25
+    When the txts are sent
+    Then GCA should have only received 1 message
 
   Scenario: Meeting group txts
     Given I am on team US
