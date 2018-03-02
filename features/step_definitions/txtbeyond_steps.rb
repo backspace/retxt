@@ -114,8 +114,12 @@ Then(/^(\w*) should have only received (\d+) message$/) do |subscriber_name, cou
     .select{|arguments| arguments[:to] == recipient_number}.length.should eq(count.to_i)
 end
 
-Then(/^I should receive a confirmation that my message was sent to meeting group (\w*)$/) do |meeting_code|
-  txt_should_have_been_sent I18n.t('txts.group.sent', meeting_code: meeting_code)
+Then(/^(\w*) should receive a confirmation that (my|their) message was sent to meeting group (\w*)$/) do |recipient, pronoun, meeting_code|
+  if recipient == 'I'
+    txt_should_have_been_sent I18n.t('txts.group.sent', meeting_code: meeting_code)
+  else
+    txt_should_have_been_sent I18n.t('txts.group.sent', meeting_code: meeting_code), Subscriber.find_by(name: recipient).number
+  end
 end
 
 Then(/^(\w*) should receive '(.*)'$/) do |recipient_name, message_content|

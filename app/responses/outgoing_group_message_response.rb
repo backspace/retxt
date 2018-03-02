@@ -5,6 +5,12 @@ class OutgoingGroupMessageResponse < SimpleResponse
   end
 
   def template_parameters(recipient)
-    {sender: sender.addressable_name, sender_team: sender.team.addressable_name, message: txt.body[(meeting.code.length + 2)..-1], meeting_code: meeting.code}
+    if sender.team && sender.name != sender.team.name
+      sender_string = "@#{sender.name} of @#{sender.team.name}"
+    else
+      sender_string = "@#{sender.name}"
+    end
+
+    {sender: sender_string, message: txt.body[(meeting.code.length + 2)..-1], meeting_code: meeting.code}
   end
 end
