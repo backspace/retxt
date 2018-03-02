@@ -64,6 +64,8 @@ en:
 
       timestamp: "'/timestamp %l:%M' will prefix all relayed and direct messages with a time they were sent. See strftime.org for formats. '/timestamp' removes timestamp."
 
+      start: "'/start datetime' sets the start time"
+
       unknown: "No help exists for '%{command}'."
 
       bang: "Confusing!"
@@ -143,3 +145,6 @@ en:
     answer: "This is a portion of the final answer"
     answer_incorrect_bounce: "That answer was incorrect!"
     answer_meeting_bounce: "That meeting was not found"
+
+
+    start_get: "The start is set to %{start_string}"

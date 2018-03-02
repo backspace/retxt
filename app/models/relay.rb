@@ -12,6 +12,8 @@ class Relay
   field :moderated, type: Boolean, default: false
   field :timestamp, type: String
 
+  field :start, type: DateTime, default: Time.zone.parse("2018-03-06 18:30")
+
   has_many :subscriptions, dependent: :delete
 
   default_scope ->{ order(created_at: :asc) }
@@ -58,6 +60,10 @@ class Relay
 
   def timestamp!(timestamp = nil)
     update_attribute(:timestamp, timestamp)
+  end
+
+  def start!(start = nil)
+    update_attribute(:start, start)
   end
 
   def subscribers

@@ -69,7 +69,11 @@ Given(/^a ((\w*)-chosen )?meeting (\w*) at (\w*)( with answer (\w*))? is schedul
 end
 
 Given(/^it is offset (\d+)$/) do |offset|
-  Timecop.freeze Meeting::START + offset.to_i.minutes
+  Timecop.freeze Relay.first.start + offset.to_i.minutes
+end
+
+Given(/^the relay start is set to (.*)$/) do |datetime_string|
+  Relay.first.update_attribute(:start, Time.zone.parse(datetime_string))
 end
 
 When(/^the txts are sent$/) do

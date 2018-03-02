@@ -17,7 +17,4 @@ class Meeting
   def full_code
     "#{code}#{teams.map(&:code).join}"
   end
-
-  # FIXME where should this live? database probs
-  START = Time.zone.parse "2018-03-06 18:30"
 end

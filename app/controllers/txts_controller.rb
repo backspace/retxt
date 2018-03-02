@@ -18,8 +18,9 @@ class TxtsController < ApplicationController
 
   def trigger
     now = Time.now
+    start = Relay.first.start
 
-    meetings = Meeting.where(messaged: false).select{|m| (Meeting::START + m.offset.minutes) < now}
+    meetings = Meeting.where(messaged: false).select{|m| (start + m.offset.minutes) < now}
 
     meetings.each do |meeting|
       fake_context = CommandContext.new(relay: Relay.first, originating_txt: FakeTxt.new(''), meeting: meeting)

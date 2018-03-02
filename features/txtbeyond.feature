@@ -71,3 +71,12 @@ Feature: txtbeyond
 
     When I txt '!X whatever'
     Then I should receive a txt that the meeting was not found
+
+  Scenario: Admin can check and change the start
+    Given Alice is subscribed as an admin
+    And the relay start is set to 2018-02-06 18:15
+    When Alice txts '/start'
+    Then Alice should receive 'The start is set to 2018-02-06 18:15'
+
+    When Alice txts '/start 2018-02-06 19:45:33'
+    Then Alice should receive 'The start is set to 2018-02-06 19:45'
