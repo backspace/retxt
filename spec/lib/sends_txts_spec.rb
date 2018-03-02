@@ -9,14 +9,10 @@ describe SendsTxts do
   let(:oid) { 'abc' }
 
   let(:client) { double('client') }
-  let(:account) { double('account') }
-  let(:sms) { double('sms') }
   let(:messages) { double('messages') }
 
   before do
-    allow(client).to receive(:account).and_return(account)
-    allow(account).to receive(:sms).and_return(sms)
-    allow(sms).to receive(:messages).and_return(messages)
+    allow(client).to receive(:messages).and_return(messages)
 
     stub_const('Txt', double)
   end

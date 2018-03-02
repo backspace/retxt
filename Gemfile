@@ -14,7 +14,7 @@ gem 'devise'
 gem 'cancan'
 gem 'wicked'
 
-gem 'twilio-ruby'
+gem 'twilio-ruby', '5.6.4'
 
 gem 'global_phone'
 gem 'dialable'
