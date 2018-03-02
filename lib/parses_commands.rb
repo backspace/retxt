@@ -25,7 +25,7 @@ class ParsesCommands
   end
 
   def command_is_addressed?
-    command.start_with? "@"
+    command.start_with?("@") || command.start_with?("&")
   end
 
   def command_is_banged?

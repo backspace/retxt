@@ -34,16 +34,16 @@ Feature: txtbeyond
 
     And a meeting M at Centennial is scheduled between US, GX, GY
 
-    When I txt '@M hello'
+    When I txt '&M hello'
     Then I should receive a confirmation that my message was sent to meeting group M
-    And GX should receive '@me of @US said to meeting group @M: hello'
-    And GYA should receive '@me of @US said to meeting group @M: hello'
-    And Jorty should receive '@me of @US said to meeting group @M: hello'
-    And US2 should receive '@me of @US said to meeting group @M: hello'
+    And GX should receive '@me of @US said to meeting group &M: hello'
+    And GYA should receive '@me of @US said to meeting group &M: hello'
+    And Jorty should receive '@me of @US said to meeting group &M: hello'
+    And US2 should receive '@me of @US said to meeting group &M: hello'
 
-    When GX txts '@M oink'
+    When GX txts '&M oink'
     Then GX should receive a confirmation that their message was sent to meeting group M
-    And US2 should receive '@GX said to meeting group @M: oink'
+    And US2 should receive '@GX said to meeting group &M: oink'
 
   Scenario: I txt the codes of the assembled teams
     Given I am on team US with code 123

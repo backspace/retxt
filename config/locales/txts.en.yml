@@ -137,8 +137,8 @@ en:
     notify_chosen_meeting: "Meet %{others} at %{region}. CHOSEN"
 
     group:
-      sent: "Your message was sent to @%{meeting_code}"
-      outgoing: "%{sender} said to meeting group @%{meeting_code}: %{message}"
+      sent: "Your message was sent to &%{meeting_code}"
+      outgoing: "%{sender} said to meeting group &%{meeting_code}: %{message}"
 
     answer: "This is a portion of the final answer"
     answer_incorrect_bounce: "That answer was incorrect!"
