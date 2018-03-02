@@ -138,7 +138,7 @@ en:
 
     group:
       sent: "Your message was sent to @%{meeting_code}"
-      outgoing: "%{sender} said to meeting group @%{meeting_code}: %{message}"
+      outgoing: "%{sender} of %{sender_team} said to meeting group @%{meeting_code}: %{message}"
 
     answer: "This is a portion of the final answer"
     answer_incorrect_bounce: "That answer was incorrect!"

@@ -24,8 +24,10 @@ class TxtsController < ApplicationController
     meetings.each do |meeting|
       fake_context = CommandContext.new(relay: Relay.first, originating_txt: FakeTxt.new(''), meeting: meeting)
 
-      meeting.subscribers.each do |subscriber|
-        NotifyMeeting.new(fake_context).execute(meeting, subscriber)
+      meeting.teams.each do |team|
+        team.subscribers.each do |subscriber|
+          NotifyMeeting.new(fake_context).execute(meeting, subscriber)
+        end
       end
 
       meeting.messaged = true

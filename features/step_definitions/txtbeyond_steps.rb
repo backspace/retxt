@@ -1,3 +1,40 @@
+Given(/^team (\w*)( with code (\d+))? is (.*)$/) do |team_name, code_present, code, subscriber_names|
+  subscribers = subscriber_names.split(', ').map do |name|
+    Subscriber.create(number: Time.now.to_f, name: name)
+  end
+
+  create_relay_with_subscriber(nil, subscribers.first)
+  relay = Relay.first
+  subscribers[1..-1].each do |subscriber|
+    relay.subscriptions << Subscription.create(subscriber: subscriber, relay: relay)
+  end
+
+  team = Team.create(name: team_name, subscribers: subscribers)
+
+  if code_present
+    team.update_attribute(:code, code)
+  end
+end
+
+Given(/^I am on team (\w*)( with code (\d+))?$/) do |team_name, code_present, code|
+  subscriber = Subscriber.find_or_create_by(name: 'me', number: my_number)
+
+  create_relay_with_subscriber(nil, subscriber)
+  @me = subscriber
+
+  team = Team.create(name: team_name, subscribers: [subscriber])
+
+  if code_present
+    team.update_attribute(:code, code)
+  end
+end
+
+Given(/^(\w+) is on team (\w+)$/) do |subscriber_name, team_name|
+  subscriber = Subscriber.create(number: Time.now.to_f, name: subscriber_name)
+  Relay.first.subscriptions << Subscription.create(subscriber: subscriber, relay: Relay.first)
+  Team.find_by(name: team_name).subscribers << subscriber
+end
+
 Given(/^I am subscribed as (\w*) with code (\d+)$/) do |name, code|
   subscriber = Subscriber.find_or_create_by(number: my_number)
   subscriber.update_attribute(:name, name)
@@ -15,10 +52,10 @@ Given(/^someone is subscribed as (\w*) with code (\d+)$/) do |name, code|
   create_relay_with_subscriber(nil, subscriber)
 end
 
-Given(/^a ((\w*)-chosen )?meeting (\w*) at (\w*)( with answer (\w*))? is scheduled( at offset (\d+))? between (.*)$/) do |chosen_container, chosen, code, region, answer_container, answer, offset_container, offset, subscriber_names|
-  subscribers = subscriber_names.split(", ").map{|name| Subscriber.find_by(name: name)}
+Given(/^a ((\w*)-chosen )?meeting (\w*) at (\w*)( with answer (\w*))? is scheduled( at offset (\d+))? between (.*)$/) do |chosen_container, chosen, code, region, answer_container, answer, offset_container, offset, team_names|
+  teams = team_names.split(", ").map{|name| Team.find_by(name: name)}
 
-  meeting = Meeting.create(subscribers: subscribers, code: code, offset: offset || 0, region: region)
+  meeting = Meeting.create(teams: teams, code: code, offset: offset || 0, region: region)
 
   if chosen_container
     meeting.chosen = Subscriber.find_by(name: chosen)
@@ -60,7 +97,7 @@ Then(/^(\w*) should receive a (chosen )?message about the meeting at (\w*)$/) do
   # FIXME meetings shouldn’t have names unless they’re a compound of subscriber names
   meeting = Meeting.where(region: region).first
 
-  others = meeting.subscribers - [subscriber]
+  others = meeting.teams - [subscriber.team]
   others_string = others.map(&:addressable_name).to_sentence
 
   if chosen

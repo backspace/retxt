@@ -11,10 +11,9 @@ class Subscriber
 
   field :locale, type: String
 
-  field :code, type: String
-
   has_many :subscriptions
   has_many :choosings, class_name: "Meeting", inverse_of: :chosen
+  belongs_to :team
 
   def name_or_anon
     name.present? ? name : 'anon'

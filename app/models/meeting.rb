@@ -10,12 +10,12 @@ class Meeting
   field :region, type: String
   field :answer, type: String
 
-  has_and_belongs_to_many :subscribers, inverse_of: nil
+  has_and_belongs_to_many :teams, inverse_of: nil
 
   belongs_to :chosen, class_name: "Subscriber"
 
   def full_code
-    "#{code}#{subscribers.map(&:code).join}"
+    "#{code}#{teams.map(&:code).join}"
   end
 
   # FIXME where should this live? database probs

@@ -5,6 +5,6 @@ class OutgoingGroupMessageResponse < SimpleResponse
   end
 
   def template_parameters(recipient)
-    {sender: sender.addressable_name, message: txt.body[(meeting.code.length + 2)..-1], meeting_code: meeting.code}
+    {sender: sender.addressable_name, sender_team: sender.team.addressable_name, message: txt.body[(meeting.code.length + 2)..-1], meeting_code: meeting.code}
   end
 end
