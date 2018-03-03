@@ -9,6 +9,7 @@ class Meeting
   field :messaged, type: Boolean, default: false
   field :region, type: String
   field :answer, type: String
+  field :description_masks, type: Array
 
   has_and_belongs_to_many :teams, inverse_of: nil
 

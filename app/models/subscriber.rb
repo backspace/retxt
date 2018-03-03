@@ -7,6 +7,8 @@ class Subscriber
   field :number, type: String
   field :name, type: String
 
+  field :display_size, type: Float
+
   field :admin, type: Boolean
 
   field :locale, type: String
