@@ -5,6 +5,7 @@ class Meeting
   include Mongoid::Versioning
 
   field :code, type: String
+  field :index, type: Integer
   field :offset, type: Integer
   field :messaged, type: Boolean, default: false
   field :region, type: String
