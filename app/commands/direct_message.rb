@@ -18,9 +18,13 @@ class DirectMessage < AbstractCommand
 
           if meeting
             @context.meeting = meeting
-            recipients = meeting.teams.map(&:subscribers) - [sender] + relay.admins
-            OutgoingGroupMessageResponse.new(context).deliver(recipients)
-            SentGroupMessageResponse.new(context).deliver(sender)
+            if meeting.messaged
+              recipients = meeting.teams.map(&:subscribers) - [sender] + relay.admins
+              OutgoingGroupMessageResponse.new(context).deliver(recipients)
+              SentGroupMessageResponse.new(context).deliver(sender)
+            else
+              PrematureGroupMessageResponse.new(context).deliver(sender)
+            end
           else
             MissingDirectMessageTargetBounceResponse.new(context).deliver(sender)
           end

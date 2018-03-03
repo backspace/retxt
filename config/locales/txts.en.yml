@@ -139,6 +139,7 @@ en:
     notify_chosen_meeting: "Meet %{others} at %{region}. CHOSEN"
 
     group:
+      premature: "You cannot yet message &%{meeting_code}"
       sent: "Your message was sent to &%{meeting_code}"
       outgoing: "%{sender} said to meeting group &%{meeting_code}: %{message}"
 
