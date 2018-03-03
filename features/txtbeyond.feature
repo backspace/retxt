@@ -46,6 +46,7 @@ Feature: txtbeyond
     And the txts are sent
 
     When I txt '&M omgtoosoon'
+    And Jorty should receive '@me tried to prematurely say &M omgtoosoon'
     Then I should receive a response that the meeting group M cannot yet be messaged
 
     When it is offset 20

@@ -140,6 +140,7 @@ en:
 
     group:
       premature: "You cannot yet message &%{meeting_code}"
+      premature_admin: "%{sender} tried to prematurely say %{body}"
       sent: "Your message was sent to &%{meeting_code}"
       outgoing: "%{sender} said to meeting group &%{meeting_code}: %{message}"
 

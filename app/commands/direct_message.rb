@@ -24,6 +24,7 @@ class DirectMessage < AbstractCommand
               SentGroupMessageResponse.new(context).deliver(sender)
             else
               PrematureGroupMessageResponse.new(context).deliver(sender)
+              PrematureGroupMessageAdminNotification.new(context).deliver(relay.admins)
             end
           else
             MissingDirectMessageTargetBounceResponse.new(context).deliver(sender)
