@@ -132,7 +132,7 @@ en:
       missing_target: "Your message was not sent because %{target_name} could not be found."
       anonymous: "You cannot send a message when you are anonymous. change your name with 'name yourname'."
 
-    question: "A RESPONSE"
+    question: "A RESPONSE %{url}"
     question_bounce: "Those codes were unrecognised!"
 
     notify_meeting: "Meet %{others} at %{region}."

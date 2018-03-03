@@ -5,6 +5,7 @@ class Question < AbstractCommand
     meeting = Meeting.all.to_a.find{|meeting| meeting.full_code == code}
 
     if meeting
+      context.meeting = meeting
       QuestionResponse.new(context).deliver sender
     else
       QuestionBounceResponse.new(context).deliver sender

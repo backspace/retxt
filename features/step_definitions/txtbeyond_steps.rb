@@ -85,7 +85,9 @@ When(/^the txts are sent$/) do
 end
 
 Then(/^I should receive a txt with links for a meeting (\w*) at (\w*)$/) do |code, region|
-  txt_should_have_been_sent "A RESPONSE", @me.number
+  meeting = Meeting.first
+  url = Rails.application.routes.url_helpers.meeting_path(meeting.id, host: "example.com")
+  txt_should_have_been_sent "A RESPONSE #{url}", @me.number
 end
 
 Then(/^I should receive a txt that the codes were not recognised$/) do
