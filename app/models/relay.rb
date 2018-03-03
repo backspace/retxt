@@ -14,6 +14,8 @@ class Relay
 
   field :start, type: DateTime, default: Time.zone.parse("2018-03-06 18:30")
 
+  field :answer, type: Array
+
   has_many :subscriptions, dependent: :delete
 
   default_scope ->{ order(created_at: :asc) }

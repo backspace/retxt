@@ -55,7 +55,7 @@ end
 Given(/^a ((\w*)-chosen )?meeting (\w*) at (\w*)( with answer (\w*))? is scheduled( at offset (\d+))? between (.*)$/) do |chosen_container, chosen, code, region, answer_container, answer, offset_container, offset, team_names|
   teams = team_names.split(", ").map{|name| Team.find_by(name: name)}
 
-  meeting = Meeting.create(teams: teams, code: code, offset: offset || 0, region: region)
+  meeting = Meeting.create(teams: teams, code: code, offset: offset || 0, region: region, index: 0)
 
   if chosen_container
     meeting.chosen = Subscriber.find_by(name: chosen)
@@ -78,6 +78,10 @@ end
 
 Given(/^the relay start is set to (.*)$/) do |datetime_string|
   Relay.first.update_attribute(:start, Time.zone.parse(datetime_string))
+end
+
+Given(/^the final answer is correct horse battery staple$/) do
+  Relay.first.update_attribute(:answer, %w(correct horse battery staple))
 end
 
 When(/^the txts are sent$/) do
@@ -143,7 +147,7 @@ Then(/^(\w*) should receive '(.*)' with no origin$/) do |recipient_name, message
 end
 
 Then(/^I should receive a txt with a portion of the final answer$/) do
-  txt_should_have_been_sent I18n.t('txts.answer')
+  txt_should_have_been_sent I18n.t('txts.answer', portion: "correct")
 end
 
 Then(/^I should receive a txt that the answer was incorrect$/) do

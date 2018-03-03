@@ -9,6 +9,7 @@ class Answer < AbstractCommand
       given_answer = $1
 
       if given_answer == meeting.answer
+        context.meeting = meeting
         AnswerResponse.new(context).deliver sender
       else
         AnswerIncorrectBounceResponse.new(context).deliver sender

@@ -71,6 +71,7 @@ Feature: txtbeyond
     Given I am on team US
     And team GX is GXA
     And a meeting M at Centennial with answer jortle is scheduled between US, GX
+    And the final answer is correct horse battery staple
 
     When I txt '!M jortle'
     Then I should receive a txt with a portion of the final answer
