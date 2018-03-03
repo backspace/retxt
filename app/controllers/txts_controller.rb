@@ -57,7 +57,7 @@ class TxtsController < ApplicationController
   private
   def validate_twilio_request
     # https://github.com/twilio/twilio-ruby/wiki/RequestValidator
-    validator = Twilio::Util::RequestValidator.new(ENV['TWILIO_AUTH_TOKEN'])
+    validator = Twilio::Security::RequestValidator.new(ENV['TWILIO_AUTH_TOKEN'])
     url = "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
     parameters = env['rack.request.form_hash']
     signature = env['HTTP_X_TWILIO_SIGNATURE']
