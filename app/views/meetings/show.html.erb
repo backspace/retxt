@@ -1,0 +1,5 @@
+<% @meeting.description_masks.each do |mask| %>
+<meta name="nokia-string" content="<%= mask %>">
+<% end %>
+
+<meta name="slices" content="<%= @meeting.teams.length + 2 %>">

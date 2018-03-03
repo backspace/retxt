@@ -12,6 +12,8 @@ ReTxt::Application.routes.draw do
     post 'trigger', on: :collection
   end
 
+  resources :meetings, only: [:show]
+
   resources :setup
 
   root to: "home#index"
