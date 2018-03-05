@@ -115,9 +115,9 @@ Then(/^(\w*) should receive a (chosen )?message about the meeting at (\w*)$/) do
   others_string = others.map(&:addressable_name).to_sentence
 
   if chosen
-    txt_should_have_been_sent I18n.t('txts.notify_chosen_meeting', others: others_string, region: meeting.region), recipient_number
+    txt_should_have_been_sent I18n.t('txts.notify_chosen_meeting', others: others_string, region: meeting.region, code: "&#{meeting.code}"), recipient_number
   else
-    txt_should_have_been_sent I18n.t('txts.notify_meeting', others: others_string, region: meeting.region), recipient_number
+    txt_should_have_been_sent I18n.t('txts.notify_meeting', others: others_string, region: meeting.region, code: "&#{meeting.code}"), recipient_number
   end
 end
 

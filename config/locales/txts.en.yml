@@ -135,8 +135,8 @@ en:
     question: "A RESPONSE %{url}"
     question_bounce: "Those codes were unrecognised!"
 
-    notify_meeting: "Meet %{others} at %{region}."
-    notify_chosen_meeting: "Meet %{others} at %{region}. CHOSEN"
+    notify_meeting: "Meet %{others} at %{region} for conclave %{code}."
+    notify_chosen_meeting: "Meet %{others} at %{region} for conclave %{code}. CHOSEN"
 
     group:
       premature: "You cannot yet message &%{meeting_code}"
