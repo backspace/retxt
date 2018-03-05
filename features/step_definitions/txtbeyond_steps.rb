@@ -9,7 +9,7 @@ Given(/^team (\w*)( with code (\d+))? is (.*)$/) do |team_name, code_present, co
     relay.subscriptions << Subscription.create(subscriber: subscriber, relay: relay)
   end
 
-  team = Team.create(name: team_name, subscribers: subscribers)
+  team = Team.create(name: team_name.downcase, subscribers: subscribers)
 
   if code_present
     team.update_attribute(:code, code)
@@ -22,7 +22,7 @@ Given(/^I am on team (\w*)( with code (\d+))?$/) do |team_name, code_present, co
   create_relay_with_subscriber(nil, subscriber)
   @me = subscriber
 
-  team = Team.create(name: team_name, subscribers: [subscriber])
+  team = Team.create(name: team_name.downcase, subscribers: [subscriber])
 
   if code_present
     team.update_attribute(:code, code)
@@ -32,7 +32,7 @@ end
 Given(/^(\w+) is on team (\w+)$/) do |subscriber_name, team_name|
   subscriber = Subscriber.create(number: Time.now.to_f, name: subscriber_name)
   Relay.first.subscriptions << Subscription.create(subscriber: subscriber, relay: Relay.first)
-  Team.find_by(name: team_name).subscribers << subscriber
+  Team.find_by(name: team_name.downcase).subscribers << subscriber
 end
 
 Given(/^I am subscribed as (\w*) with code (\d+)$/) do |name, code|
@@ -53,7 +53,7 @@ Given(/^someone is subscribed as (\w*) with code (\d+)$/) do |name, code|
 end
 
 Given(/^a ((\w*)-chosen )?meeting (\w*) at (\w*)( with answer (\w*))? is scheduled( at offset (\d+))? between (.*)$/) do |chosen_container, chosen, code, region, answer_container, answer, offset_container, offset, team_names|
-  teams = team_names.split(", ").map{|name| Team.find_by(name: name)}
+  teams = team_names.split(", ").map{|name| Team.find_by(name: name.downcase)}
 
   meeting = Meeting.create(teams: teams, code: code, offset: offset || 0, region: region, index: 0)
 
@@ -115,7 +115,7 @@ Then(/^(\w*) should receive a (chosen )?message about the meeting at (\w*)$/) do
   others_string = others.map(&:addressable_name).to_sentence
 
   if chosen
-    txt_should_have_been_sent I18n.t('txts.notify_chosen_meeting', others: others_string, region: meeting.region, code: "#{meeting.code}", team_code_blanks: "[code for @GX]123"), recipient_number
+    txt_should_have_been_sent I18n.t('txts.notify_chosen_meeting', others: others_string, region: meeting.region, code: "#{meeting.code}", team_code_blanks: "[code for @gx]123"), recipient_number
   else
     txt_should_have_been_sent I18n.t('txts.notify_meeting', others: others_string, region: meeting.region, code: "#{meeting.code}"), recipient_number
   end

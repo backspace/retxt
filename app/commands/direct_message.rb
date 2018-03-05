@@ -7,11 +7,19 @@ class DirectMessage < AbstractCommand
         ForbiddenAnonymousDirectMessageBounceResponse.new(context).deliver sender
       else
         target_subscriber = FindsSubscribers.find(target)
+        team = Team.where(name: target.downcase[1..-1]).first
 
         if target_subscriber
           OutgoingDirectMessageResponse.new(context).deliver(target_subscriber)
           OutgoingDirectMessageCopyNotification.new(context).deliver(relay.admins)
           SentDirectMessageResponse.new(context).deliver(sender)
+        elsif team
+          OutgoingDirectMessageCopyNotification.new(context).deliver(relay.admins)
+
+          team.subscribers.each do |target_subscriber|
+            OutgoingDirectMessageResponse.new(context).deliver(target_subscriber)
+            SentDirectMessageResponse.new(context).deliver(sender)
+          end
         else
           meeting_group_name = target[1..-1]
           meeting = Meeting.where(code: meeting_group_name).first

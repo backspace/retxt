@@ -34,6 +34,14 @@ Feature: txtbeyond
     When the txts are sent
     Then GCA should have only received 1 message
 
+  Scenario: Team DMs
+    Given I am on team US
+    And team GX is GXA, GXB
+
+    When I txt '@GX hey'
+    Then GXA should receive '@me said to you: @GX hey'
+    And GXB should receive '@me said to you: @GX hey'
+
   Scenario: Meeting group txts
     Given I am on team US
     And US2 is on team US
@@ -55,10 +63,10 @@ Feature: txtbeyond
     When I txt '&M hello'
 
     Then I should receive a confirmation that my message was sent to meeting group M
-    And GX should receive '@me of @US said to meeting group &M: hello'
-    And GYA should receive '@me of @US said to meeting group &M: hello'
-    And Jorty should receive '@me of @US said to meeting group &M: hello'
-    And US2 should receive '@me of @US said to meeting group &M: hello'
+    And GX should receive '@me of @us said to meeting group &M: hello'
+    And GYA should receive '@me of @us said to meeting group &M: hello'
+    And Jorty should receive '@me of @us said to meeting group &M: hello'
+    And US2 should receive '@me of @us said to meeting group &M: hello'
 
     When GX txts '&M oink'
     # FIXME these have incorrect originating IDs ugh
