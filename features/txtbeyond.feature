@@ -1,8 +1,8 @@
 Feature: txtbeyond
 
   Scenario: Scheduled messages get sent out
-    Given team GX is GXA, GXB
-    And team GY is GYA
+    Given team GX with code 789 is GXA, GXB
+    And team GY with code 123 is GYA
     And team GA is GAA
     And team GB is GBA
     And team GC is GCA

@@ -15,6 +15,7 @@ class NotifyMeetingResponse < SimpleResponse
   end
 
   def template_parameters(recipient)
-    {others: (meeting.teams - [recipient.team]).map(&:addressable_name).to_sentence, region: meeting.region, code: "&#{meeting.code}"}
+    team_code_blanks = meeting.teams.map{|team| team == recipient.team ? team.code : "[code for #{team.addressable_name}]"}.join('')
+    {others: (meeting.teams - [recipient.team]).map(&:addressable_name).to_sentence, region: meeting.region, code: meeting.code, team_code_blanks: team_code_blanks}
   end
 end
