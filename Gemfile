@@ -51,4 +51,6 @@ gem 'haml'
 
 gem 'coveralls', require: false
 
+gem 'sentry-raven'
+
 gem 'rails_12factor', group: :production

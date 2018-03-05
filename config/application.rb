@@ -69,3 +69,7 @@ module ReTxt
     config.assets.initialize_on_precompile = false
   end
 end
+
+Raven.configure do |config|
+  config.dsn = 'https://07a084a4bf2c4a2987d0407148eb2af7:8e01ef9554724d25bdf594fb5e5886af@sentry.io/298128'
+end
