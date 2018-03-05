@@ -63,10 +63,10 @@ Feature: txtbeyond
     When I txt '&M hello'
 
     Then I should receive a confirmation that my message was sent to meeting group M
-    And GX should receive '@me of @us said to meeting group &M: hello'
-    And GYA should receive '@me of @us said to meeting group &M: hello'
-    And Jorty should receive '@me of @us said to meeting group &M: hello'
-    And US2 should receive '@me of @us said to meeting group &M: hello'
+    And GX should receive '@me of @us said to conclave &M: hello'
+    And GYA should receive '@me of @us said to conclave &M: hello'
+    And Jorty should receive '@me of @us said to conclave &M: hello'
+    And US2 should receive '@me of @us said to conclave &M: hello'
 
     When GX txts '&M oink'
     # FIXME these have incorrect originating IDs ugh

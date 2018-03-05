@@ -133,7 +133,7 @@ en:
       anonymous: "You cannot send a message when you are anonymous. change your name with 'name yourname'."
 
     question: "A RESPONSE %{url}"
-    question_bounce: "Those codes were unrecognised!"
+    question_bounce: "Those sigils were unrecognised!"
 
     notify_meeting: "Meet %{others} at %{region} for conclave &%{code}. You can txt the conclave by starting your message with &%{code}."
     notify_chosen_meeting: "Meet %{others} at %{region} for conclave &%{code}. When you convene, txt ?%{code}%{team_code_blanks} to get the incantation link."
@@ -142,10 +142,10 @@ en:
       premature: "You cannot yet message &%{meeting_code}"
       premature_admin: "%{sender} tried to prematurely say %{body}"
       sent: "Your message was sent to &%{meeting_code}"
-      outgoing: "%{sender} said to meeting group &%{meeting_code}: %{message}"
+      outgoing: "%{sender} said to conclave &%{meeting_code}: %{message}"
 
-    answer: "This is a portion of the final answer: %{portion}\n\nWhen you’re ready, enter it at %{host}"
-    answer_incorrect_bounce: "That answer was incorrect!"
+    answer: "This is a portion of the final spell: %{portion}\n\nWhen you’re ready, enter it at %{host}"
+    answer_incorrect_bounce: "That revelation was incorrect!"
     answer_meeting_bounce: "That meeting was not found"
 
 
