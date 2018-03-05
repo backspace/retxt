@@ -144,7 +144,7 @@ en:
       sent: "Your message was sent to &%{meeting_code}"
       outgoing: "%{sender} said to meeting group &%{meeting_code}: %{message}"
 
-    answer: "This is a portion of the final answer: %{portion}"
+    answer: "This is a portion of the final answer: %{portion}\n\nWhen you’re ready, enter it at %{host}"
     answer_incorrect_bounce: "That answer was incorrect!"
     answer_meeting_bounce: "That meeting was not found"
 

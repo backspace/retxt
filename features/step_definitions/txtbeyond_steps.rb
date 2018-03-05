@@ -151,7 +151,7 @@ Then(/^(\w*) should receive '(.*)' with no origin$/) do |recipient_name, message
 end
 
 Then(/^I should receive a txt with a portion of the final answer$/) do
-  txt_should_have_been_sent I18n.t('txts.answer', portion: "correct")
+  txt_should_have_been_sent I18n.t('txts.answer', portion: "correct", host: "example.com")
 end
 
 Then(/^I should receive a txt that the answer was incorrect$/) do
