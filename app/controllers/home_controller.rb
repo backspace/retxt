@@ -12,12 +12,14 @@ class HomeController < ApplicationController
       flash[:alert] = "Your entries were not recognised"
       redirect_to "/"
     else
-      @relay.admins.each do |admin|
-        SendsTxts.send_txt(
-          to: admin.number,
-          from: @relay.number,
-          body: "Someone accessed the directions"
-        )
+      unless params[:testing]
+        @relay.admins.each do |admin|
+          SendsTxts.send_txt(
+            to: admin.number,
+            from: @relay.number,
+            body: "Someone accessed the directions"
+          )
+        end
       end
     end
   end
