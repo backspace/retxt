@@ -134,7 +134,7 @@ en:
       missing_target: "Your message was not sent because %{target_name} could not be found."
       anonymous: "You cannot send a message when you are anonymous. change your name with 'name yourname'."
 
-    question: "A RESPONSE %{url}"
+    question: "Visit this page and overlay your slices: %{url}"
     question_bounce: "Those sigils were unrecognised!"
 
     notify_meeting: "Meet %{others} at %{region} for conclave &%{code}. You can txt the conclave by starting your message with &%{code}."
