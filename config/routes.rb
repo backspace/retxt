@@ -17,4 +17,8 @@ ReTxt::Application.routes.draw do
   resources :setup
 
   root to: "home#index"
+
+  get 'spell', to: 'home#spell'
+  get 'edit_spell', to: 'home#edit_spell'
+  put 'save_spell', to: 'home#save_spell'
 end

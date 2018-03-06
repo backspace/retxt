@@ -6,6 +6,26 @@ class HomeController < ApplicationController
     @subscriber_count = 5
   end
 
+  def spell
+    @relay = Relay.master
+    if params[:answer] != @relay.answer
+      flash[:alert] = "Your entries were not recognised"
+      redirect_to "/"
+    end
+  end
+
+  def edit_spell
+    @relay = Relay.master
+    authorize! :edit, @relay
+  end
+
+  def save_spell
+    @relay = Relay.master
+    @relay.update!(relay_params)
+    flash[:notice] = "Saved!"
+    redirect_to "/edit_spell"
+  end
+
   private
   def check_for_setup
     if User.empty?
@@ -13,5 +33,9 @@ class HomeController < ApplicationController
     elsif Subscriber.empty?
       redirect_to setup_path(:get_admin_number)
     end
+  end
+
+  def relay_params
+    params.require(:relay).permit(:directions)
   end
 end

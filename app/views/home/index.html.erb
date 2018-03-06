@@ -1,0 +1,7 @@
+<%= form_tag("/spell", method: :get) do %>
+  <% @relay.answer.each do |answer, index| %>
+    <%= text_field_tag("answer[]", answer.first) %>
+  <% end %>
+
+  <%= submit_tag("Go") %>
+<% end %>

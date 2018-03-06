@@ -15,6 +15,7 @@ class Relay
   field :start, type: DateTime, default: Time.zone.parse("2018-03-06 18:30")
 
   field :answer, type: Array
+  field :directions, type: String
 
   has_many :subscriptions, dependent: :delete
 
