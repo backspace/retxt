@@ -11,10 +11,13 @@ class Answer < AbstractCommand
       if given_answer.downcase == meeting.answer.downcase
         context.meeting = meeting
         AnswerResponse.new(context).deliver sender
+        CopyNotification.new(context, 'correct answer').deliver relay.admins
       else
         AnswerIncorrectBounceResponse.new(context).deliver sender
+        CopyNotification.new(context, 'incorrect answer').deliver relay.admins
       end
     else
+      CopyNotification.new(context, 'incorrect answer meeting').deliver relay.admins
       AnswerMeetingBounceResponse.new(context).deliver sender
     end
   end

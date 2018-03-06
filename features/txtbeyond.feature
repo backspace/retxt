@@ -91,15 +91,19 @@ Feature: txtbeyond
     And team GX is GXA
     And a meeting M at Centennial with answer JORTLE is scheduled between US, GX
     And the final answer is correct horse battery staple
+    And Jorty is subscribed as an admin
 
     When I txt '!M jortle '
     Then I should receive a txt with a portion of the final answer
+    And Jorty should receive 'correct answer: @me sent: !M jortle'
 
     When I txt '!M shartle'
     Then I should receive a txt that the answer was incorrect
+    And Jorty should receive 'incorrect answer: @me sent: !M shartle'
 
     When I txt '!X whatever'
     Then I should receive a txt that the meeting was not found
+    And Jorty should receive 'incorrect answer meeting: @me sent: !X whatever'
 
   Scenario: Admin can check and change the start
     Given Alice is subscribed as an admin
