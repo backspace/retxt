@@ -1,10 +1,6 @@
 class NotifyMeetingResponse < SimpleResponse
   def deliver(recipient)
-    if meeting.chosen == recipient
-      @template_name_override = 'notify_chosen_meeting'
-    else
-      @template_name_override = 'notify_meeting'
-    end
+    @template_name_override = 'notify_chosen_meeting'
 
     super
   end
