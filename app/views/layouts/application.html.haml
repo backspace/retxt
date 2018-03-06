@@ -12,7 +12,7 @@
   -# Set the viewport width to device width for mobile
   %meta{ :name => "viewport", :content => "width=device-width, initial-scale=1.0" }
 
-  %title= content_for?(:title) ? yield(:title) : "retxt"
+  %title txtbeyond
 
   = stylesheet_link_tag "application"
   = javascript_include_tag "vendor/custom.modernizr"
@@ -21,16 +21,6 @@
 %body{class: controller_name, id: action_name}
   .row.header
     .small-12.columns
-      =link_to(image_tag('tower.png', size: '100x100'), '/', class: 'image')
-      %h1
-        =link_to "retxt", '/'
-      -if user_signed_in?
-        -if current_user.admin
-          =link_to t('navigation.subscribers'), subscribers_url
-          =link_to t('navigation.users'), users_url
-        =link_to t('navigation.sign_out'), destroy_user_session_path, method: :delete
-      -else
-        =link_to t('navigation.sign_in'), new_user_session_path
       %p.notice=notice
       %p.alert=alert
 
