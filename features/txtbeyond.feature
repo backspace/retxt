@@ -77,14 +77,17 @@ Feature: txtbeyond
     Given I am on team US with code 123
     And team GX with code 234 is GXA
     And team GY with code 345 is GYA
+    And Jorty is subscribed as an admin
 
     And a meeting M at Centennial is scheduled between US, GX, GY
 
     When I txt '?M123234345'
     Then I should receive a txt with links for a meeting M at Centennial
+    And Jorty should receive 'correct meeting code: @me sent: ?M123234345'
 
     When I txt '?111'
     Then I should receive a txt that the codes were not recognised
+    And Jorty should receive 'incorrect meeting code: @me sent: ?111'
 
   Scenario: I txt the answer for the meeting
     Given I am on team US

@@ -7,8 +7,10 @@ class Question < AbstractCommand
     if meeting
       context.meeting = meeting
       QuestionResponse.new(context).deliver sender
+      CopyNotification.new(context, 'correct meeting code').deliver relay.admins
     else
       QuestionBounceResponse.new(context).deliver sender
+      CopyNotification.new(context, 'incorrect meeting code').deliver relay.admins
     end
   end
 
