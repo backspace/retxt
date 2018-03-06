@@ -8,7 +8,7 @@ class Answer < AbstractCommand
       context.txt.body =~ /\s(.*)/
       given_answer = $1
 
-      if given_answer == meeting.answer
+      if given_answer.downcase == meeting.answer.downcase
         context.meeting = meeting
         AnswerResponse.new(context).deliver sender
       else

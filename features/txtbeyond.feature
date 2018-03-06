@@ -89,10 +89,10 @@ Feature: txtbeyond
   Scenario: I txt the answer for the meeting
     Given I am on team US
     And team GX is GXA
-    And a meeting M at Centennial with answer jortle is scheduled between US, GX
+    And a meeting M at Centennial with answer JORTLE is scheduled between US, GX
     And the final answer is correct horse battery staple
 
-    When I txt '!M jortle'
+    When I txt '!M jortle '
     Then I should receive a txt with a portion of the final answer
 
     When I txt '!M shartle'
