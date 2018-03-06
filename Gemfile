@@ -20,6 +20,8 @@ gem 'global_phone'
 gem 'dialable'
 gem 'countries'
 
+gem 'redcarpet'
+
 # group :test do
   gem 'rspec-rails', '3'
   gem 'mocha', require: false

@@ -183,6 +183,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.13.0)
     rake (11.3.0)
+    redcarpet (3.4.0)
     rspec-core (3.0.0)
       rspec-support (~> 3.0.0)
     rspec-expectations (3.0.0)
@@ -283,6 +284,7 @@ DEPENDENCIES
   pry-remote
   rails (= 4.1.16)
   rails_12factor
+  redcarpet
   rspec-rails (= 3)
   sass-rails (~> 4)
   sentry-raven
