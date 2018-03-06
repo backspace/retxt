@@ -29,6 +29,7 @@ class HomeController < ApplicationController
 
   def save_spell
     @relay = Relay.master
+    authorize! :edit, @relay
     @relay.update!(relay_params)
     flash[:notice] = "Saved!"
     redirect_to "/edit_spell"
