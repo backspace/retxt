@@ -148,7 +148,7 @@ en:
 
     answer: "This is a portion of the final spell: %{portion}\n\nWhen you’re ready, enter it at %{host}"
     answer_incorrect_bounce: "That revelation was incorrect!"
-    answer_meeting_bounce: "That meeting was not found"
+    answer_meeting_bounce: "That conclave is unrecognised"
 
 
     start_get: "The start is set to %{start_string}"
