@@ -5,7 +5,7 @@ ruby '2.3.0'
 gem 'rails', '4.1.16'
 gem 'unicorn'
 
-gem 'mongoid', '5.1.1'
+gem 'mongoid', '5.4.0'
 gem 'mongoid_paranoia'
 gem 'mongoid-versioning'
 gem 'mongoid-app_settings'
