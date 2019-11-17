@@ -141,6 +141,10 @@
     =txt_pair('', RelayedTxtFormatter.new(relay: relay, sender: relayer, recipient: relayer, txt: Txt.new(body: t('.timestamping.relayed_message'), created_at: Time.now)).format, receiver: t('.timestamping.direct_sender'))
     =txt_pair(message, t('txts.direct.sent', target_name: "@#{t('.timestamping.relay_sender')}"), sender: t('.timestamping.direct_sender'))
     =txt_pair('', t('txts.direct.outgoing', prefix: "#{Time.zone.now.strftime(timestamp).strip} ", sender: "@#{t('.timestamping.direct_sender')}", message: message), receiver: t('.timestamping.relay_sender'))
+  .large-6.small-12.columns
+    %h3=t '.inviting.heading'
+    =txt_pair("/#{t('commands.invite')} #{t('.inviting.invitee_number')}", t('txts.admin.invite', admin_name: t('.addressable_admin_name'), number: t('.inviting.invitee_number')))
+    =txt_pair('', t('txts.invite', relay_name: 'exciting'), receiver: t('.inviting.invitee_number'))
 
 %section.row
   .large-6.small-12.columns

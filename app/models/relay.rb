@@ -13,6 +13,7 @@ class Relay
   field :timestamp, type: String
 
   has_many :subscriptions, dependent: :delete
+  has_many :invitations, dependent: :delete
 
   default_scope ->{ order(created_at: :asc) }
 
@@ -20,8 +21,20 @@ class Relay
     subscription_for(subscriber).present?
   end
 
+  def number_subscribed?(number)
+    subscriptions.map(&:subscriber).map(&:number).include? number
+  end
+
   def subscription_for(subscriber)
     subscriptions.where(subscriber: subscriber).first
+  end
+
+  def invited?(number)
+    invitation_for(number).present?
+  end
+
+  def invitation_for(number)
+    invitations.where(number: number).first
   end
 
   def self.master

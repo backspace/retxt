@@ -130,6 +130,10 @@ en:
         direct_message: "@alice on my way"
         direct_sender: bob
 
+      inviting:
+        heading: Invitations
+        invitee_number: "+14165551212"
+
       feedback:
         heading: Feedback
         list_introduction: "Things to consider:"

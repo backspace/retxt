@@ -246,6 +246,22 @@ Then(/^I should receive a txt saying Bob unsubscribed$/) do
   txt_should_have_been_sent I18n.t("txts.admin.unsubscription", name: 'Bob', number: Subscriber.find_by(name: 'Bob').number), my_number
 end
 
+Then(/^Alice should receive a txt that (\d+) was invited$/) do |number|
+  txt_should_have_been_sent I18n.t("txts.admin.invite", admin_name: "Alice", number: number), Subscriber.find_by(name: 'Alice').number
+end
+
+Then(/^Alice should receive a txt that (\d+) was already invited$/) do |number|
+  txt_should_have_been_sent I18n.t("txts.admin.already_invited_invite_bounce_response", admin_name: "Alice", number: number), Subscriber.find_by(name: 'Alice').number
+end
+
+Then(/^Alice should receive a txt that (\d+) was already subscribed$/) do |number|
+  txt_should_have_been_sent I18n.t("txts.admin.already_subscribed_invite_bounce", number: number), Subscriber.find_by(name: 'Alice').number
+end
+
+Then(/^(\d+) should receive an invitation$/) do |number|
+  txt_should_have_been_sent I18n.t('txts.invite', relay_name: ''), number
+end
+
 # FIXME lessen coupling to relay template
 
 Then(/^Bob should receive '@Alice says: this message should not go to everyone' from relay A$/) do

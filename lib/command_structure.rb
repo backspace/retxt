@@ -26,7 +26,9 @@ COMMAND_STRUCTURE = {
     :voice,
     :unvoice,
 
-    :timestamp
+    :timestamp,
+
+    :invite
   ],
 
   locale_setting: [
